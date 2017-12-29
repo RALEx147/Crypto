@@ -15,6 +15,9 @@
 		910A819A1FA4DC75001F868A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910A81981FA4DC75001F868A /* Main.storyboard */; };
 		910A819C1FA4DC75001F868A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		910A819F1FA4DC75001F868A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910A819D1FA4DC75001F868A /* LaunchScreen.storyboard */; };
+		910B0D0D1FF622840028E76C /* add1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D0B1FF622840028E76C /* add1.json */; };
+		910B0D0F1FF6255A0028E76C /* add2.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D0E1FF625590028E76C /* add2.json */; };
+		910B0D131FF627000028E76C /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D121FF627000028E76C /* 1.json */; };
 		9113C0DB1FE9EC39005170A4 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113C0DA1FE9EC39005170A4 /* IntentHandler.swift */; };
 		9113C0E31FE9EC39005170A4 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9113C0E21FE9EC39005170A4 /* IntentsUI.framework */; };
 		9113C0E61FE9EC39005170A4 /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113C0E51FE9EC39005170A4 /* IntentViewController.swift */; };
@@ -37,7 +40,6 @@
 		914BAE1F1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		918F08D71FF33D5E0082AC9A /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D31FF33D5E0082AC9A /* 4.json */; };
 		918F08D81FF33D5E0082AC9A /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D41FF33D5E0082AC9A /* 3.json */; };
-		918F08D91FF33D5E0082AC9A /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D51FF33D5E0082AC9A /* 1.json */; };
 		918F08DA1FF33D5E0082AC9A /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D61FF33D5E0082AC9A /* 2.json */; };
 		919B5CB81FF4A67500F2D917 /* structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919B5CB71FF4A67500F2D917 /* structs.swift */; };
 		91A8B86E1FF4A8BC002CFF05 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 91A8B86C1FF4A8BB002CFF05 /* top2.json */; };
@@ -118,6 +120,9 @@
 		910A819B1FA4DC75001F868A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		910A819E1FA4DC75001F868A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		910A81A01FA4DC75001F868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		910B0D0B1FF622840028E76C /* add1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add1.json; path = local/add1.json; sourceTree = SOURCE_ROOT; };
+		910B0D0E1FF625590028E76C /* add2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add2.json; path = local/add2.json; sourceTree = SOURCE_ROOT; };
+		910B0D121FF627000028E76C /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = 1.json; path = local/1.json; sourceTree = SOURCE_ROOT; };
 		9113C0D81FE9EC39005170A4 /* CryptoSiri.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CryptoSiri.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9113C0DA1FE9EC39005170A4 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		9113C0DC1FE9EC39005170A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -143,7 +148,6 @@
 		914BAE1C1FEBA05200861C31 /* Crypto PubKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto PubKeys.entitlements"; sourceTree = "<group>"; };
 		918F08D31FF33D5E0082AC9A /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
 		918F08D41FF33D5E0082AC9A /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
-		918F08D51FF33D5E0082AC9A /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 1.json; sourceTree = "<group>"; };
 		918F08D61FF33D5E0082AC9A /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
 		919B5CB71FF4A67500F2D917 /* structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = structs.swift; sourceTree = "<group>"; };
 		91A8B86C1FF4A8BB002CFF05 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = local/top2.json; sourceTree = SOURCE_ROOT; };
@@ -299,14 +303,16 @@
 				910A81921FA4DC75001F868A /* AppDelegate.swift */,
 				910A819B1FA4DC75001F868A /* Assets.xcassets */,
 				910A819D1FA4DC75001F868A /* LaunchScreen.storyboard */,
-				918F08D51FF33D5E0082AC9A /* 1.json */,
+				910B0D121FF627000028E76C /* 1.json */,
 				918F08D61FF33D5E0082AC9A /* 2.json */,
 				918F08D41FF33D5E0082AC9A /* 3.json */,
 				918F08D31FF33D5E0082AC9A /* 4.json */,
+				910B0D0B1FF622840028E76C /* add1.json */,
+				910B0D0E1FF625590028E76C /* add2.json */,
 				91A8B86D1FF4A8BC002CFF05 /* top1.json */,
+				91A8B86C1FF4A8BB002CFF05 /* top2.json */,
 				9129AD941FF4B9DD00EF04C0 /* STHeiti Light.ttc */,
 				9129AD951FF4B9DE00EF04C0 /* STHeiti Medium.ttc */,
-				91A8B86C1FF4A8BB002CFF05 /* top2.json */,
 			);
 			path = others;
 			sourceTree = "<group>";
@@ -489,12 +495,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				910B0D131FF627000028E76C /* 1.json in Resources */,
 				918F08D81FF33D5E0082AC9A /* 3.json in Resources */,
-				918F08D91FF33D5E0082AC9A /* 1.json in Resources */,
 				910A819F1FA4DC75001F868A /* LaunchScreen.storyboard in Resources */,
+				910B0D0D1FF622840028E76C /* add1.json in Resources */,
 				910A819C1FA4DC75001F868A /* Assets.xcassets in Resources */,
 				918F08DA1FF33D5E0082AC9A /* 2.json in Resources */,
 				918F08D71FF33D5E0082AC9A /* 4.json in Resources */,
+				910B0D0F1FF6255A0028E76C /* add2.json in Resources */,
 				9129AD961FF4BA2C00EF04C0 /* STHeiti Light.ttc in Resources */,
 				91A8B86E1FF4A8BC002CFF05 /* top2.json in Resources */,
 				910A819A1FA4DC75001F868A /* Main.storyboard in Resources */,

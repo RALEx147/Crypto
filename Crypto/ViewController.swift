@@ -25,29 +25,38 @@ class ViewController: UIViewController {
     
     
     
+    
+    @IBOutlet weak var halo: UIImageView!
+    @IBOutlet weak var icon: UIImageView!
+    
+    
+    @IBOutlet weak var v2: UIView!
+    @IBOutlet weak var v1: UIView!
+    
+    
+    
+    
     var view1:FirstViewController!
     var view2:SecondViewController!
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "seg1"{
             view1 = segue.destination as? FirstViewController
         }
         else{
             view2 = segue.destination as? SecondViewController
-            
         }
     }
     
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addTopButton(on: topOn)
-        view2?.view.isHidden = true
+        
+        v2.alpha = 0
         setupFrame()
         
-        
-}
+    }
     
     
     
@@ -102,53 +111,65 @@ class ViewController: UIViewController {
     
     
     func toKey(){
-        self.view1?.banner.frame = bannerFrame
-        self.view1?.add.frame = addFrame
-        self.view1?.total.alpha = 1
-        self.view1?.banner.alpha = 1
-        self.view1?.add.alpha = 1
-        self.view1?.table.alpha = 1
-        self.view1?.ani1.alpha = 1
-        self.view1?.ani2.alpha = 1
-        self.view1?.ani3.alpha = 1
-        self.view1?.ani4.alpha = 1
-        self.view1?.bg.alpha = 1
-        self.view1?.bg.frame = aniBGFrame
-        self.view1?.ani1.frame = ani1Frame
         
-        self.view1?.view.isHidden = false
-        self.view2?.view.isHidden = true
+        self.v2.alpha = 0
     }
     
     func toKeyAnimate(){
-        UIView.animate(withDuration: 0.3) {
-            self.view2?.banner.alpha = 0
-        }
+        
+        self.v1.alpha = 1
+        
+        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseOut, animations: {
+            self.view1?.table.alpha = 1
+            self.view1?.table.alpha = 1
+            self.view1?.total.alpha = 1
+            self.view1?.ani1.alpha = 1
+            self.view1?.ani2.alpha = 1
+            self.view1?.ani3.alpha = 1
+            self.view1?.ani4.alpha = 1
+            self.view1?.bg.alpha = 1
+            self.view1?.add?.alpha = 1
+            
+            self.view1?.add?.frame = self.addFrame
+            self.view1?.banner.frame = self.bannerFrame
+            self.view1?.bg.frame = self.aniBGFrame
+            self.view1?.ani1.frame = self.ani1Frame
+            self.view1?.ani2.frame = self.ani2Frame
+            self.view1?.ani3.frame = self.ani3Frame
+            self.view1?.ani4.frame = self.ani4Frame
+            
+        }, completion: ({ (end) in }))
     }
     
     func toPrice(){
-        self.view2?.banner.alpha = 1
-        self.view1?.view.isHidden = true
-        self.view2?.view.isHidden = false
+        
+        self.v1.alpha = 0
+        self.v2.alpha = 1
+        
+        
     }
     
     func toPriceAnimate(){
         
+        
         UIView.animate(withDuration: 0.23, delay: 0, options: .curveEaseOut, animations: {
             self.view1?.table.alpha = 0
-            //            self.view1?.ani1.frame
-            self.view1?.add.frame = CGRect(x: (self.view1?.add.frame.origin.x)!, y: -20, width: (self.view1?.add.frame.width)!, height: (self.view1?.add.frame.height)!)
-            self.view1?.add.alpha = 0
+            
+            self.view1?.add?.frame = CGRect(x: (self.view1?.add?.frame.origin.x)!, y: -20, width: (self.view1?.add?.frame.width)!, height: (self.view1?.add?.frame.height)!)
+            self.view1?.add?.alpha = 0
             self.view1?.total.alpha = 0
-            self.view1?.banner.frame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: -128, width: 375, height: 223)
+            self.view1?.banner.frame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: -128, width: self.view1.banner.frame.width, height: 223)
             self.view1?.ani1.frame = CGRect(x: (self.view1?.ani1.frame.origin.x)!, y: -20, width: (self.view1?.ani1.frame.width)!, height: (self.view1?.ani1.frame.height)!)
+            self.view1?.ani2.frame = CGRect(x: (self.view1?.ani2.frame.origin.x)!, y: -20, width: (self.view1?.ani2.frame.width)!, height: (self.view1?.ani2.frame.height)!)
+            self.view1?.ani3.frame = CGRect(x: (self.view1?.ani3.frame.origin.x)!, y: -20, width: (self.view1?.ani3.frame.width)!, height: (self.view1?.ani3.frame.height)!)
+            self.view1?.ani4.frame = CGRect(x: (self.view1?.ani4.frame.origin.x)!, y: -20, width: (self.view1?.ani4.frame.width)!, height: (self.view1?.ani4.frame.height)!)
             self.view1?.bg.frame = CGRect(x: (self.view1?.bg.frame.origin.x)!, y: -20, width: (self.view1?.bg.frame.width)!, height: (self.view1?.bg.frame.height)!)
             self.view1?.ani1.alpha = 0
             self.view1?.ani2.alpha = 0
             self.view1?.ani3.alpha = 0
             self.view1?.ani4.alpha = 0
             self.view1?.bg.alpha = 0
-        }, completion: ({ (end) in print("done")}))
+        }, completion: ({ (end) in}))
     }
     
     
@@ -162,8 +183,10 @@ class ViewController: UIViewController {
     var ani3Frame:CGRect!
     var ani4Frame:CGRect!
     var aniBGFrame:CGRect!
+    
     func setupFrame() {
-        addFrame = CGRect(x: (self.view1?.add.frame.origin.x)!, y: (self.view1?.add.frame.origin.y)! , width: (self.view1?.add.frame.width)!, height: (self.view1?.add.frame.height)!)
+        
+        addFrame = CGRect(x: (self.view1?.add?.frame.origin.x)!, y: (self.view1?.add?.frame.origin.y)! , width: (self.view1?.add?.frame.width)!, height: (self.view1?.add?.frame.height)!)
         bannerFrame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: (self.view1?.banner.frame.origin.y)! , width: (self.view1?.banner.frame.width)!, height: (self.view1?.banner.frame.height)!)
         ani1Frame = CGRect(x: (self.view1?.ani1.frame.origin.x)!, y: (self.view1?.ani1.frame.origin.y)! , width: (self.view1?.ani1.frame.width)!, height: (self.view1?.ani1.frame.height)!)
         ani2Frame = CGRect(x: (self.view1?.ani2.frame.origin.x)!, y: (self.view1?.ani2.frame.origin.y)! , width: (self.view1?.ani2.frame.width)!, height: (self.view1?.ani1.frame.height)!)
