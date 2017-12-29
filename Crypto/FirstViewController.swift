@@ -70,7 +70,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         keys["neo"] = "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW"
         keys["eth"] = "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87"
         
-        
+        self.total.font = UIFont(name: "STHeiti Light.tcc", size: 50.0)
+        total.font = total.font.withSize(50)
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let format = numberFormatter.string(from: NSNumber(value:UserDefaults.standard.double(forKey: "total")))
@@ -364,6 +365,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func showAdd(){
         let superView = parent as! ViewController
         self.bannerHeight.constant = 100
+        self.totalHeight.constant = 30
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
             superView.icon.frame.origin.y = -39
@@ -373,8 +375,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             superView.top?.frame.origin.y = -30
             superView.top?.alpha = 0
             self.add?.frame.origin.y = 60
-            self.total.frame.origin.y = 
-                self.total.font.pointSize = 30
+            
+            self.total.font = UIFont(name: "STHeiti Light.tcc", size: 30)
             self.bg.frame.origin.y = 60
             
             
@@ -386,7 +388,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func hideAdd(){
         let superView = parent as! ViewController
         self.bannerHeight.constant = 223
-        self.totalHeight.constant = 30
+        self.totalHeight.constant = 75
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
             superView.icon.frame.origin.y = 39
@@ -395,6 +397,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             superView.halo.alpha = 1
             superView.top?.frame.origin.y = 30
             superView.top?.alpha = 1
+            self.total.font = UIFont(name: "STHeiti Light.tcc", size: 50)
+            self.bg.frame.origin.y = 180
+
             self.add?.frame = self.addFrame
             
         }, completion: ({ (end) in }))

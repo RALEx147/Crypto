@@ -118,8 +118,9 @@ class ViewController: UIViewController {
     func toKeyAnimate(){
         
         self.v1.alpha = 1
-        
+//        self.view1.bannerHeight.constant = 223
         UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseOut, animations: {
+//            self.view.layoutIfNeeded()
             self.view1?.table.alpha = 1
             self.view1?.table.alpha = 1
             self.view1?.total.alpha = 1
@@ -127,17 +128,16 @@ class ViewController: UIViewController {
             self.view1?.ani2.alpha = 1
             self.view1?.ani3.alpha = 1
             self.view1?.ani4.alpha = 1
-            self.view1?.bg.alpha = 1
             self.view1?.add?.alpha = 1
-            
+            self.view1?.bg.alpha = 1
             self.view1?.add?.frame = self.addFrame
-            self.view1?.banner.frame = self.bannerFrame
             self.view1?.bg.frame = self.aniBGFrame
             self.view1?.ani1.frame = self.ani1Frame
             self.view1?.ani2.frame = self.ani2Frame
             self.view1?.ani3.frame = self.ani3Frame
             self.view1?.ani4.frame = self.ani4Frame
-            
+            self.view1.banner.frame = self.bannerFrame
+
         }, completion: ({ (end) in }))
     }
     
@@ -151,24 +151,26 @@ class ViewController: UIViewController {
     
     func toPriceAnimate(){
         
-        
+//        self.view1.bannerHeight.constant = 10
         UIView.animate(withDuration: 0.23, delay: 0, options: .curveEaseOut, animations: {
+//            self.view.layoutIfNeeded()
             self.view1?.table.alpha = 0
-            
-            self.view1?.add?.frame = CGRect(x: (self.view1?.add?.frame.origin.x)!, y: -20, width: (self.view1?.add?.frame.width)!, height: (self.view1?.add?.frame.height)!)
-            self.view1?.add?.alpha = 0
             self.view1?.total.alpha = 0
-            self.view1?.banner.frame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: -128, width: self.view1.banner.frame.width, height: 223)
-            self.view1?.ani1.frame = CGRect(x: (self.view1?.ani1.frame.origin.x)!, y: -20, width: (self.view1?.ani1.frame.width)!, height: (self.view1?.ani1.frame.height)!)
-            self.view1?.ani2.frame = CGRect(x: (self.view1?.ani2.frame.origin.x)!, y: -20, width: (self.view1?.ani2.frame.width)!, height: (self.view1?.ani2.frame.height)!)
-            self.view1?.ani3.frame = CGRect(x: (self.view1?.ani3.frame.origin.x)!, y: -20, width: (self.view1?.ani3.frame.width)!, height: (self.view1?.ani3.frame.height)!)
-            self.view1?.ani4.frame = CGRect(x: (self.view1?.ani4.frame.origin.x)!, y: -20, width: (self.view1?.ani4.frame.width)!, height: (self.view1?.ani4.frame.height)!)
-            self.view1?.bg.frame = CGRect(x: (self.view1?.bg.frame.origin.x)!, y: -20, width: (self.view1?.bg.frame.width)!, height: (self.view1?.bg.frame.height)!)
+            self.view1?.add?.alpha = 0
             self.view1?.ani1.alpha = 0
             self.view1?.ani2.alpha = 0
             self.view1?.ani3.alpha = 0
             self.view1?.ani4.alpha = 0
             self.view1?.bg.alpha = 0
+            self.view1?.add?.frame.origin.y = -20
+            self.view1?.ani1.frame.origin.y = -20
+            self.view1?.ani2.frame.origin.y = -20
+            self.view1?.ani3.frame.origin.y = -20
+            self.view1?.ani4.frame.origin.y = -20
+            self.view1?.bg.frame.origin.y = -20
+            self.view1.banner.frame.origin.y =
+
+
         }, completion: ({ (end) in}))
     }
     
