@@ -35,8 +35,8 @@
 	<string>LaunchScreen</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>STHeiti Light.ttc</string>
-		<string>STHeiti Medium.ttc</string>
+		<string>STHeiti-Light.ttc</string>
+		<string>STHeiti-Medium.ttc</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>

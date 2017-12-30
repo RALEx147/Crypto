@@ -22,19 +22,21 @@ struct NEO: Decodable {
     let name: String?
     let total: String?
     var price_usd: Double?
+    
 }
 struct ETH: Decodable {
     let result: String?
 }
 
 
-class cells: NSObject {
+class cells: NSObject{
     var name:String!
     var tag:String?
     var more:String?
     var amount:String!
     var balance:String!
-    
+    var subCells = [cells]()
+    override var description: String { return "name:\(name!), tag:\(tag ?? ""), more:\(more ?? ""), amount:\(amount!), balance:\(balance!), subCells: \(subCells)||"}
 
     override init() {
         super.init()
@@ -56,23 +58,39 @@ class cells: NSObject {
         coder.encode(self.balance, forKey: "balance")
         
     }
+    
 }
 
 
-
+class ethCell: cells{
+    init(t:String, m:String, a:String, b:String) {
+        super.init()
+        name = "Ethereum"
+        tag = t
+        more = m
+        amount = a
+        balance = b
+    }
+}
 
 class neoCell: cells{
     var rpx:rpxCell?
     var gas:gasCell?
+    
+    override var description: String { return super.description + (rpx?.description)! + (gas?.description)!}
     
     init(t:String, m:String, a:String, b:String, r:rpxCell?, g:gasCell?) {
         super.init()
         name = "NEO"
         tag = t
         more = m
+        amount = a
         balance = b
         rpx = r
         gas = g
+        if gas != nil {subCells.append(gas!)}
+        if rpx != nil {subCells.append(rpx!)}
+
     }
 }
 
@@ -96,7 +114,16 @@ class gasCell: cells {
 }
 
 
-
+class addCoin: cells{
+    override init() {
+        super.init()
+        name = ""
+        amount = ""
+        balance = ""
+        more = ""
+        tag = ""
+    }
+}
 
 
 

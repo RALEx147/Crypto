@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     
     
     
+    @IBOutlet weak var gradient: NSLayoutConstraint!
+    
     
     
     @IBOutlet weak var halo: UIImageView!
@@ -111,16 +113,12 @@ class ViewController: UIViewController {
     
     
     func toKey(){
-        
         self.v2.alpha = 0
     }
     
     func toKeyAnimate(){
-        
         self.v1.alpha = 1
-//        self.view1.bannerHeight.constant = 223
         UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseOut, animations: {
-//            self.view.layoutIfNeeded()
             self.view1?.table.alpha = 1
             self.view1?.table.alpha = 1
             self.view1?.total.alpha = 1
@@ -137,23 +135,16 @@ class ViewController: UIViewController {
             self.view1?.ani3.frame = self.ani3Frame
             self.view1?.ani4.frame = self.ani4Frame
             self.view1.banner.frame = self.bannerFrame
-
         }, completion: ({ (end) in }))
     }
     
     func toPrice(){
-        
         self.v1.alpha = 0
         self.v2.alpha = 1
-        
-        
     }
     
     func toPriceAnimate(){
-        
-//        self.view1.bannerHeight.constant = 10
         UIView.animate(withDuration: 0.23, delay: 0, options: .curveEaseOut, animations: {
-//            self.view.layoutIfNeeded()
             self.view1?.table.alpha = 0
             self.view1?.total.alpha = 0
             self.view1?.add?.alpha = 0
@@ -168,9 +159,7 @@ class ViewController: UIViewController {
             self.view1?.ani3.frame.origin.y = -20
             self.view1?.ani4.frame.origin.y = -20
             self.view1?.bg.frame.origin.y = -20
-            self.view1.banner.frame.origin.y =
-
-
+            self.view1.banner.frame.origin.y = -128
         }, completion: ({ (end) in}))
     }
     
@@ -189,7 +178,7 @@ class ViewController: UIViewController {
     func setupFrame() {
         
         addFrame = CGRect(x: (self.view1?.add?.frame.origin.x)!, y: (self.view1?.add?.frame.origin.y)! , width: (self.view1?.add?.frame.width)!, height: (self.view1?.add?.frame.height)!)
-        bannerFrame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: (self.view1?.banner.frame.origin.y)! , width: (self.view1?.banner.frame.width)!, height: (self.view1?.banner.frame.height)!)
+        bannerFrame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: (self.view1?.banner.frame.origin.y)! , width: (self.view.frame.width), height: (self.view1?.banner.frame.height)!)
         ani1Frame = CGRect(x: (self.view1?.ani1.frame.origin.x)!, y: (self.view1?.ani1.frame.origin.y)! , width: (self.view1?.ani1.frame.width)!, height: (self.view1?.ani1.frame.height)!)
         ani2Frame = CGRect(x: (self.view1?.ani2.frame.origin.x)!, y: (self.view1?.ani2.frame.origin.y)! , width: (self.view1?.ani2.frame.width)!, height: (self.view1?.ani1.frame.height)!)
         ani3Frame = CGRect(x: (self.view1?.ani3.frame.origin.x)!, y: (self.view1?.ani3.frame.origin.y)! , width: (self.view1?.ani3.frame.width)!, height: (self.view1?.ani3.frame.height)!)

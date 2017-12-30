@@ -21,44 +21,132 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return keys.count
+        
+        
+        return cellArray.count
+        
     }
     
+
+    var edit = false
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = table.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        let array = Array(self.keys)
-        cell.cellView.layer.cornerRadius = 10
-        if array[indexPath.row].key == "neo"{
-            cell.name.text = "NEO"
-            cell.imagee.image = #imageLiteral(resourceName: "NEO")
-            cell.tagg.text = array[indexPath.row].value
-        }
-        else if array[indexPath.row].key == "eth"{
-            cell.name.text = "Ethereum"
-            cell.tagg.text = array[indexPath.row].value
-            cell.imagee.image = #imageLiteral(resourceName: "ETH")
+        let cell = table.dequeueReusableCell(withIdentifier: "cell2") as! CustomTableViewCell
+        let cur = self.cellArray[indexPath.row]
+        cell.cellView?.layer.cornerRadius = 10
+        cell.name?.text = cur.name
+        cell.tagg?.text = cur.tag
+        if cur.name == ""{
+            cell.money?.text = ""
+            cell.moreLabel.text = ""
+            
+            cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
+            cell.addCoin.isUserInteractionEnabled = true
+            cell.moreIcon.isUserInteractionEnabled = false
         }
         else{
-            cell.name.text = "Error"
-            cell.imagee.image = #imageLiteral(resourceName: "halo")
+            var cash = Double(cur.balance)!
+            cell.imagee?.image = UIImage(named: cur.name)
+            cell.moreIcon.imageView?.image = #imageLiteral(resourceName: "more")
+            cell.moreIcon.setImage(#imageLiteral(resourceName: "more"), for: .normal)
+            let more = cur.more!
+            cell.addCoin.setImage(UIImage(), for: .normal)
+            cell.moreIcon.isUserInteractionEnabled = true
+            cell.addCoin.isUserInteractionEnabled = false
+            cell.moreLabel?.text = more
+            if Int(more) != nil {
+                cell.moreLabel?.text = more + " more"
+                for i in cur.subCells{
+                    cash += Double(i.balance)!
+                }
+            }
+            cash = cleanUp(cash)
+            cell.money?.text = "$" + String(cash)
         }
-
+        cell.subTable.layer.cornerRadius = 10
+        if cell.extended{
+            cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: cell.subTable.frame.width)
+        }
+        else{
+            cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: 45)
+        }
         return cell
     }
+    func cleanUp(_ cash:Double) -> Double{
+        var out = cash
+        if out < 1.0 && out >= 0.0{
+            out = out.truncate(places: 5)
+        }
+        else if out > 1.0 && out < 10.0{
+            out = out.truncate(places: 4)
+        }
+        else if out > 10.0 && out < 100.0{
+            out = out.truncate(places: 3)
+        }
+        else if out > 100.0{
+            out = out.truncate(places: 2)
+        }
+        return out
+    }
+    
+    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    //        let cell = table.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+    //        let array = Array(self.keys)
+    //        print(array)
+    //        cell.cellView?.layer.cornerRadius = 10
+    //
+    //        if array[indexPath.row].key == "neo"{
+    //            cell.name?.text = "NEO"
+    //            cell.imagee?.image = #imageLiteral(resourceName: "NEO")
+    //            cell.tagg?.text = array[indexPath.row].value
+    //            self.disGroup2.notify(queue: .main){
+    //
+    //
+    //                cell.money?.text = "$" + String(describing: self.neoTotal()!.truncate(places: 2))
+    //            }
+    //
+    //
+    //        }
+    //        else if array[indexPath.row].key == "eth"{
+    //            cell.name?.text = "Ethereum"
+    //            cell.tagg?.text = array[indexPath.row].value
+    //            cell.imagee?.image = #imageLiteral(resourceName: "ETH")
+    //            disGroup2.notify(queue: .main){
+    //                let outt = String(describing: self.ethTotal()!.truncate(places: 2))
+    //                cell.money?.text = "$" + outt
+    //            }
+    //            cell.moreLabel.text = ""
+    //
+    //        }
+    //        else if array[indexPath.row].key == "zADDCOIN"{
+    //            cell.name?.text = ""
+    //            cell.tagg?.text = ""
+    //            cell.imagee?.image = UIImage()
+    //            cell.money?.text = ""
+    //            cell.moreIcon.imageView?.image = UIImage()
+    //            cell.moreLabel.text = ""
+    //        }
+    //        else{
+    //            cell.name?.text = "Error"
+    //            cell.imagee?.image = #imageLiteral(resourceName: "halo")
+    //        }
+    //
+    //        return cell
+    //    }
     
     @IBOutlet weak var banner: UIImageView!
     
     
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var total: UILabel!
-    var all:[CMC]!
     var keys = [String: String]()
+    var all:[CMC]!
     var neo:[NEO]!
     var eth:ETH!
     var impact = UIImpactFeedbackGenerator(style: .heavy)
     let disGroup = DispatchGroup()
+    let disGroup2 = DispatchGroup()
     var loading = false
-    
+    var cellArray = [cells]()
     
     let ani1 = LOTAnimationView(name: "1")
     let ani2 = LOTAnimationView(name: "2")
@@ -66,25 +154,24 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     let ani4 = LOTAnimationView(name: "4")
     
     override func viewDidLoad() {
-        
+        disGroup2.enter()
         keys["neo"] = "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW"
         keys["eth"] = "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87"
         
-        self.total.font = UIFont(name: "STHeiti Light.tcc", size: 50.0)
+        self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
         total.font = total.font.withSize(50)
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = NumberFormatter.Style.decimal
         let format = numberFormatter.string(from: NSNumber(value:UserDefaults.standard.double(forKey: "total")))
         total.text = "$" + format!
-
         
         spacing.backgroundColor = UIColor(named: "bg")
         view.backgroundColor = UIColor(named: "bg")
+        table.backgroundColor = UIColor(named: "bg")
         table.backgroundView?.backgroundColor = UIColor(named: "bg")
-        addAddButton(on: addOn)
-
-        setupRefresh()
         
+        addAddButton(on: addOn)
+        setupRefresh()
         
     }
     
@@ -97,6 +184,8 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             Construct{(completion) in self.all = completion}
             neoBalance{(completion) in self.neo = completion}
             ethBalance{(completion) in self.eth = completion}
+            
+            
             
             self.ani3.removeFromSuperview()
             self.ani4.removeFromSuperview()
@@ -123,6 +212,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                             }
                             self.impact.impactOccurred()
                             self.loading = false
+                            self.disGroup2.leave()
                         }
                     }
                 }
@@ -130,6 +220,35 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
             disGroup.notify(queue: .main){
                 self.ani2.loopAnimation = false
+            }
+            
+            disGroup2.notify(queue: .main){
+                var rCell:rpxCell?
+                var gCell:gasCell?
+                var nCell:neoCell?
+                var eCell:ethCell?
+                
+                eCell = ethCell(t: self.keys["eth"]!, m: "", a: (String(describing: self.ethTotal(trueValue: true)!)), b: String(describing: self.ethTotal()!))
+                for i in self.neo{
+                    if i.name == "RPX"{
+                        
+                        rCell = rpxCell(a: i.total!, b: (String(i.price_usd!)))
+                    }
+                    if i.name == "GAS"{
+                        
+                        gCell = gasCell(a: i.total!, b: (String(i.price_usd!)))
+                    }
+                }
+                for i in self.neo{
+                    if i.name == "NEO"{
+                        
+                        nCell = neoCell(t: self.keys["neo"]!, m: "2", a: i.total! , b: (String(i.price_usd!)), r: rCell, g: gCell)
+                    }
+                }
+                
+                self.cellArray.append(nCell!)
+                self.cellArray.append(eCell!)
+                self.table.reloadData()
             }
         }
     }
@@ -261,12 +380,17 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }.resume()
     }
     
-    func ethTotal() -> Double?{
+    func ethTotal(trueValue: Bool = false) -> Double?{
         if eth != nil && all != nil && !all.isEmpty{
             let divisor = 1000000000000000000.0
             let realValue = Double(self.eth.result!)! / divisor
-            let output = realValue * Double(self.getPrice(name: "ethereum"))!
-            return output
+            if trueValue{
+                return realValue
+            }
+            else{
+                let output = realValue * Double(self.getPrice(name: "ethereum"))!
+                return output
+            }
         }
         else{return nil}
     }
@@ -286,7 +410,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     let bg = UIImageView(image: UIImage(named:"refresh"))
-
+    
     
     func setupRefresh() {
         bg.frame.origin = CGPoint(x: 18, y: 180)
@@ -308,7 +432,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         ani1.setValue(UIColor.white, forKeypath: "start.Ellipse 1.Stroke 1.Color", atFrame: 0)
         ani1.setValue(UIColor.white, forKeypath: "static 3.Ellipse 1.Stroke 1.Color", atFrame: 0)
         ani1.setValue(UIColor.white, forKeypath: "static4.Group 1.Stroke 1.Color", atFrame: 0)
-
+        
         ani1.setValue(UIColor.white, forKeypath: "1.Group 1.Stroke 1.Color", atFrame: 0)
         ani2.setValue(UIColor.white, forKeypath: "middle.Ellipse 1.Stroke 1.Color", atFrame: 0)
         ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
@@ -347,6 +471,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.showAdd()
             add?.play(completion: { (success:Bool) in
                 self.addOn = true
+                self.editing()
                 self.addAddButton(on: self.addOn)
             })
         }else{
@@ -358,16 +483,21 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    func editing(){
+        edit = true
+        
+    }
     
     
-
     @IBOutlet weak var bannerHeight: NSLayoutConstraint!
     func showAdd(){
         let superView = parent as! ViewController
         self.bannerHeight.constant = 100
-        self.totalHeight.constant = 30
+        self.totalHeight.constant = 15
+        superView.gradient.constant = 30
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
+            superView.view.layoutIfNeeded()
             superView.icon.frame.origin.y = -39
             superView.icon.alpha = 0
             superView.halo.frame.origin.y = -29
@@ -375,33 +505,50 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             superView.top?.frame.origin.y = -30
             superView.top?.alpha = 0
             self.add?.frame.origin.y = 60
-            
-            self.total.font = UIFont(name: "STHeiti Light.tcc", size: 30)
+            self.total.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             self.bg.frame.origin.y = 60
-            
-            
-        }, completion: ({ (end) in }))
+            self.ani1.frame.origin.y = 53.5
+            self.ani2.frame.origin.y = 53.5
+            self.ani3.frame.origin.y = 53.5
+            self.ani4.frame.origin.y = 53.5
+            self.addFrame.origin.y = 60
+        }, completion: ({ (end) in
+            self.add?.frame.origin.y = 60
+            let add = addCoin()
+            self.cellArray.append(add)
+            self.table.beginUpdates()
+            self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .automatic)
+            self.table.endUpdates()
 
+        }))
+        
         
     }
     @IBOutlet weak var totalHeight: NSLayoutConstraint!
     func hideAdd(){
         let superView = parent as! ViewController
         self.bannerHeight.constant = 223
-        self.totalHeight.constant = 75
+        self.totalHeight.constant = 85
+        superView.gradient.constant = 98
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
+            superView.view.layoutIfNeeded()
             superView.icon.frame.origin.y = 39
             superView.icon.alpha = 1
             superView.halo.frame.origin.y = 29
             superView.halo.alpha = 1
             superView.top?.frame.origin.y = 30
             superView.top?.alpha = 1
-            self.total.font = UIFont(name: "STHeiti Light.tcc", size: 50)
+            self.total.transform = CGAffineTransform(scaleX: 1, y: 1)
             self.bg.frame.origin.y = 180
-
-            self.add?.frame = self.addFrame
-            
+            self.ani1.frame.origin.y = 173.5
+            self.ani2.frame.origin.y = 173.5
+            self.ani3.frame.origin.y = 173.5
+            self.ani4.frame.origin.y = 173.5
+            self.add?.frame.origin.y = 181
+            self.addFrame.origin.y = 181
+            self.cellArray.remove(at: self.cellArray.count-1)
+            self.table.reloadData()
         }, completion: ({ (end) in }))
     }
     

@@ -15,17 +15,20 @@
 		910A819A1FA4DC75001F868A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910A81981FA4DC75001F868A /* Main.storyboard */; };
 		910A819C1FA4DC75001F868A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		910A819F1FA4DC75001F868A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910A819D1FA4DC75001F868A /* LaunchScreen.storyboard */; };
-		910B0D0D1FF622840028E76C /* add1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D0B1FF622840028E76C /* add1.json */; };
-		910B0D0F1FF6255A0028E76C /* add2.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D0E1FF625590028E76C /* add2.json */; };
-		910B0D131FF627000028E76C /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D121FF627000028E76C /* 1.json */; };
+		910B0D141FF6FC0D0028E76C /* structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919B5CB71FF4A67500F2D917 /* structs.swift */; };
+		910B0D161FF735950028E76C /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D151FF735950028E76C /* 1.json */; };
+		910B0D1B1FF735AF0028E76C /* add1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D171FF735AE0028E76C /* add1.json */; };
+		910B0D1C1FF735AF0028E76C /* add2.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D181FF735AF0028E76C /* add2.json */; };
+		910B0D1D1FF735AF0028E76C /* STHeiti-Medium.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D191FF735AF0028E76C /* STHeiti-Medium.ttc */; };
+		910B0D1E1FF735AF0028E76C /* STHeiti-Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D1A1FF735AF0028E76C /* STHeiti-Light.ttc */; };
+		910B0D211FF735B90028E76C /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D1F1FF735B90028E76C /* top2.json */; };
+		910B0D221FF735B90028E76C /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D201FF735B90028E76C /* top1.json */; };
 		9113C0DB1FE9EC39005170A4 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113C0DA1FE9EC39005170A4 /* IntentHandler.swift */; };
 		9113C0E31FE9EC39005170A4 /* IntentsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9113C0E21FE9EC39005170A4 /* IntentsUI.framework */; };
 		9113C0E61FE9EC39005170A4 /* IntentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9113C0E51FE9EC39005170A4 /* IntentViewController.swift */; };
 		9113C0E91FE9EC39005170A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9113C0E71FE9EC39005170A4 /* MainInterface.storyboard */; };
 		9113C0ED1FE9EC39005170A4 /* CryptoSiriUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9113C0E11FE9EC39005170A4 /* CryptoSiriUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9113C0F01FE9EC39005170A4 /* CryptoSiri.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9113C0D81FE9EC39005170A4 /* CryptoSiri.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		9129AD961FF4BA2C00EF04C0 /* STHeiti Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 9129AD941FF4B9DD00EF04C0 /* STHeiti Light.ttc */; };
-		9129AD971FF4BA2E00EF04C0 /* STHeiti Medium.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 9129AD951FF4B9DE00EF04C0 /* STHeiti Medium.ttc */; };
 		9129AD991FF4C97400EF04C0 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */; };
 		914B4BAA1FC8F7C400968A3E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */; };
 		914B4BAD1FC8F7C400968A3E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B4BAC1FC8F7C400968A3E /* TodayViewController.swift */; };
@@ -41,9 +44,6 @@
 		918F08D71FF33D5E0082AC9A /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D31FF33D5E0082AC9A /* 4.json */; };
 		918F08D81FF33D5E0082AC9A /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D41FF33D5E0082AC9A /* 3.json */; };
 		918F08DA1FF33D5E0082AC9A /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D61FF33D5E0082AC9A /* 2.json */; };
-		919B5CB81FF4A67500F2D917 /* structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919B5CB71FF4A67500F2D917 /* structs.swift */; };
-		91A8B86E1FF4A8BC002CFF05 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 91A8B86C1FF4A8BB002CFF05 /* top2.json */; };
-		91A8B86F1FF4A8BC002CFF05 /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 91A8B86D1FF4A8BC002CFF05 /* top1.json */; };
 		91A8B8711FF4AE1C002CFF05 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8701FF4AE1C002CFF05 /* FirstViewController.swift */; };
 		91E10E8B1FE9070300F65228 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914B4BAE1FC8F7C400968A3E /* MainInterface.storyboard */; };
 		91E5E59A1FF4967B006B06B6 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -120,9 +120,13 @@
 		910A819B1FA4DC75001F868A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		910A819E1FA4DC75001F868A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		910A81A01FA4DC75001F868A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		910B0D0B1FF622840028E76C /* add1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add1.json; path = local/add1.json; sourceTree = SOURCE_ROOT; };
-		910B0D0E1FF625590028E76C /* add2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add2.json; path = local/add2.json; sourceTree = SOURCE_ROOT; };
-		910B0D121FF627000028E76C /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = 1.json; path = local/1.json; sourceTree = SOURCE_ROOT; };
+		910B0D151FF735950028E76C /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = 1.json; path = ../../../../../Desktop/local/1.json; sourceTree = "<group>"; };
+		910B0D171FF735AE0028E76C /* add1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add1.json; path = ../../../../../Desktop/local/add1.json; sourceTree = "<group>"; };
+		910B0D181FF735AF0028E76C /* add2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add2.json; path = ../../../../../Desktop/local/add2.json; sourceTree = "<group>"; };
+		910B0D191FF735AF0028E76C /* STHeiti-Medium.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeiti-Medium.ttc"; path = "../../../../../Desktop/local/STHeiti-Medium.ttc"; sourceTree = "<group>"; };
+		910B0D1A1FF735AF0028E76C /* STHeiti-Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeiti-Light.ttc"; path = "../../../../../Desktop/local/STHeiti-Light.ttc"; sourceTree = "<group>"; };
+		910B0D1F1FF735B90028E76C /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = ../../../../../Desktop/local/top2.json; sourceTree = "<group>"; };
+		910B0D201FF735B90028E76C /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = ../../../../../Desktop/local/top1.json; sourceTree = "<group>"; };
 		9113C0D81FE9EC39005170A4 /* CryptoSiri.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CryptoSiri.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9113C0DA1FE9EC39005170A4 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
 		9113C0DC1FE9EC39005170A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -131,8 +135,6 @@
 		9113C0E51FE9EC39005170A4 /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
 		9113C0E81FE9EC39005170A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		9113C0EA1FE9EC39005170A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9129AD941FF4B9DD00EF04C0 /* STHeiti Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeiti Light.ttc"; path = "local/STHeiti Light.ttc"; sourceTree = SOURCE_ROOT; };
-		9129AD951FF4B9DE00EF04C0 /* STHeiti Medium.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeiti Medium.ttc"; path = "local/STHeiti Medium.ttc"; sourceTree = SOURCE_ROOT; };
 		9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		914B4BA71FC8F7C400968A3E /* Crypto Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Crypto Widget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -150,8 +152,6 @@
 		918F08D41FF33D5E0082AC9A /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
 		918F08D61FF33D5E0082AC9A /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
 		919B5CB71FF4A67500F2D917 /* structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = structs.swift; sourceTree = "<group>"; };
-		91A8B86C1FF4A8BB002CFF05 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = local/top2.json; sourceTree = SOURCE_ROOT; };
-		91A8B86D1FF4A8BC002CFF05 /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = local/top1.json; sourceTree = SOURCE_ROOT; };
 		91A8B8701FF4AE1C002CFF05 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		91E10E851FE8C36C00F65228 /* Crypto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crypto.entitlements; sourceTree = "<group>"; };
 		91E10E861FE8C3BF00F65228 /* Crypto Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto Widget.entitlements"; sourceTree = "<group>"; };
@@ -303,16 +303,16 @@
 				910A81921FA4DC75001F868A /* AppDelegate.swift */,
 				910A819B1FA4DC75001F868A /* Assets.xcassets */,
 				910A819D1FA4DC75001F868A /* LaunchScreen.storyboard */,
-				910B0D121FF627000028E76C /* 1.json */,
+				910B0D151FF735950028E76C /* 1.json */,
 				918F08D61FF33D5E0082AC9A /* 2.json */,
 				918F08D41FF33D5E0082AC9A /* 3.json */,
 				918F08D31FF33D5E0082AC9A /* 4.json */,
-				910B0D0B1FF622840028E76C /* add1.json */,
-				910B0D0E1FF625590028E76C /* add2.json */,
-				91A8B86D1FF4A8BC002CFF05 /* top1.json */,
-				91A8B86C1FF4A8BB002CFF05 /* top2.json */,
-				9129AD941FF4B9DD00EF04C0 /* STHeiti Light.ttc */,
-				9129AD951FF4B9DE00EF04C0 /* STHeiti Medium.ttc */,
+				910B0D181FF735AF0028E76C /* add2.json */,
+				910B0D201FF735B90028E76C /* top1.json */,
+				910B0D1F1FF735B90028E76C /* top2.json */,
+				910B0D1A1FF735AF0028E76C /* STHeiti-Light.ttc */,
+				910B0D191FF735AF0028E76C /* STHeiti-Medium.ttc */,
+				910B0D171FF735AE0028E76C /* add1.json */,
 			);
 			path = others;
 			sourceTree = "<group>";
@@ -495,19 +495,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				910B0D131FF627000028E76C /* 1.json in Resources */,
-				918F08D81FF33D5E0082AC9A /* 3.json in Resources */,
-				910A819F1FA4DC75001F868A /* LaunchScreen.storyboard in Resources */,
-				910B0D0D1FF622840028E76C /* add1.json in Resources */,
 				910A819C1FA4DC75001F868A /* Assets.xcassets in Resources */,
+				910B0D1B1FF735AF0028E76C /* add1.json in Resources */,
+				918F08D81FF33D5E0082AC9A /* 3.json in Resources */,
+				910B0D221FF735B90028E76C /* top1.json in Resources */,
+				910B0D1D1FF735AF0028E76C /* STHeiti-Medium.ttc in Resources */,
 				918F08DA1FF33D5E0082AC9A /* 2.json in Resources */,
+				910B0D161FF735950028E76C /* 1.json in Resources */,
 				918F08D71FF33D5E0082AC9A /* 4.json in Resources */,
-				910B0D0F1FF6255A0028E76C /* add2.json in Resources */,
-				9129AD961FF4BA2C00EF04C0 /* STHeiti Light.ttc in Resources */,
-				91A8B86E1FF4A8BC002CFF05 /* top2.json in Resources */,
+				910B0D211FF735B90028E76C /* top2.json in Resources */,
+				910B0D1C1FF735AF0028E76C /* add2.json in Resources */,
+				910A819F1FA4DC75001F868A /* LaunchScreen.storyboard in Resources */,
 				910A819A1FA4DC75001F868A /* Main.storyboard in Resources */,
-				9129AD971FF4BA2E00EF04C0 /* STHeiti Medium.ttc in Resources */,
-				91A8B86F1FF4A8BC002CFF05 /* top1.json in Resources */,
+				910B0D1E1FF735AF0028E76C /* STHeiti-Light.ttc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,7 +555,7 @@
 			files = (
 				9129AD991FF4C97400EF04C0 /* CustomTableViewCell.swift in Sources */,
 				91A8B8711FF4AE1C002CFF05 /* FirstViewController.swift in Sources */,
-				919B5CB81FF4A67500F2D917 /* structs.swift in Sources */,
+				910B0D141FF6FC0D0028E76C /* structs.swift in Sources */,
 				910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */,
 				910A81931FA4DC75001F868A /* AppDelegate.swift in Sources */,
 				910A81951FA4DC75001F868A /* ViewController.swift in Sources */,
