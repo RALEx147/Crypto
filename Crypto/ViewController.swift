@@ -68,7 +68,6 @@ class ViewController: UIViewController {
     
     
     
-    
     var topOn = false
     var top:LOTAnimationView?
     let topFrame = CGRect(x: 18, y: 30, width: 84, height: 45)
@@ -90,7 +89,7 @@ class ViewController: UIViewController {
         tap.numberOfTapsRequired = 1
         top?.addGestureRecognizer(tap)
     }
-    @IBAction func toggleMenu (recognizer:UITapGestureRecognizer) {
+    @IBAction func toggleMenu (recognizer:UITapGestureRecognizer? = nil) {
         if !topOn {
             self.toPriceAnimate()
             top?.play(completion: { (success:Bool) in
@@ -159,7 +158,7 @@ class ViewController: UIViewController {
             self.view1?.ani3.frame.origin.y = -20
             self.view1?.ani4.frame.origin.y = -20
             self.view1?.bg.frame.origin.y = -20
-            self.view1.banner.frame.origin.y = -128
+            self.view1?.banner.frame.origin.y = -128
         }, completion: ({ (end) in}))
     }
     

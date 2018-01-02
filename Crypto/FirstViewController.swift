@@ -11,142 +11,20 @@ import UIKit
 import Lottie
 
 
-class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var content = [[[(String, String)]]]()
+class FirstViewController: UIViewController{
+    
     
     @IBOutlet weak var spacing: UIView!
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        tableView.backgroundColor = UIColor(named: "bg")
-        cell.contentView.backgroundColor = UIColor(named: "bg")
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
-        return cellArray.count
-        
-    }
-    
-
-    var edit = false
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = table.dequeueReusableCell(withIdentifier: "cell2") as! CustomTableViewCell
-        let cur = self.cellArray[indexPath.row]
-        cell.cellView?.layer.cornerRadius = 10
-        cell.name?.text = cur.name
-        cell.tagg?.text = cur.tag
-        if cur.name == ""{
-            cell.money?.text = ""
-            cell.moreLabel.text = ""
-            
-            cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
-            cell.addCoin.isUserInteractionEnabled = true
-            cell.moreIcon.isUserInteractionEnabled = false
-        }
-        else{
-            var cash = Double(cur.balance)!
-            cell.imagee?.image = UIImage(named: cur.name)
-            cell.moreIcon.imageView?.image = #imageLiteral(resourceName: "more")
-            cell.moreIcon.setImage(#imageLiteral(resourceName: "more"), for: .normal)
-            let more = cur.more!
-            cell.addCoin.setImage(UIImage(), for: .normal)
-            cell.moreIcon.isUserInteractionEnabled = true
-            cell.addCoin.isUserInteractionEnabled = false
-            cell.moreLabel?.text = more
-            if Int(more) != nil {
-                cell.moreLabel?.text = more + " more"
-                for i in cur.subCells{
-                    cash += Double(i.balance)!
-                }
-            }
-            cash = cleanUp(cash)
-            cell.money?.text = "$" + String(cash)
-        }
-        cell.subTable.layer.cornerRadius = 10
-        if cell.extended{
-            cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: cell.subTable.frame.width)
-        }
-        else{
-            cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: 45)
-        }
-        return cell
-    }
-    func cleanUp(_ cash:Double) -> Double{
-        var out = cash
-        if out < 1.0 && out >= 0.0{
-            out = out.truncate(places: 5)
-        }
-        else if out > 1.0 && out < 10.0{
-            out = out.truncate(places: 4)
-        }
-        else if out > 10.0 && out < 100.0{
-            out = out.truncate(places: 3)
-        }
-        else if out > 100.0{
-            out = out.truncate(places: 2)
-        }
-        return out
-    }
-    
-    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        let cell = table.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-    //        let array = Array(self.keys)
-    //        print(array)
-    //        cell.cellView?.layer.cornerRadius = 10
-    //
-    //        if array[indexPath.row].key == "neo"{
-    //            cell.name?.text = "NEO"
-    //            cell.imagee?.image = #imageLiteral(resourceName: "NEO")
-    //            cell.tagg?.text = array[indexPath.row].value
-    //            self.disGroup2.notify(queue: .main){
-    //
-    //
-    //                cell.money?.text = "$" + String(describing: self.neoTotal()!.truncate(places: 2))
-    //            }
-    //
-    //
-    //        }
-    //        else if array[indexPath.row].key == "eth"{
-    //            cell.name?.text = "Ethereum"
-    //            cell.tagg?.text = array[indexPath.row].value
-    //            cell.imagee?.image = #imageLiteral(resourceName: "ETH")
-    //            disGroup2.notify(queue: .main){
-    //                let outt = String(describing: self.ethTotal()!.truncate(places: 2))
-    //                cell.money?.text = "$" + outt
-    //            }
-    //            cell.moreLabel.text = ""
-    //
-    //        }
-    //        else if array[indexPath.row].key == "zADDCOIN"{
-    //            cell.name?.text = ""
-    //            cell.tagg?.text = ""
-    //            cell.imagee?.image = UIImage()
-    //            cell.money?.text = ""
-    //            cell.moreIcon.imageView?.image = UIImage()
-    //            cell.moreLabel.text = ""
-    //        }
-    //        else{
-    //            cell.name?.text = "Error"
-    //            cell.imagee?.image = #imageLiteral(resourceName: "halo")
-    //        }
-    //
-    //        return cell
-    //    }
-    
     @IBOutlet weak var banner: UIImageView!
-    
-    
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var total: UILabel!
     var keys = [String: String]()
     var all:[CMC]!
-    var neo:[NEO]!
-    var eth:ETH!
     var impact = UIImpactFeedbackGenerator(style: .heavy)
     let disGroup = DispatchGroup()
     let disGroup2 = DispatchGroup()
     var loading = false
-    var cellArray = [cells]()
+    var cellArray = [Cell]()
     
     let ani1 = LOTAnimationView(name: "1")
     let ani2 = LOTAnimationView(name: "2")
@@ -155,15 +33,29 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         disGroup2.enter()
-        keys["neo"] = "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW"
-        keys["eth"] = "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87"
+        self.loadCells()
+        
+        
+        
+        
+//        let r = Cell(name: "red pulse", tag: "rpx", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
+//        let g = Cell(name: "gas", tag: "gas", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
+//        let neo = Cell(name: "neo", tag: "main", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCells: [r, g])
+//        let eth = Cell(name: "ethereum", tag: "eth", amount: "0", balance: "0", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87")
+//        self.cellArray.append(neo)
+//        self.cellArray.append(eth)
+//        self.saveCells()
+        
+        
+        
+        table.estimatedRowHeight = 150
+        table.rowHeight = UITableViewAutomaticDimension
+        
         
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
         total.font = total.font.withSize(50)
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        let format = numberFormatter.string(from: NSNumber(value:UserDefaults.standard.double(forKey: "total")))
-        total.text = "$" + format!
+//        total.text = "$" + String(describing: totalPrice())
+        
         
         spacing.backgroundColor = UIColor(named: "bg")
         view.backgroundColor = UIColor(named: "bg")
@@ -175,6 +67,80 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
     }
     
+    func totalPrice() -> Double{
+        var out: Double = 0.0
+        for i in cellArray.indices{
+            if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
+                for j in cellArray[i].subCells!.indices{
+                    out += Double(cellArray[i].subCells![j].balance)!
+                }
+            }
+            if let ss:Double = Double(cellArray[i].balance!){
+                out += ss
+            }
+        }
+        return out
+    }
+    
+    
+    func saveCells(){
+        UserDefaults.standard.setValue(NSKeyedArchiver.archivedData(withRootObject: cellArray), forKey: "cellArray")
+        UserDefaults.standard.synchronize()
+    }
+    func loadCells(){
+        cellArray = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "cellArray") as! NSData) as Data) as! [Cell]
+    }
+    
+    
+    
+    var succeed = true
+    func updateCell(_ c: Cell) -> Cell{
+        if c.name == "NEO" || c.name == "GAS" || c.name == "RPX" || c.name == "DBC" || c.name == "APH"{
+            var neo:[NEO]!
+            neoBalance(c){(completion) in neo = completion}
+            disGroup.notify(queue: .main){
+                if neo != nil && !neo.isEmpty{
+                    for i in neo{
+                        if i.name == c.name{
+                            c.amount = i.total
+                            if let t = (Double(i.total!)), let p = Double(self.getPrice(name: c.name)){
+                                c.balance = String(describing: (t * p))
+                            }
+                        }
+                    }
+                }
+                else{
+                    print("fail")
+                    self.succeed = false
+                }
+            }
+        }
+        else if c.name == "Ethereum"{
+            var eth:ETH!
+            ethBalance(c){(completion) in eth = completion}
+            disGroup.notify(queue: .main){
+                if eth.result != nil{
+                if let amo = self.ethTotal(e: eth, trueValue: true){
+                    c.amount = String(describing: amo)
+                }
+                if let bal = self.ethTotal(e: eth){
+                    c.balance = String(describing: bal)
+                }
+                }
+                else{
+                    self.succeed = false
+                }
+            }
+        }
+        else if c.name == "Bitcoin"{
+            
+        }
+        
+        return c
+        
+        
+    }
+    
     
     @IBAction func reload(_ sender: Any) {
         if !loading{
@@ -182,10 +148,15 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
             self.ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
             Construct{(completion) in self.all = completion}
-            neoBalance{(completion) in self.neo = completion}
-            ethBalance{(completion) in self.eth = completion}
             
-            
+            for i in cellArray.indices{
+                if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
+                    for j in cellArray[i].subCells!.indices{
+                        cellArray[i].subCells![j] = updateCell(cellArray[i].subCells![j])
+                    }
+                }
+                cellArray[i] = updateCell(cellArray[i])
+            }
             
             self.ani3.removeFromSuperview()
             self.ani4.removeFromSuperview()
@@ -200,16 +171,10 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     self.ani3.play{ (finished) in
                         self.view.addSubview(self.ani4)
                         self.ani4.play{ (finished) in
-                            if self.all == nil || self.all.isEmpty || self.neo.isEmpty || self.neo == nil || self.eth == nil{
+                            if !self.succeed{
                                 self.unfinished()
                             }
-                            else{
-                                let n = self.neoTotal() ?? 0.0
-                                let e = self.ethTotal() ?? 0.0
-                                let cash = n.truncate(places: 2) + e.truncate(places: 2)
-                                UserDefaults().set(cash, forKey: "total")
-                                self.total.text = "$" + String(cash)
-                            }
+                            
                             self.impact.impactOccurred()
                             self.loading = false
                             self.disGroup2.leave()
@@ -223,32 +188,9 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             disGroup2.notify(queue: .main){
-                var rCell:rpxCell?
-                var gCell:gasCell?
-                var nCell:neoCell?
-                var eCell:ethCell?
-                
-                eCell = ethCell(t: self.keys["eth"]!, m: "", a: (String(describing: self.ethTotal(trueValue: true)!)), b: String(describing: self.ethTotal()!))
-                for i in self.neo{
-                    if i.name == "RPX"{
-                        
-                        rCell = rpxCell(a: i.total!, b: (String(i.price_usd!)))
-                    }
-                    if i.name == "GAS"{
-                        
-                        gCell = gasCell(a: i.total!, b: (String(i.price_usd!)))
-                    }
-                }
-                for i in self.neo{
-                    if i.name == "NEO"{
-                        
-                        nCell = neoCell(t: self.keys["neo"]!, m: "2", a: i.total! , b: (String(i.price_usd!)), r: rCell, g: gCell)
-                    }
-                }
-                
-                self.cellArray.append(nCell!)
-                self.cellArray.append(eCell!)
                 self.table.reloadData()
+                self.saveCells()
+                print(self.cellArray)
             }
         }
     }
@@ -291,11 +233,26 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }.resume()
     }
     
-    func neoBalance(completion: @escaping ([NEO]) -> ()){
+    func ethTotal(e: ETH, trueValue: Bool = false) -> Double?{
+        if e.result != nil && all != nil && !all.isEmpty{
+            let divisor = 1000000000000000000.0
+            let realValue = Double(e.result!)! / divisor
+            if trueValue{
+                return realValue
+            }
+            else{
+                let output = realValue * Double(self.getPrice(name: "ethereum"))!
+                return output
+            }
+        }
+        else{return nil}
+    }
+    
+    func neoBalance(_ c: Cell, completion: @escaping ([NEO]) -> ()){
         self.disGroup.enter()
         var done = false
         let start = DispatchTime.now()
-        let link = "https://otcgo.cn/api/v1/balances/" + self.keys["neo"]!
+        let link = "https://otcgo.cn/api/v1/balances/" + c.address
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
                 self.disGroup.leave()
@@ -306,7 +263,6 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 do {
-                    
                     let neo = try JSONDecoder().decode(NEON.self, from: data)
                     var output = [NEO]()
                     for i in neo.balances{
@@ -327,33 +283,13 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }.resume()
     }
     
-    func neoTotal() -> Double?{
-        if neo != nil && !neo.isEmpty  && !all.isEmpty && all != nil{
-            for i in 0...neo.count-1{
-                if let amount = Double(neo[i].total!){
-                    if neo[i].name == "NEO"{
-                        if let price = Double(self.getPrice(name: "NEO")){neo[i].price_usd = (amount * price)}}
-                    else if neo[i].name == "GAS"{
-                        if let price = Double(self.getPrice(name: "Gas")){neo[i].price_usd = (amount * price)}}
-                    else if neo[i].name == "RPX"{
-                        if let price = Double(self.getPrice(name: "Red Pulse")){neo[i].price_usd = (amount * price)}
-                    }
-                }
-            }
-            var output = 0.0
-            for i in neo{
-                output += i.price_usd ?? 0
-            }
-            return output
-        }
-        else{return nil}
-    }
+
     
-    func ethBalance(completion: @escaping (ETH) -> ()){
+    func ethBalance(_ c:Cell, completion: @escaping (ETH) -> ()){
         let start = DispatchTime.now()
         self.disGroup.enter()
         var done = false
-        let link = "https://api.etherscan.io/api?module=account&action=balance&address=" + self.keys["eth"]!
+        let link = "https://api.etherscan.io/api?module=account&action=balance&address=" + c.address
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
                 self.disGroup.leave()
@@ -371,7 +307,6 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     print(end.uptimeNanoseconds - start.uptimeNanoseconds)
                     self.disGroup.leave()
                     done = true
-                    
                     completion(balance)
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
@@ -380,32 +315,35 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }.resume()
     }
     
-    func ethTotal(trueValue: Bool = false) -> Double?{
-        if eth != nil && all != nil && !all.isEmpty{
-            let divisor = 1000000000000000000.0
-            let realValue = Double(self.eth.result!)! / divisor
-            if trueValue{
-                return realValue
-            }
-            else{
-                let output = realValue * Double(self.getPrice(name: "ethereum"))!
-                return output
-            }
-        }
-        else{return nil}
-    }
+
     
     func getPrice(name: String) -> String{
         for j in self.all{
             let i = j.name?.lowercased()
-            if i == name.lowercased(){
+            let k = j.symbol?.lowercased()
+            if i == name.lowercased() || k == name.lowercased(){
                 return j.price_usd!
             }
         }
         return "Not Found"
     }
     
-    
+    func cleanUp(_ cash:Double) -> Double{
+        var out = cash
+        if out < 1.0 && out >= 0.0{
+            out = out.truncate(places: 5)
+        }
+        else if out > 1.0 && out < 10.0{
+            out = out.truncate(places: 4)
+        }
+        else if out > 10.0 && out < 100.0{
+            out = out.truncate(places: 3)
+        }
+        else if out > 100.0{
+            out = out.truncate(places: 2)
+        }
+        return out
+    }
     
     
     
@@ -471,7 +409,6 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.showAdd()
             add?.play(completion: { (success:Bool) in
                 self.addOn = true
-                self.editing()
                 self.addAddButton(on: self.addOn)
             })
         }else{
@@ -483,10 +420,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    func editing(){
-        edit = true
-        
-    }
+    
     
     
     @IBOutlet weak var bannerHeight: NSLayoutConstraint!
@@ -514,7 +448,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.addFrame.origin.y = 60
         }, completion: ({ (end) in
             self.add?.frame.origin.y = 60
-            let add = addCoin()
+            let add = Cell(name: "", tag: "", amount: "", balance: "", address: "")
             self.cellArray.append(add)
             self.table.beginUpdates()
             self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .automatic)
@@ -527,6 +461,7 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var totalHeight: NSLayoutConstraint!
     func hideAdd(){
         let superView = parent as! ViewController
+//        let uitc =
         self.bannerHeight.constant = 223
         self.totalHeight.constant = 85
         superView.gradient.constant = 98
@@ -554,5 +489,84 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
 }
+
+extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        tableView.backgroundColor = UIColor(named: "bg")
+        cell.contentView.backgroundColor = UIColor(named: "bg")
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cellArray.count
+    }
+    
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = table.dequeueReusableCell(withIdentifier: "cell2") as! CustomTableViewCell
+        let cur = self.cellArray[indexPath.row]
+        cell.cellView?.layer.cornerRadius = 10
+        cell.name?.text = cur.name
+        cell.tagg?.text = cur.tag
+        if cur.name == ""{
+            cell.money?.text = ""
+            cell.moreLabel.text = ""
+            
+            cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
+            cell.addCoin.isUserInteractionEnabled = true
+            cell.moreIcon.isUserInteractionEnabled = false
+        }
+        else{
+            var cash = Double(cur.balance!) ?? 0.0
+            cell.imagee?.image = UIImage(named: cur.name!)
+            cell.moreIcon.imageView?.image = #imageLiteral(resourceName: "more")
+            cell.moreIcon.setImage(#imageLiteral(resourceName: "more"), for: .normal)
+            let more = cur.more!
+            cell.addCoin.setImage(UIImage(), for: .normal)
+            cell.moreIcon.isUserInteractionEnabled = true
+            cell.addCoin.isUserInteractionEnabled = false
+            cell.moreLabel?.text = more
+            if Int(more) != nil {
+                cell.moreLabel?.text = more + " more"
+                if let sC = cur.subCells{
+                    for i in sC{
+                        cash += Double(i.balance!)!
+                    }
+                }
+            }
+            cash = cleanUp(cash)
+            cell.money?.text = "$" + String(cash)
+        }
+        cell.subTable.layer.cornerRadius = 10
+        if cell.extended{
+            cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: cell.subTable.frame.width)
+        }
+        else{
+            cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: 45)
+        }
+        return cell
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 extension Double{func truncate(places : Int)-> Double{return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))}}

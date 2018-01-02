@@ -94,7 +94,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="180" estimatedRowHeight="-1" sectionHeaderHeight="41" sectionFooterHeight="25" translatesAutoresizingMaskIntoConstraints="NO" id="BYE-Sh-Ieb">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="180" estimatedRowHeight="-1" sectionHeaderHeight="41" sectionFooterHeight="25" translatesAutoresizingMaskIntoConstraints="NO" id="BYE-Sh-Ieb">
                                 <rect key="frame" x="0.0" y="221" width="375" height="446"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="0.0" colorSpace="deviceRGB"/>
@@ -215,11 +215,11 @@
                                             <outlet property="tagg" destination="yiV-lf-kpc" id="4YS-Zg-49C"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell2" rowHeight="180" id="bsd-5c-map" customClass="CustomTableViewCell" customModule="Crypto" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="144" width="375" height="180"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell2" rowHeight="92" id="bsd-5c-map" customClass="CustomTableViewCell" customModule="Crypto" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="144" width="375" height="92"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bsd-5c-map" id="e4Q-Cy-91y">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="180"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="92"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4Vg-mR-Aqv">
@@ -305,6 +305,7 @@
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                                     <constraints>
                                                         <constraint firstItem="nA5-nO-HJS" firstAttribute="centerY" secondItem="nde-Tc-Cu9" secondAttribute="centerY" id="2dG-aX-9bd"/>
+                                                        <constraint firstAttribute="height" constant="75" id="4M6-oU-Th8"/>
                                                         <constraint firstItem="HtT-N4-t2D" firstAttribute="centerY" secondItem="nde-Tc-Cu9" secondAttribute="centerY" id="9y8-uY-Cow"/>
                                                         <constraint firstItem="AXq-iG-bUi" firstAttribute="top" secondItem="nde-Tc-Cu9" secondAttribute="top" constant="8" id="A6v-sq-Ehb"/>
                                                         <constraint firstItem="gzC-jX-5Rt" firstAttribute="top" secondItem="nde-Tc-Cu9" secondAttribute="top" constant="24" id="CA0-2C-v6y"/>
@@ -318,22 +319,25 @@
                                                         <constraint firstAttribute="trailing" secondItem="HtT-N4-t2D" secondAttribute="trailing" constant="20" id="sG8-jc-vpy"/>
                                                         <constraint firstItem="gzC-jX-5Rt" firstAttribute="leading" secondItem="nde-Tc-Cu9" secondAttribute="leading" constant="73" id="slh-wc-ABo"/>
                                                         <constraint firstItem="Bjs-MF-xyo" firstAttribute="centerX" secondItem="nde-Tc-Cu9" secondAttribute="centerX" id="vS1-bn-yEt"/>
-                                                        <constraint firstAttribute="height" constant="75" id="zHS-YW-5xD"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="deviceRGB"/>
                                             <constraints>
-                                                <constraint firstItem="nde-Tc-Cu9" firstAttribute="centerX" secondItem="e4Q-Cy-91y" secondAttribute="centerX" id="Ac6-Ow-UCD"/>
                                                 <constraint firstAttribute="trailing" secondItem="nde-Tc-Cu9" secondAttribute="trailing" constant="13" id="MUb-KD-AYk"/>
+                                                <constraint firstAttribute="bottom" secondItem="nde-Tc-Cu9" secondAttribute="bottom" constant="9" id="SbX-8b-LVh"/>
+                                                <constraint firstItem="nde-Tc-Cu9" firstAttribute="centerX" secondItem="e4Q-Cy-91y" secondAttribute="centerX" id="lYQ-f4-Z0q"/>
                                                 <constraint firstItem="nde-Tc-Cu9" firstAttribute="top" secondItem="e4Q-Cy-91y" secondAttribute="top" constant="8" id="mQW-i5-F2c"/>
+                                                <constraint firstItem="nde-Tc-Cu9" firstAttribute="leading" secondItem="e4Q-Cy-91y" secondAttribute="leading" constant="12" id="ulL-AC-cyQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="deviceRGB"/>
                                         <connections>
                                             <outlet property="addCoin" destination="Bjs-MF-xyo" id="8zf-xA-H9z"/>
+                                            <outlet property="bottomConstraint" destination="SbX-8b-LVh" id="gvw-ju-Mhe"/>
                                             <outlet property="cellView" destination="nde-Tc-Cu9" id="m4i-dy-r5b"/>
                                             <outlet property="content" destination="e4Q-Cy-91y" id="eHI-Pc-guw"/>
+                                            <outlet property="height" destination="4M6-oU-Th8" id="d8N-bD-oFJ"/>
                                             <outlet property="imagee" destination="nA5-nO-HJS" id="kjm-h6-Q3d"/>
                                             <outlet property="money" destination="G0J-rz-mxi" id="zRJ-fD-7Zg"/>
                                             <outlet property="moreIcon" destination="HtT-N4-t2D" id="jNu-RD-fyE"/>
