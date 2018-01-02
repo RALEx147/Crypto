@@ -58,6 +58,9 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 self.addCoin.alpha = 0
             }) { (_) in
                 up.endUpdates()
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.newAddress.alpha = 1
+                })
 
             }
         }
@@ -87,6 +90,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var addCoin: UIButton!
     
+    @IBOutlet var newAddress: UILabel!
     var extended = true
     
 
@@ -143,6 +147,8 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         
         bottomCons.isActive = false
         
+            self.newAddress.font = UIFont(name: "STHeitiSC-Medium", size: 22.0)
+        newAddress.font = newAddress.font.withSize(22)
         
     }
     

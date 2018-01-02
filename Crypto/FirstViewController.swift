@@ -89,7 +89,14 @@ class FirstViewController: UIViewController{
         UserDefaults.standard.synchronize()
     }
     func loadCells(){
-        cellArray = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "cellArray") as! NSData) as Data) as! [Cell]
+        if let key = (UserDefaults.standard.object(forKey: "cellArray") as? NSData) {
+            if let sC:[Cell] = NSKeyedUnarchiver.unarchiveObject(with: key as Data?)) as? [Cell]{
+                self.cellArray = sC
+            }
+        }
+        
+//        cellArray = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "cellArray") as! NSData) as Data) as! [Cell]
+        
         for i in cellArray{
             if i.name == ""{
                 if let index = cellArray.index(of: i) {
