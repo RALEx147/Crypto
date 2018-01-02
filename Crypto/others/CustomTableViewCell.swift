@@ -14,8 +14,11 @@ protocol CustomTableViewCellDelegate {
 
 class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource {
 
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet var bottomCons: NSLayoutConstraint!
+
+    @IBOutlet var dropShadown: NSLayoutConstraint!
     
+    @IBOutlet var subBottom: NSLayoutConstraint!
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return kk.count
     }
@@ -26,6 +29,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         return cell
     }
     
+    @IBOutlet weak var subHeight: NSLayoutConstraint!
     @IBOutlet weak var height: NSLayoutConstraint!
     
     @IBOutlet weak var cellView: UIView?
@@ -44,23 +48,33 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     @IBAction func touchAdd(_ sender: Any) {
         let up = self.superview as! UITableView
         if addBool{
-            self.height.constant = self.height.constant + 50
+            self.height.constant = self.height.constant + 80
+            up.beginUpdates()
+            bottomCons.isActive = true
+            subBottom.isActive = false
+            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+                self.updateConstraints()
+                self.layoutIfNeeded()
+                self.addCoin.alpha = 0
+            }) { (_) in
+                up.endUpdates()
+
+            }
+        }
+        else{
+            self.height.constant = self.height.constant - 80
             up.beginUpdates()
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                 self.updateConstraints()
                 self.layoutIfNeeded()
+                
+                
             }) { (_) in
                 up.endUpdates()
-            }
-        }
-        else{
-            self.height.constant = self.height.constant - 50
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
-                self.updateConstraints()
-                self.layoutIfNeeded()
-                self.addCoin.alpha = 1
-            }) { (_) in
-                up.reloadData()
+                self.bottomCons.isActive = false
+                self.subBottom.isActive = true
+                
+
             }
         }
         addBool = !addBool
@@ -73,10 +87,42 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var addCoin: UIButton!
     
+    var extended = true
+    
+
     @IBAction func more(_ sender: Any) {
+        let up = self.superview as! UITableView
+
+        if extended{
+            up.beginUpdates()
+            subHeight.constant = subHeight.constant + CGFloat((kk.count - 1) * 45)
+            UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
+                self.layoutIfNeeded()
+            }, completion: { (_) in
+                up.endUpdates()
+                self.dropShadown.constant = self.dropShadown.constant + 20
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.layoutIfNeeded()
+                })
+            })
+        }
+        else{
+            
+            up.beginUpdates()
+            subHeight.constant = subHeight.constant - CGFloat((kk.count - 1) * 45)
+            
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+                self.layoutIfNeeded()
+            }, completion: { (_) in
+                up.endUpdates()
+                self.dropShadown.constant = self.dropShadown.constant - 20
+                UIView.animate(withDuration: 0.4, animations: {
+                    self.layoutIfNeeded()
+                })
+            })
+        }
         
         extended = !extended
-        print(extended)
     }
     
     var kk = ["empty","-9","99","8","9"]
@@ -84,13 +130,22 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     @IBOutlet weak var subTable: UITableView!
     
     
-    var extended = false
+    
     override func awakeFromNib() {
+        
+
         super.awakeFromNib()
         subTable.delegate = self
         subTable.dataSource = self
-        // Initialization code
+//        self.subTable.alpha = 0
+        
+        self.layoutIfNeeded()
+        
+        bottomCons.isActive = false
+        
+        
     }
+    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

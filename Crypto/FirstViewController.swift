@@ -31,22 +31,19 @@ class FirstViewController: UIViewController{
     let ani3 = LOTAnimationView(name: "3")
     let ani4 = LOTAnimationView(name: "4")
     
+    
+    let nF:NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        return numberFormatter
+    }()
+    
     override func viewDidLoad() {
-        disGroup2.enter()
         self.loadCells()
         
         
         
-        
-//        let r = Cell(name: "red pulse", tag: "rpx", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
-//        let g = Cell(name: "gas", tag: "gas", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
-//        let neo = Cell(name: "neo", tag: "main", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCells: [r, g])
-//        let eth = Cell(name: "ethereum", tag: "eth", amount: "0", balance: "0", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87")
-//        self.cellArray.append(neo)
-//        self.cellArray.append(eth)
-//        self.saveCells()
-        
-        
+
         
         table.estimatedRowHeight = 150
         table.rowHeight = UITableViewAutomaticDimension
@@ -54,7 +51,11 @@ class FirstViewController: UIViewController{
         
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
         total.font = total.font.withSize(50)
-//        total.text = "$" + String(describing: totalPrice())
+        
+
+        let format = nF.string(from: NSNumber(value: cleanUp(totalPrice())))
+        
+        total.text = "$" + format!
         
         
         spacing.backgroundColor = UIColor(named: "bg")
@@ -89,21 +90,29 @@ class FirstViewController: UIViewController{
     }
     func loadCells(){
         cellArray = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "cellArray") as! NSData) as Data) as! [Cell]
+        for i in cellArray{
+            if i.name == ""{
+                if let index = cellArray.index(of: i) {
+                    cellArray.remove(at: index)
+                }
+            }
+        }
     }
     
-    
-    
+    let neoPriceNames:[String:String] = ["rpx":"red pulse", "dbc":"deepbrain chain", "gas":"gas", "neo":"neo"]
     var succeed = true
     func updateCell(_ c: Cell) -> Cell{
-        if c.name == "NEO" || c.name == "GAS" || c.name == "RPX" || c.name == "DBC" || c.name == "APH"{
+        
+        if c.name.lowercased() == "neo" || c.name.lowercased() == "gas" || c.name.lowercased() == "rpx" || c.name.lowercased() == "dbc" || c.name.lowercased() == "aph"{
             var neo:[NEO]!
             neoBalance(c){(completion) in neo = completion}
             disGroup.notify(queue: .main){
+                
                 if neo != nil && !neo.isEmpty{
                     for i in neo{
-                        if i.name == c.name{
+                        if i.name?.lowercased() == c.name {
                             c.amount = i.total
-                            if let t = (Double(i.total!)), let p = Double(self.getPrice(name: c.name)){
+                            if let t = (Double(i.total!)), let p = Double(self.getPrice(name: self.neoPriceNames[c.name.lowercased()]!)){
                                 c.balance = String(describing: (t * p))
                             }
                         }
@@ -115,7 +124,7 @@ class FirstViewController: UIViewController{
                 }
             }
         }
-        else if c.name == "Ethereum"{
+        else if c.name.lowercased() == "ethereum"{
             var eth:ETH!
             ethBalance(c){(completion) in eth = completion}
             disGroup.notify(queue: .main){
@@ -143,11 +152,12 @@ class FirstViewController: UIViewController{
     
     
     @IBAction func reload(_ sender: Any) {
+        
         if !loading{
+            disGroup2.enter()
             loading = true
             self.ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
             self.ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
-            Construct{(completion) in self.all = completion}
             
             for i in cellArray.indices{
                 if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
@@ -157,7 +167,8 @@ class FirstViewController: UIViewController{
                 }
                 cellArray[i] = updateCell(cellArray[i])
             }
-            
+            Construct{(completion) in self.all = completion}
+
             self.ani3.removeFromSuperview()
             self.ani4.removeFromSuperview()
             self.ani2.loopAnimation = true
@@ -174,7 +185,6 @@ class FirstViewController: UIViewController{
                             if !self.succeed{
                                 self.unfinished()
                             }
-                            
                             self.impact.impactOccurred()
                             self.loading = false
                             self.disGroup2.leave()
@@ -190,6 +200,8 @@ class FirstViewController: UIViewController{
             disGroup2.notify(queue: .main){
                 self.table.reloadData()
                 self.saveCells()
+                let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
+                self.total.text = "$" + format!
                 print(self.cellArray)
             }
         }
@@ -465,7 +477,13 @@ class FirstViewController: UIViewController{
         self.bannerHeight.constant = 223
         self.totalHeight.constant = 85
         superView.gradient.constant = 98
-        UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
+        
+        self.cellArray.remove(at: self.cellArray.count-1)
+        self.table.beginUpdates()
+        self.table.deleteRows(at: [IndexPath(row: self.cellArray.count, section: 0)], with: .fade)
+        self.table.endUpdates()
+        
+        UIView.animate(withDuration: 0.3, delay: 0.00, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
             superView.view.layoutIfNeeded()
             superView.icon.frame.origin.y = 39
@@ -482,7 +500,9 @@ class FirstViewController: UIViewController{
             self.ani4.frame.origin.y = 173.5
             self.add?.frame.origin.y = 181
             self.addFrame.origin.y = 181
-            self.cellArray.remove(at: self.cellArray.count-1)
+
+            
+            
             self.table.reloadData()
         }, completion: ({ (end) in }))
     }
@@ -507,12 +527,11 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = table.dequeueReusableCell(withIdentifier: "cell2") as! CustomTableViewCell
         let cur = self.cellArray[indexPath.row]
         cell.cellView?.layer.cornerRadius = 10
-        cell.name?.text = cur.name
-        cell.tagg?.text = cur.tag
+        cell.name?.text = cur.tag
+        cell.tagg?.text = cur.name + ": " + cur.address
         if cur.name == ""{
             cell.money?.text = ""
             cell.moreLabel.text = ""
-            
             cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
             cell.addCoin.isUserInteractionEnabled = true
             cell.moreIcon.isUserInteractionEnabled = false
@@ -526,8 +545,8 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             cell.addCoin.setImage(UIImage(), for: .normal)
             cell.moreIcon.isUserInteractionEnabled = true
             cell.addCoin.isUserInteractionEnabled = false
-            cell.moreLabel?.text = more
-            if Int(more) != nil {
+            cell.moreLabel?.text = ""
+            if Int(more) != nil && Int(more)! > 0{
                 cell.moreLabel?.text = more + " more"
                 if let sC = cur.subCells{
                     for i in sC{
@@ -535,8 +554,10 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
             }
+
             cash = cleanUp(cash)
-            cell.money?.text = "$" + String(cash)
+            let format = nF.string(from: NSNumber(value: cash))
+            cell.money?.text = "$" + format!
         }
         cell.subTable.layer.cornerRadius = 10
         if cell.extended{

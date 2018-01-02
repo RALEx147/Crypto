@@ -31,3 +31,13 @@ import Foundation
 //}
 
 
+
+//        let r = Cell(name: "red pulse", tag: "rpx", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
+//        let g = Cell(name: "gas", tag: "gas", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
+//        let neo = Cell(name: "neo", tag: "main", amount: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCells: [r, g])
+//        let eth = Cell(name: "ethereum", tag: "eth", amount: "0", balance: "0", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87")
+//        self.cellArray.append(neo)
+//        self.cellArray.append(eth)
+//        self.saveCells()
+
+
