@@ -20,12 +20,27 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     @IBOutlet var subBottom: NSLayoutConstraint!
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return kk.count
+        return cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cc")
-        cell.textLabel?.text = kk[indexPath.row]
+        let supper = FirstViewController()
+        let cell = subTable.dequeueReusableCell(withIdentifier: "subCell") as! SubTableViewCell
+        let cur = cells[indexPath.row]
+        
+        
+//        cell.price.text = "$" + supper.getPrice(name: cur.name)
+//        cell.price.text =
+//
+//        cell.amount.text = String(describing: supper.cleanUp(Double(cur.amount) ?? 0.0))
+        
+        
+        var cash = Double(cur.balance!) ?? 0.0
+        cash = supper.cleanUp(cash)
+        let format = supper.nF.string(from: NSNumber(value: cash))
+        cell.total?.text = "$" + format!
+        
+        
         return cell
     }
     
@@ -70,14 +85,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
                 self.updateConstraints()
                 self.layoutIfNeeded()
-                
-                
             }) { (_) in
                 up.endUpdates()
+                self.addCoin.alpha = 1
                 self.bottomCons.isActive = false
                 self.subBottom.isActive = true
-                
-
             }
         }
         addBool = !addBool
@@ -96,10 +108,10 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
 
     @IBAction func more(_ sender: Any) {
         let up = self.superview as! UITableView
-
+        print(num)
         if extended{
             up.beginUpdates()
-            subHeight.constant = subHeight.constant + CGFloat((kk.count - 1) * 45)
+            subHeight.constant = subHeight.constant + CGFloat((cells.count - 2) * 43 + 45)
             UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }, completion: { (_) in
@@ -113,7 +125,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         else{
             
             up.beginUpdates()
-            subHeight.constant = subHeight.constant - CGFloat((kk.count - 1) * 45)
+            subHeight.constant = subHeight.constant - CGFloat((cells.count - 2) * 43 + 45)
             
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                 self.layoutIfNeeded()
@@ -129,12 +141,12 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         extended = !extended
     }
     
-    var kk = ["empty","-9","99","8","9"]
+    var cells = [Cell]()
     
     @IBOutlet weak var subTable: UITableView!
     
     
-    
+    var num = 0
     override func awakeFromNib() {
         
 
@@ -142,6 +154,18 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         subTable.delegate = self
         subTable.dataSource = self
 //        self.subTable.alpha = 0
+//        var end:String.Index!
+//
+//        if let str = moreLabel.text{
+//            if str.count > 0{
+//                end = str.index(str.startIndex, offsetBy: 1)
+//                self.num = Int(str[str.startIndex..<end])!
+//            }
+//
+//        }
+//        for _ in 0...num{
+//            kk.append("placeholder")
+//        }
         
         self.layoutIfNeeded()
         

@@ -40,12 +40,20 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
+
+        let g = Cell(name: "GAS", tag: "Neo Gas", amount: "", price: "", balance: "", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
+        let r = Cell(name: "RPX", tag: "Red Pulse", amount: "", price: "", balance: "", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
+        let n = Cell(name: "NEO", tag: "Main", amount: "", price: "", balance: "", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCell: [g, r])
+        let e = Cell(name: "ETH", tag: "Ethereum Wallet", amount: "", price: "", balance: "", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87")
+            
+        cellArray.append(n)
+        cellArray.append(e)
         
-        
-        
+        self.saveCells()
 
         
-        table.estimatedRowHeight = 150
+        table.estimatedRowHeight = 130
+    
         table.rowHeight = UITableViewAutomaticDimension
         
         
@@ -65,6 +73,9 @@ class FirstViewController: UIViewController{
         
         addAddButton(on: addOn)
         setupRefresh()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
+            self.reload(self)
+        }
         
     }
     
@@ -89,21 +100,18 @@ class FirstViewController: UIViewController{
         UserDefaults.standard.synchronize()
     }
     func loadCells(){
-        if let key = (UserDefaults.standard.object(forKey: "cellArray") as? NSData) {
-            if let sC:[Cell] = NSKeyedUnarchiver.unarchiveObject(with: key as Data?)) as? [Cell]{
-                self.cellArray = sC
-            }
-        }
-        
-//        cellArray = NSKeyedUnarchiver.unarchiveObject(with: (UserDefaults.standard.object(forKey: "cellArray") as! NSData) as Data) as! [Cell]
-        
-        for i in cellArray{
-            if i.name == ""{
-                if let index = cellArray.index(of: i) {
-                    cellArray.remove(at: index)
+        if let key:NSData = (UserDefaults.standard.object(forKey: "cellArray") as? NSData) {
+            cellArray = NSKeyedUnarchiver.unarchiveObject(with: (key as Data)) as! [Cell]
+            
+            for i in cellArray{
+                if i.name == ""{
+                    if let index = cellArray.index(of: i) {
+                        cellArray.remove(at: index)
+                    }
                 }
             }
         }
+
     }
     
     let neoPriceNames:[String:String] = ["rpx":"red pulse", "dbc":"deepbrain chain", "gas":"gas", "neo":"neo"]
@@ -121,8 +129,10 @@ class FirstViewController: UIViewController{
                             c.amount = i.total
                             if let t = (Double(i.total!)), let p = Double(self.getPrice(name: self.neoPriceNames[c.name.lowercased()]!)){
                                 c.balance = String(describing: (t * p))
+                                c.price = String(describing: p)
                             }
                         }
+                        
                     }
                 }
                 else{
@@ -136,12 +146,17 @@ class FirstViewController: UIViewController{
             ethBalance(c){(completion) in eth = completion}
             disGroup.notify(queue: .main){
                 if eth.result != nil{
-                if let amo = self.ethTotal(e: eth, trueValue: true){
-                    c.amount = String(describing: amo)
-                }
-                if let bal = self.ethTotal(e: eth){
-                    c.balance = String(describing: bal)
-                }
+                    if let amo = self.ethTotal(e: eth, trueValue: true){
+                        c.amount = String(describing: amo)
+                    }
+                    if let bal = self.ethTotal(e: eth){
+                        c.balance = String(describing: bal)
+                    }
+                    
+                    c.price = self.getPrice(name: "ethereum")
+                    
+                    
+                    
                 }
                 else{
                     self.succeed = false
@@ -159,57 +174,63 @@ class FirstViewController: UIViewController{
     
     
     @IBAction func reload(_ sender: Any) {
-        
-        if !loading{
-            disGroup2.enter()
-            loading = true
-            self.ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
-            self.ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
-            
-            for i in cellArray.indices{
-                if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
-                    for j in cellArray[i].subCells!.indices{
-                        cellArray[i].subCells![j] = updateCell(cellArray[i].subCells![j])
-                    }
-                }
-                cellArray[i] = updateCell(cellArray[i])
-            }
-            Construct{(completion) in self.all = completion}
+        if !Reachability.isConnectedToNetwork(){
+            let alert = UIAlertController(title: "No Connection", message: "Please connect to the internet and refresh again", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
+            self.present(alert, animated: true, completion: nil)
 
-            self.ani3.removeFromSuperview()
-            self.ani4.removeFromSuperview()
-            self.ani2.loopAnimation = true
-            self.view.addSubview(self.ani1)
-            self.ani1.play{ (finished) in
-                self.ani1.removeFromSuperview()
-                self.view.addSubview(self.ani2)
-                self.ani2.play{ (finished) in
-                    self.ani2.removeFromSuperview()
-                    self.view.addSubview(self.ani3)
-                    self.ani3.play{ (finished) in
-                        self.view.addSubview(self.ani4)
-                        self.ani4.play{ (finished) in
-                            if !self.succeed{
-                                self.unfinished()
-                            }
-                            self.impact.impactOccurred()
-                            self.loading = false
-                            self.disGroup2.leave()
+        }
+        else{
+            if !loading{
+                disGroup2.enter()
+                loading = true
+                self.ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
+                self.ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
+                
+                for i in cellArray.indices{
+                    cellArray[i] = updateCell(cellArray[i])
+                    if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
+                        for j in cellArray[i].subCells!.indices{
+                            cellArray[i].subCells![j] = updateCell(cellArray[i].subCells![j])
                         }
                     }
                 }
-            }
-            
-            disGroup.notify(queue: .main){
-                self.ani2.loopAnimation = false
-            }
-            
-            disGroup2.notify(queue: .main){
-                self.table.reloadData()
-                self.saveCells()
-                let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
-                self.total.text = "$" + format!
-                print(self.cellArray)
+                Construct{(completion) in self.all = completion}
+                self.ani3.removeFromSuperview()
+                self.ani4.removeFromSuperview()
+                self.ani2.loopAnimation = true
+                self.view.addSubview(self.ani1)
+                self.ani1.play{ (finished) in
+                    self.ani1.removeFromSuperview()
+                    self.view.addSubview(self.ani2)
+                    self.ani2.play{ (finished) in
+                        self.ani2.removeFromSuperview()
+                        self.view.addSubview(self.ani3)
+                        self.ani3.play{ (finished) in
+                            self.view.addSubview(self.ani4)
+                            self.ani4.play{ (finished) in
+                                if !self.succeed{
+                                    self.unfinished()
+                                }
+                                self.impact.impactOccurred()
+                                self.loading = false
+                                self.disGroup2.leave()
+                            }
+                        }
+                    }
+                }
+                
+                disGroup.notify(queue: .main){
+                    self.ani2.loopAnimation = false
+                }
+                
+                disGroup2.notify(queue: .main){
+                    self.table.reloadData()
+                    self.saveCells()
+                    let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
+                    self.total.text = "$" + format!
+                    print(self.cellArray)
+                }
             }
         }
     }
@@ -229,7 +250,7 @@ class FirstViewController: UIViewController{
         var done = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
-                self.self.disGroup.leave()
+                self.disGroup.leave()
                 completion(nil)
             }
         }
@@ -319,7 +340,6 @@ class FirstViewController: UIViewController{
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 do {
-                    
                     let balance = try JSONDecoder().decode(ETH.self, from: data)
                     let end = DispatchTime.now()
                     print("eth")
@@ -349,7 +369,10 @@ class FirstViewController: UIViewController{
     
     func cleanUp(_ cash:Double) -> Double{
         var out = cash
-        if out < 1.0 && out >= 0.0{
+        if out < 0.00001 && out >= 0.0{
+            out = out.truncate(places: 5)
+        }
+        if out > 0.00001 && out < 1.0{
             out = out.truncate(places: 5)
         }
         else if out > 1.0 && out < 10.0{
@@ -358,8 +381,11 @@ class FirstViewController: UIViewController{
         else if out > 10.0 && out < 100.0{
             out = out.truncate(places: 3)
         }
-        else if out > 100.0{
+        else if out > 100.0 && out < 1000000{
             out = out.truncate(places: 2)
+        }
+        else if out > 1000000{
+            out = out.truncate(places: 0)
         }
         return out
     }
@@ -449,6 +475,9 @@ class FirstViewController: UIViewController{
         self.totalHeight.constant = 15
         superView.gradient.constant = 30
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
+
+            let head = self.table.tableHeaderView
+            head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! - 5)
             self.view.layoutIfNeeded()
             superView.view.layoutIfNeeded()
             superView.icon.frame.origin.y = -39
@@ -467,7 +496,7 @@ class FirstViewController: UIViewController{
             self.addFrame.origin.y = 60
         }, completion: ({ (end) in
             self.add?.frame.origin.y = 60
-            let add = Cell(name: "", tag: "", amount: "", balance: "", address: "")
+            let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "")
             self.cellArray.append(add)
             self.table.beginUpdates()
             self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .automatic)
@@ -480,17 +509,37 @@ class FirstViewController: UIViewController{
     @IBOutlet weak var totalHeight: NSLayoutConstraint!
     func hideAdd(){
         let superView = parent as! ViewController
-//        let uitc =
+
         self.bannerHeight.constant = 223
         self.totalHeight.constant = 85
         superView.gradient.constant = 98
         
         self.cellArray.remove(at: self.cellArray.count-1)
         self.table.beginUpdates()
-        self.table.deleteRows(at: [IndexPath(row: self.cellArray.count, section: 0)], with: .fade)
+        let indx = IndexPath(row: self.cellArray.count, section: 0)
+        let x = self.table.cellForRow(at: indx) as! CustomTableViewCell
+        self.table.deleteRows(at: [indx], with: .fade)
         self.table.endUpdates()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
+            
+            if !x.addBool{
+                x.height.constant = x.height.constant - 80
+                x.updateConstraints()
+                x.layoutIfNeeded()
+                x.newAddress.alpha = 0
+                x.addCoin.alpha = 1
+                x.bottomCons.isActive = false
+                x.subBottom.isActive = true
+                x.addBool = !x.addBool
+            }
+            
+        }
         
-        UIView.animate(withDuration: 0.3, delay: 0.00, options: .curveEaseOut, animations: {
+    
+        
+        UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
+            let head = self.table.tableHeaderView
+            head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! + 5)
             self.view.layoutIfNeeded()
             superView.view.layoutIfNeeded()
             superView.icon.frame.origin.y = 39
@@ -565,6 +614,18 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             cash = cleanUp(cash)
             let format = nF.string(from: NSNumber(value: cash))
             cell.money?.text = "$" + format!
+            
+            let placeholder = Cell(name: "", tag: " ", amount: " ", price: "", balance: " ", address: " ")
+            cell.cells = [placeholder]
+            if cur.more.count > 0{
+            cell.cells.append(cur)
+            for i in 0..<Int(cur.more)!{
+                cell.cells.append(cur.subCells![i])
+            }
+            }
+            cell.subTable.separatorColor = UIColor(named: "bg")
+
+
         }
         cell.subTable.layer.cornerRadius = 10
         if cell.extended{
