@@ -41,3 +41,13 @@ import Foundation
 //        self.saveCells()
 
 
+
+
+//        let neo = Cell(name: "NEO", tag: "Main", amount: "0", price: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCells: [Cell]())
+//
+//
+//        let eth = Cell(name: "ETH", tag: "Ether", amount: "0", price: "0", balance: "0", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87", subCells: [Cell]())
+//                self.cellArray.append(neo)
+//                self.cellArray.append(eth)
+//                self.saveCells()
+//

@@ -40,17 +40,6 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
-
-        let g = Cell(name: "GAS", tag: "Neo Gas", amount: "", price: "", balance: "", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
-        let r = Cell(name: "RPX", tag: "Red Pulse", amount: "", price: "", balance: "", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW")
-        let n = Cell(name: "NEO", tag: "Main", amount: "", price: "", balance: "", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCell: [g, r])
-        let e = Cell(name: "ETH", tag: "Ethereum Wallet", amount: "", price: "", balance: "", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87")
-            
-        cellArray.append(n)
-        cellArray.append(e)
-        
-        self.saveCells()
-
         
         table.estimatedRowHeight = 130
     
@@ -77,6 +66,7 @@ class FirstViewController: UIViewController{
             self.reload(self)
         }
         
+        
     }
     
     func totalPrice() -> Double{
@@ -84,7 +74,7 @@ class FirstViewController: UIViewController{
         for i in cellArray.indices{
             if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
                 for j in cellArray[i].subCells!.indices{
-                    out += Double(cellArray[i].subCells![j].balance)!
+                    out += Double(cellArray[i].subCells![j].balance) ?? 0.0
                 }
             }
             if let ss:Double = Double(cellArray[i].balance!){
@@ -114,64 +104,7 @@ class FirstViewController: UIViewController{
 
     }
     
-    let neoPriceNames:[String:String] = ["rpx":"red pulse", "dbc":"deepbrain chain", "gas":"gas", "neo":"neo"]
     var succeed = true
-    func updateCell(_ c: Cell) -> Cell{
-        
-        if c.name.lowercased() == "neo" || c.name.lowercased() == "gas" || c.name.lowercased() == "rpx" || c.name.lowercased() == "dbc" || c.name.lowercased() == "aph"{
-            var neo:[NEO]!
-            neoBalance(c){(completion) in neo = completion}
-            disGroup.notify(queue: .main){
-                
-                if neo != nil && !neo.isEmpty{
-                    for i in neo{
-                        if i.name?.lowercased() == c.name {
-                            c.amount = i.total
-                            if let t = (Double(i.total!)), let p = Double(self.getPrice(name: self.neoPriceNames[c.name.lowercased()]!)){
-                                c.balance = String(describing: (t * p))
-                                c.price = String(describing: p)
-                            }
-                        }
-                        
-                    }
-                }
-                else{
-                    print("fail")
-                    self.succeed = false
-                }
-            }
-        }
-        else if c.name.lowercased() == "ethereum"{
-            var eth:ETH!
-            ethBalance(c){(completion) in eth = completion}
-            disGroup.notify(queue: .main){
-                if eth.result != nil{
-                    if let amo = self.ethTotal(e: eth, trueValue: true){
-                        c.amount = String(describing: amo)
-                    }
-                    if let bal = self.ethTotal(e: eth){
-                        c.balance = String(describing: bal)
-                    }
-                    
-                    c.price = self.getPrice(name: "ethereum")
-                    
-                    
-                    
-                }
-                else{
-                    self.succeed = false
-                }
-            }
-        }
-        else if c.name == "Bitcoin"{
-            
-        }
-        
-        return c
-        
-        
-    }
-    
     
     @IBAction func reload(_ sender: Any) {
         if !Reachability.isConnectedToNetwork(){
@@ -189,12 +122,8 @@ class FirstViewController: UIViewController{
                 
                 for i in cellArray.indices{
                     cellArray[i] = updateCell(cellArray[i])
-                    if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
-                        for j in cellArray[i].subCells!.indices{
-                            cellArray[i].subCells![j] = updateCell(cellArray[i].subCells![j])
-                        }
-                    }
                 }
+                
                 Construct{(completion) in self.all = completion}
                 self.ani3.removeFromSuperview()
                 self.ani4.removeFromSuperview()
@@ -226,6 +155,8 @@ class FirstViewController: UIViewController{
                 
                 disGroup2.notify(queue: .main){
                     self.table.reloadData()
+                    self.reloadSubTable()
+
                     self.saveCells()
                     let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
                     self.total.text = "$" + format!
@@ -236,9 +167,112 @@ class FirstViewController: UIViewController{
     }
     
     
+    
+    func updateCell(_ c: Cell) -> Cell{
+        succeed = true
+        if c.name.lowercased() == "neo"{
+            var neo:[NEO]!
+            neoBalance(c){(completion) in neo = completion}
+            disGroup.notify(queue: .main){
+                
+                
+                if neo != nil && !neo.isEmpty{
+                    
+                    var tempArr = [String]()
+                    if !c.subCells.isEmpty{
+                        for j in c.subCells!{
+                            tempArr.append(j.name.lowercased())
+                        }
+                    }
+                    tempArr.append("neo")
+                    
+                    
+                    var newSubcells = [NEO]()
+                    for i in neo.indices{
+                        let namee = neo[i].name!
+                        if let space = namee.index(of: " ") {
+                            neo[i].name = String(namee[namee.startIndex..<space])
+                        }
+                    }
+                    for i in neo{
+                        if !tempArr.contains((i.name?.lowercased())!){
+                            newSubcells.append(i)
+                        }
+                    }
+                    
+                    for x in newSubcells{
+                        let t = (Double(x.total!))
+                        let p = Double(self.getPrice(name: x.name!.lowercased()))!
+                        let new = Cell(name: x.name!, tag: x.name!, amount: x.total!, price: String(describing: p), balance: String(describing: (t! * p)), address: c.address!, subCells: [Cell]())
+                        c.subCells!.append(new)
+                        
+                        
+                    }
+                    c.subCells = c.subCells!
+                    
+                    for i in neo{
+                        if c.subCells.isEmpty{
+                            for j in c.subCells!{
+                                if i.name?.lowercased() == j.name.lowercased() {
+                                    c.amount = i.total
+                                    if let t = (Double(i.total!)), let p = Double(self.getPrice(name: j.name.lowercased())){
+                                        c.balance = String(describing: (t * p))
+                                        c.price = String(describing: p)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if i.name?.lowercased() == "neo"{
+                            c.amount = i.total
+                            if let t = (Double(i.total!)), let p = Double(self.getPrice(name: c.name.lowercased())){
+                                c.balance = String(describing: (t * p))
+                                c.price = String(describing: p)
+                            }
+                        }
+                    }
+                    
+                    
+                    c.updateMore()
+                }
+                else{
+                    print("fail")
+                    self.succeed = false
+                }
+            }
+        }
+            
+            
+            
+        else if c.name.lowercased() == "eth"{
+            var eth:ETH!
+            ethBalance(c){(completion) in eth = completion}
+            disGroup.notify(queue: .main){
+                
+                if eth.ETH?.balance != nil{
+                    c.amount = String(describing: eth.ETH!.balance!)
+                    c.balance = String(describing: (eth.ETH?.balance)! * Double(self.getPrice(name: "ethereum"))!)
+                    c.price = self.getPrice(name: "ethereum")
+                    print(c.amount)
+                }
+                else{
+                    self.succeed = false
+                }
+            }
+        }
+        else if c.name == "Bitcoin"{
+            
+        }
+        
+        return c
+        
+        
+    }
+    
+    
     func unfinished(){
-        ani3.setValue(UIColor.red, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
-        self.ani4.setValue(UIColor.red, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
+        ani3.setValue(UIColor(named: "failure")!, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
+        self.ani4.setValue(UIColor(named: "failure")!, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
         self.impact.impactOccurred()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
             self.impact.impactOccurred()
@@ -273,21 +307,7 @@ class FirstViewController: UIViewController{
             }.resume()
     }
     
-    func ethTotal(e: ETH, trueValue: Bool = false) -> Double?{
-        if e.result != nil && all != nil && !all.isEmpty{
-            let divisor = 1000000000000000000.0
-            let realValue = Double(e.result!)! / divisor
-            if trueValue{
-                return realValue
-            }
-            else{
-                let output = realValue * Double(self.getPrice(name: "ethereum"))!
-                return output
-            }
-        }
-        else{return nil}
-    }
-    
+
     func neoBalance(_ c: Cell, completion: @escaping ([NEO]) -> ()){
         self.disGroup.enter()
         var done = false
@@ -306,7 +326,7 @@ class FirstViewController: UIViewController{
                     let neo = try JSONDecoder().decode(NEON.self, from: data)
                     var output = [NEO]()
                     for i in neo.balances{
-                        if (i.name == "RPX" || i.name == "NEO" || i.name == "GAS") {
+                        if (i.name == "NEO" || i.total != "0") {
                             output.append(i)
                         }
                     }
@@ -329,13 +349,15 @@ class FirstViewController: UIViewController{
         let start = DispatchTime.now()
         self.disGroup.enter()
         var done = false
-        let link = "https://api.etherscan.io/api?module=account&action=balance&address=" + c.address
+        let link = "https://api.ethplorer.io/getAddressInfo/" + c.address + "?apiKey=freekey"
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
                 self.disGroup.leave()
-                completion(ETH(result: nil))
+                let e = ETH(ETH: ether(balance: nil), tokens: nil)
+                completion(e)
             }
         }
+        
         guard let url = URL(string: link) else { return }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let data = data {
@@ -440,9 +462,24 @@ class FirstViewController: UIViewController{
         add = LOTAnimationView(name: animation)
         add?.isUserInteractionEnabled = true
         add?.frame = addFrame
+        
         add?.contentMode = .scaleAspectFill
         addAddGeus()
         self.view.addSubview(add!)
+        
+        
+        add?.translatesAutoresizingMaskIntoConstraints = false
+        add?.contentMode = .scaleToFill
+        
+        let trainlingAdd = add?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        trainlingAdd?.constant = -18
+        let bottomAdd = add?.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+        bottomAdd?.constant = -10
+        let h = add?.heightAnchor.constraint(equalToConstant: 30)
+        let w = add?.widthAnchor.constraint(equalToConstant: 30)
+        let cons:[NSLayoutConstraint] = [trainlingAdd!, bottomAdd!, h!, w!]
+        NSLayoutConstraint.activate(cons)
+        
     }
     func addAddGeus(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(FirstViewController.toggleMenu(recognizer:)))
@@ -466,16 +503,57 @@ class FirstViewController: UIViewController{
     }
     
     
+    func fadeMore(){
+        let cells = self.table.visibleCells as! Array<CustomTableViewCell>
+        for i in cells {
+            i.moreLabel.alpha = 0
+            i.moreIcon.alpha = 0
+            i.toMore.isActive = false
+            i.toView.isActive = true
+        }
+    }
+    
+    func defadeMore(){
+        let cells = self.table.visibleCells as! Array<CustomTableViewCell>
+        for i in cells {
+            i.moreLabel.alpha = 1
+            i.moreIcon.alpha = 1
+            i.toMore.isActive = true
+            i.toView.isActive = false
+        }
+    }
+    
+    func reloadSubTable() {
+        let cells = self.table.visibleCells as! Array<CustomTableViewCell>
+        for i in cells {
+            i.subTable.reloadData()
+        }
+    }
+    
+    func reloadSubMore() {
+        let cells = self.table.visibleCells as! Array<CustomTableViewCell>
+        for i in cells {
+            if !i.extended{
+                i.more(i.moreIcon)
+            }
+        }
+    }
+    
+    
+    
+    @IBOutlet var totalHeight: NSLayoutConstraint!
     
     
     @IBOutlet weak var bannerHeight: NSLayoutConstraint!
     func showAdd(){
         let superView = parent as! ViewController
         self.bannerHeight.constant = 100
-        self.totalHeight.constant = 15
+        self.totalHeight.constant = 10
         superView.gradient.constant = 30
+        
+        table.reloadData()
+        
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
-
             let head = self.table.tableHeaderView
             head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! - 5)
             self.view.layoutIfNeeded()
@@ -485,6 +563,7 @@ class FirstViewController: UIViewController{
             superView.halo.frame.origin.y = -29
             superView.halo.alpha = 0
             superView.top?.frame.origin.y = -30
+            
             superView.top?.alpha = 0
             self.add?.frame.origin.y = 60
             self.total.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
@@ -494,73 +573,90 @@ class FirstViewController: UIViewController{
             self.ani3.frame.origin.y = 53.5
             self.ani4.frame.origin.y = 53.5
             self.addFrame.origin.y = 60
+            self.fadeMore()
         }, completion: ({ (end) in
             self.add?.frame.origin.y = 60
-            let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "")
+            let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
             self.cellArray.append(add)
-            self.table.beginUpdates()
-            self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .automatic)
-            self.table.endUpdates()
-
+            self.table.performBatchUpdates({
+                self.reloadSubMore()
+                self.reloadSubTable()
+                self.table.isEditing = true
+                self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .fade)
+            }) { (_) in self.table.reloadData()}
         }))
         
         
     }
-    @IBOutlet weak var totalHeight: NSLayoutConstraint!
     func hideAdd(){
         let superView = parent as! ViewController
 
-        self.bannerHeight.constant = 223
-        self.totalHeight.constant = 85
-        superView.gradient.constant = 98
+
         
         self.cellArray.remove(at: self.cellArray.count-1)
-        self.table.beginUpdates()
         let indx = IndexPath(row: self.cellArray.count, section: 0)
         let x = self.table.cellForRow(at: indx) as! CustomTableViewCell
-        self.table.deleteRows(at: [indx], with: .fade)
-        self.table.endUpdates()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
-            
-            if !x.addBool{
-                x.height.constant = x.height.constant - 80
-                x.updateConstraints()
-                x.layoutIfNeeded()
-                x.newAddress.alpha = 0
-                x.addCoin.alpha = 1
-                x.bottomCons.isActive = false
-                x.subBottom.isActive = true
-                x.addBool = !x.addBool
-            }
-            
+
+        self.table.performBatchUpdates({
+            table.isEditing = false
+            self.table.deleteRows(at: [indx], with: .fade)
+        }) { (_) in
+            UIView.animate(withDuration: 0.24, delay: 0, options: .curveEaseOut, animations: {
+                let head = self.table.tableHeaderView
+                head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! + 5)
+                self.bannerHeight.constant = 223
+                self.totalHeight.constant = 28.5
+                superView.gradient.constant = 98
+                self.view.layoutIfNeeded()
+                superView.icon.frame.origin.y = 39
+                superView.icon.alpha = 1
+                superView.halo.frame.origin.y = 29
+                superView.halo.alpha = 1
+                superView.top?.frame.origin.y = 30
+                superView.top?.alpha = 1
+                self.total.transform = CGAffineTransform(scaleX: 1, y: 1)
+                self.bg.frame.origin.y = 180
+                self.ani1.frame.origin.y = 173.5
+                self.ani2.frame.origin.y = 173.5
+                self.ani3.frame.origin.y = 173.5
+                self.ani4.frame.origin.y = 173.5
+                self.add?.frame.origin.y = 181
+                self.addFrame.origin.y = 181
+                self.defadeMore()
+                
+                
+                
+            }, completion: ({ (end) in
+                self.table.reloadData()
+                
+                if end{
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
+                        
+                        if !x.addBool{
+                            x.height.constant = x.height.constant - 80
+                            x.updateConstraints()
+                            x.layoutIfNeeded()
+                            x.newAddress.alpha = 0
+                            x.ltcButton.alpha = 0
+                            x.btcButton.alpha = 0
+                            x.neoButton.alpha = 0
+                            x.xrpButton.alpha = 0
+                            x.ethButton.alpha = 0
+                            x.addCoin.alpha = 1
+                            x.bottomCons.isActive = false
+                            x.subBottom.isActive = true
+                            x.addBool = !x.addBool
+                        }
+                        
+                    }
+                }
+            }))
         }
+
         
     
         
-        UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
-            let head = self.table.tableHeaderView
-            head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! + 5)
-            self.view.layoutIfNeeded()
-            superView.view.layoutIfNeeded()
-            superView.icon.frame.origin.y = 39
-            superView.icon.alpha = 1
-            superView.halo.frame.origin.y = 29
-            superView.halo.alpha = 1
-            superView.top?.frame.origin.y = 30
-            superView.top?.alpha = 1
-            self.total.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.bg.frame.origin.y = 180
-            self.ani1.frame.origin.y = 173.5
-            self.ani2.frame.origin.y = 173.5
-            self.ani3.frame.origin.y = 173.5
-            self.ani4.frame.origin.y = 173.5
-            self.add?.frame.origin.y = 181
-            self.addFrame.origin.y = 181
 
-            
-            
-            self.table.reloadData()
-        }, completion: ({ (end) in }))
     }
     
     
@@ -591,12 +687,11 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
             cell.addCoin.isUserInteractionEnabled = true
             cell.moreIcon.isUserInteractionEnabled = false
+            cell.moreIcon.isHidden = true
         }
         else{
             var cash = Double(cur.balance!) ?? 0.0
             cell.imagee?.image = UIImage(named: cur.name!)
-            cell.moreIcon.imageView?.image = #imageLiteral(resourceName: "more")
-            cell.moreIcon.setImage(#imageLiteral(resourceName: "more"), for: .normal)
             let more = cur.more!
             cell.addCoin.setImage(UIImage(), for: .normal)
             cell.moreIcon.isUserInteractionEnabled = true
@@ -604,18 +699,15 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             cell.moreLabel?.text = ""
             if Int(more) != nil && Int(more)! > 0{
                 cell.moreLabel?.text = more + " more"
-                if let sC = cur.subCells{
-                    for i in sC{
-                        cash += Double(i.balance!)!
-                    }
+                for i in cur.subCells!{
+                    cash += Double(i.balance!) ?? 0.0
                 }
             }
 
             cash = cleanUp(cash)
             let format = nF.string(from: NSNumber(value: cash))
             cell.money?.text = "$" + format!
-            
-            let placeholder = Cell(name: "", tag: " ", amount: " ", price: "", balance: " ", address: " ")
+            let placeholder = Cell(name: "", tag: " ", amount: " ", price: "", balance: " ", address: " ", subCells: [Cell]())
             cell.cells = [placeholder]
             if cur.more.count > 0{
             cell.cells.append(cur)
@@ -624,7 +716,6 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             }
             }
             cell.subTable.separatorColor = UIColor(named: "bg")
-
 
         }
         cell.subTable.layer.cornerRadius = 10
@@ -636,12 +727,56 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.row == self.cellArray.count-1{
+            return false
+        }
+        else{
+            return true
+        }
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.row == self.cellArray.count-1{
+            return false
+        }
+        else{
+            return true
+        }
+        
+        
+    }
+
+    
+
+    //needs work
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = self.cellArray[sourceIndexPath.row]
+        self.cellArray.remove(at: sourceIndexPath.row)
+        self.cellArray.insert(movedObject, at: destinationIndexPath.row)
+        NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(cellArray)")
+        // To check for correctness enable: self.tableView.reloadData()
+    }
+    
+
+    
+    
+    
+    }
+
+
+
+
+
+class NeverClearView: UIView {
+    override var backgroundColor: UIColor? {
+        didSet {
+            if backgroundColor?.cgColor.alpha == 0 {
+                backgroundColor = oldValue
+            }
+        }
+    }
 }
-
-
-
-
-
 
 
 

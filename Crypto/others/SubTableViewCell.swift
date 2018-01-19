@@ -19,6 +19,7 @@ class SubTableViewCell: UITableViewCell {
     }
     @IBOutlet var amount: UILabel!
     
+    @IBOutlet var img: UIImageView!
     @IBOutlet var total: UILabel!
     @IBOutlet var price: UILabel!
     override func setSelected(_ selected: Bool, animated: Bool) {

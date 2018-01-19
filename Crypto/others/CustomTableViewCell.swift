@@ -23,16 +23,27 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         return cells.count
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let supper = FirstViewController()
         let cell = subTable.dequeueReusableCell(withIdentifier: "subCell") as! SubTableViewCell
         let cur = cells[indexPath.row]
         
         
-//        cell.price.text = "$" + supper.getPrice(name: cur.name)
-//        cell.price.text =
-//
-//        cell.amount.text = String(describing: supper.cleanUp(Double(cur.amount) ?? 0.0))
+        var p =  Double(cur.price!) ?? 0.0
+        p = supper.cleanUp(p)
+                let pFormat = supper.nF.string(from: NSNumber(value: p))
+        cell.price.text = "$" + pFormat!
+        if let i = UIImage(named: cur.name!){
+            cell.img.image = i
+        }
+        else{
+            cell.img.image = #imageLiteral(resourceName: "other")
+        }
+        var num = Double(cur.amount!) ?? 0.0
+        num = supper.cleanUp(num)
+        let nFormat = supper.nF.string(from: NSNumber(value: num))
+        cell.amount?.text =  nFormat! + " " + cur.name!
         
         
         var cash = Double(cur.balance!) ?? 0.0
@@ -59,6 +70,14 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
 
     @IBOutlet weak var content: UIView!
     
+    
+    
+    
+    @IBOutlet var neoButton: UIButton!
+    @IBOutlet var xrpButton: UIButton!
+    @IBOutlet var ltcButton: UIButton!
+    @IBOutlet var ethButton: UIButton!
+    @IBOutlet var btcButton: UIButton!
     var addBool = true
     @IBAction func touchAdd(_ sender: Any) {
         let up = self.superview as! UITableView
@@ -71,10 +90,17 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 self.updateConstraints()
                 self.layoutIfNeeded()
                 self.addCoin.alpha = 0
+                
+                
             }) { (_) in
                 up.endUpdates()
                 UIView.animate(withDuration: 0.3, animations: {
                     self.newAddress.alpha = 1
+                    self.ltcButton.alpha = 1
+                    self.btcButton.alpha = 1
+                    self.ethButton.alpha = 1
+                    self.neoButton.alpha = 1
+                    self.xrpButton.alpha = 1
                 })
 
             }
@@ -106,11 +132,16 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     var extended = true
     
 
-    @IBAction func more(_ sender: Any) {
+    @IBAction func more(_ sender: UIButton) {
         let up = self.superview as! UITableView
         print(num)
         if extended{
             up.beginUpdates()
+            
+            UIView.transition(with: sender as UIView, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                sender.setImage(UIImage(named: "moreI"), for: .normal)
+            }, completion: nil)
+            
             subHeight.constant = subHeight.constant + CGFloat((cells.count - 2) * 43 + 45)
             UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
                 self.layoutIfNeeded()
@@ -127,6 +158,10 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             up.beginUpdates()
             subHeight.constant = subHeight.constant - CGFloat((cells.count - 2) * 43 + 45)
             
+            UIView.transition(with: sender as UIView, duration: 0.4, options: .transitionCrossDissolve, animations: {
+                sender.setImage(UIImage(named: "more"), for: .normal)
+            }, completion: nil)
+            
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }, completion: { (_) in
@@ -136,6 +171,8 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                     self.layoutIfNeeded()
                 })
             })
+            
+            
         }
         
         extended = !extended
@@ -145,6 +182,9 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     @IBOutlet weak var subTable: UITableView!
     
+    @IBOutlet var toMore: NSLayoutConstraint!
+    
+    @IBOutlet var toView: NSLayoutConstraint!
     
     var num = 0
     override func awakeFromNib() {
@@ -166,6 +206,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
 //        for _ in 0...num{
 //            kk.append("placeholder")
 //        }
+
         
         self.layoutIfNeeded()
         
@@ -175,7 +216,6 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         newAddress.font = newAddress.font.withSize(22)
         
     }
-    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

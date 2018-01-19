@@ -20,18 +20,33 @@ struct NEON: Decodable {
     let balances: [NEO]
 }
 struct NEO: Decodable {
-    let name: String?
+    var name: String?
     let total: String?
     var price_usd: Double?
     
 }
+
+
 struct ETH: Decodable {
-    let result: String?
+    let ETH: ether?
+    let tokens: [ERC20]?
+}
+struct ERC20: Decodable{
+    let tokenInfo: ERC20Info?
+    let balance: Int?
+}
+struct ERC20Info: Decodable {
+    let name: String?
+    let decimal: Int?
+    let symbol: String?
+}
+struct ether: Decodable{
+    let balance: Double?
 }
 
 
 class Cell: NSObject, NSCoding{
-
+    
     var name:String!
     var tag:String!
     var more:String!
@@ -39,15 +54,15 @@ class Cell: NSObject, NSCoding{
     var price:String!
     var address:String!
     var balance:String!
-    var subCells:[Cell]?
+    var subCells:[Cell]!
     
     override var description: String { return "name:\(name!), tag:\(tag ?? ""), more:\(more ?? ""), price:\(price!) amount:\(amount!), balance:\(balance!), address:\(address!), subCells: \(String(describing: subCells))"}
-
+    
     override init() {
         super.init()
     }
     
-    init(name: String, tag: String, amount: String, price: String, balance: String, address: String, subCells: [Cell]? = nil) {
+    init(name: String, tag: String, amount: String, price: String, balance: String, address: String, subCells: [Cell]) {
         super.init()
         self.name = name
         self.tag = tag
@@ -56,7 +71,7 @@ class Cell: NSObject, NSCoding{
         self.price = price
         self.address = address
         self.subCells = subCells
-        self.more = String(describing: subCells?.count ?? 0)
+        self.more = String(describing: subCells.count)
     }
     
     required init(coder decoder: NSCoder) {
@@ -66,16 +81,14 @@ class Cell: NSObject, NSCoding{
         self.amount = decoder.decodeObject(forKey: "amount") as! String
         self.address = decoder.decodeObject(forKey: "address") as! String
         self.price = decoder.decodeObject(forKey: "price") as! String
-
+        
         self.balance = decoder.decodeObject(forKey: "balance") as! String
         if let key = (decoder.decodeObject(forKey: "subCells") as? NSData) as Data? {
-            if let sC:[Cell] = NSKeyedUnarchiver.unarchiveObject(with: key) as? [Cell]{
-                self.subCells = sC
-            }
+            self.subCells = NSKeyedUnarchiver.unarchiveObject(with: key) as! [Cell]
         }
     }
-
-
+    
+    
     func encode(with aCoder: NSCoder) {
         
         aCoder.encode(self.name, forKey: "name")
@@ -89,7 +102,14 @@ class Cell: NSObject, NSCoding{
         
     }
     
+    func updateMore(){
+        self.more = String(describing: subCells.count)
     }
+    
+    
+    
+    
+}
 
 
 

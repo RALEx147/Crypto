@@ -308,10 +308,10 @@
 		918F08D21FF33CEA0082AC9A /* others */ = {
 			isa = PBXGroup;
 			children = (
-				91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */,
 				9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */,
-				91383F1D1FFF1FB00000ECB7 /* connection.swift */,
 				919B5CB71FF4A67500F2D917 /* structs.swift */,
+				91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */,
+				91383F1D1FFF1FB00000ECB7 /* connection.swift */,
 				910F1EF01FF999FA0096F3A9 /* oldCode.swift */,
 				910A81921FA4DC75001F868A /* AppDelegate.swift */,
 				910A819B1FA4DC75001F868A /* Assets.xcassets */,

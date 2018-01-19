@@ -113,6 +113,7 @@ class ViewController: UIViewController {
     
     func toKey(){
         self.v2.alpha = 0
+        self.view1.reload(self)
     }
     
     func toKeyAnimate(){
@@ -128,6 +129,7 @@ class ViewController: UIViewController {
             self.view1?.add?.alpha = 1
             self.view1?.bg.alpha = 1
             self.view1?.add?.frame = self.addFrame
+            
             self.view1?.bg.frame = self.aniBGFrame
             self.view1?.ani1.frame = self.ani1Frame
             self.view1?.ani2.frame = self.ani2Frame
