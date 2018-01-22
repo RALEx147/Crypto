@@ -40,7 +40,6 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
-        
         table.estimatedRowHeight = 130
     
         table.rowHeight = UITableViewAutomaticDimension
@@ -187,18 +186,20 @@ class FirstViewController: UIViewController{
                     tempArr.append("neo")
                     
                     
-                    var newSubcells = [NEO]()
+                    
                     for i in neo.indices{
                         let namee = neo[i].name!
                         if let space = namee.index(of: " ") {
                             neo[i].name = String(namee[namee.startIndex..<space])
                         }
                     }
+                    var newSubcells = [NEO]()
                     for i in neo{
                         if !tempArr.contains((i.name?.lowercased())!){
                             newSubcells.append(i)
                         }
                     }
+                    
                     
                     for x in newSubcells{
                         let t = (Double(x.total!))
@@ -208,7 +209,7 @@ class FirstViewController: UIViewController{
                         
                         
                     }
-                    c.subCells = c.subCells!
+//                    c.subCells = c.subCells!
                     
                     for i in neo{
                         if c.subCells.isEmpty{
@@ -218,6 +219,7 @@ class FirstViewController: UIViewController{
                                     if let t = (Double(i.total!)), let p = Double(self.getPrice(name: j.name.lowercased())){
                                         c.balance = String(describing: (t * p))
                                         c.price = String(describing: p)
+                                        c.amount = String(describing: t)
                                     }
                                 }
                             }
@@ -228,6 +230,7 @@ class FirstViewController: UIViewController{
                             if let t = (Double(i.total!)), let p = Double(self.getPrice(name: c.name.lowercased())){
                                 c.balance = String(describing: (t * p))
                                 c.price = String(describing: p)
+                                c.amount = String(describing: t)
                             }
                         }
                     }
@@ -253,7 +256,79 @@ class FirstViewController: UIViewController{
                     c.amount = String(describing: eth.ETH!.balance!)
                     c.balance = String(describing: (eth.ETH?.balance)! * Double(self.getPrice(name: "ethereum"))!)
                     c.price = self.getPrice(name: "ethereum")
-                    print(c.amount)
+                    
+                    
+                    
+                    
+                    var tempArr = [String]()
+                    if !c.subCells.isEmpty{
+                        for j in c.subCells!{
+                            tempArr.append(j.tag.lowercased())
+                        }
+                    }
+                    tempArr.append("ethereum")
+                    
+                    var newSubcells = [ERC20]()
+                    
+                    for i in eth.tokens!{
+                        if !tempArr.contains((i.tokenInfo?.name?.lowercased())!){
+                            newSubcells.append(i)
+                        }
+                    }
+                    print(newSubcells)
+                    
+                    for x in newSubcells{
+                        let exp: Int
+                        if x.tokenInfo?.decimals?.decInt == 0 {
+                            exp = Int((x.tokenInfo?.decimals?.decString)!)!
+                        }
+                        else{
+                            exp = (x.tokenInfo?.decimals?.decInt)!
+                        }
+                        let divisor = Double(10 ^ exp)
+                        let t = Double(x.balance!) / divisor
+                        
+                        let p = Double(self.getPrice(name: (x.tokenInfo?.symbol!.lowercased())!))!
+                        let new = Cell(name: x.tokenInfo!.symbol!, tag: x.tokenInfo!.name!, amount: String(describing: t), price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
+                        c.subCells!.append(new)
+                        
+                        
+                    }
+                    
+                    
+                    
+                    if eth.tokens != nil && !(eth.tokens?.isEmpty)!{
+                        for i in eth.tokens!{
+                                for j in c.subCells{
+                                    if i.tokenInfo?.symbol?.lowercased() == j.name.lowercased() {
+                                        if let p = Double(self.getPrice(name: j.name.lowercased())){
+                                            let exp: Int
+                                            if i.tokenInfo?.decimals?.decInt == 0 {
+                                                exp = Int((i.tokenInfo?.decimals?.decString)!)!
+                                            }
+                                            else{
+                                                exp = (i.tokenInfo?.decimals?.decInt)!
+                                            }
+                                            let divisor: Double = Double(truncating: pow(10, exp) as NSNumber)
+                                            let t = Double(i.balance!) / divisor
+                                            j.amount = String(describing: t)
+                                            j.balance = String(describing: (t * p))
+                                            j.price = String(describing: p)
+                                            
+                                        }
+                                    }
+                                
+                            }
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                c.updateMore()
+                    
                 }
                 else{
                     self.succeed = false
@@ -280,7 +355,7 @@ class FirstViewController: UIViewController{
     }
     func Construct(completion: @escaping ([CMC]?) -> ()){
         self.disGroup.enter()
-        let start = DispatchTime.now()
+        
         var done = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
@@ -294,9 +369,8 @@ class FirstViewController: UIViewController{
                 do {
                     
                     let coin = try JSONDecoder().decode([CMC].self, from: data)
-                    let end = DispatchTime.now()
+                    
                     print("cmc")
-                    print(end.uptimeNanoseconds - start.uptimeNanoseconds)
                     self.disGroup.leave()
                     done = true
                     completion(coin)
@@ -311,7 +385,7 @@ class FirstViewController: UIViewController{
     func neoBalance(_ c: Cell, completion: @escaping ([NEO]) -> ()){
         self.disGroup.enter()
         var done = false
-        let start = DispatchTime.now()
+        
         let link = "https://otcgo.cn/api/v1/balances/" + c.address
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
@@ -330,9 +404,8 @@ class FirstViewController: UIViewController{
                             output.append(i)
                         }
                     }
-                    let end = DispatchTime.now()
+                    
                     print("neo")
-                    print(end.uptimeNanoseconds - start.uptimeNanoseconds)
                     self.disGroup.leave()
                     done = true
                     completion(output)
@@ -346,7 +419,6 @@ class FirstViewController: UIViewController{
 
     
     func ethBalance(_ c:Cell, completion: @escaping (ETH) -> ()){
-        let start = DispatchTime.now()
         self.disGroup.enter()
         var done = false
         let link = "https://api.ethplorer.io/getAddressInfo/" + c.address + "?apiKey=freekey"
@@ -363,9 +435,8 @@ class FirstViewController: UIViewController{
             if let data = data {
                 do {
                     let balance = try JSONDecoder().decode(ETH.self, from: data)
-                    let end = DispatchTime.now()
+                    
                     print("eth")
-                    print(end.uptimeNanoseconds - start.uptimeNanoseconds)
                     self.disGroup.leave()
                     done = true
                     completion(balance)

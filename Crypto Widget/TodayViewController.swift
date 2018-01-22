@@ -262,15 +262,14 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func getCMC(completion: @escaping ([CMC]) -> ()){
-        let start = DispatchTime.now()
+        
         disGroup.enter()
         guard let url = URL(string: "https://api.coinmarketcap.com/v1/ticker/?limit=0") else { return }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 do {
                     let coin = try JSONDecoder().decode([CMC].self, from: data)
-                    let end = DispatchTime.now()
-                    print(end.uptimeNanoseconds - start.uptimeNanoseconds)
+                    
                     self.disGroup.leave()
                     completion(coin)
                 } catch let jsonErr {print("Error serializing json:", jsonErr)}

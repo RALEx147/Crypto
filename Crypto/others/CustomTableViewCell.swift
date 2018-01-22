@@ -134,7 +134,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
 
     @IBAction func more(_ sender: UIButton) {
         let up = self.superview as! UITableView
-        print(num)
+        
         if extended{
             up.beginUpdates()
             
@@ -142,7 +142,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 sender.setImage(UIImage(named: "moreI"), for: .normal)
             }, completion: nil)
             
-            subHeight.constant = subHeight.constant + CGFloat((cells.count - 2) * 43 + 45)
+            subHeight.constant = subHeight.constant + CGFloat((cells.count - 1) * 44)
             UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }, completion: { (_) in
@@ -156,7 +156,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         else{
             
             up.beginUpdates()
-            subHeight.constant = subHeight.constant - CGFloat((cells.count - 2) * 43 + 45)
+            subHeight.constant = subHeight.constant - CGFloat(Float(cells.count - 1) * 44)
             
             UIView.transition(with: sender as UIView, duration: 0.4, options: .transitionCrossDissolve, animations: {
                 sender.setImage(UIImage(named: "more"), for: .normal)

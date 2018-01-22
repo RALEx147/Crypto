@@ -37,9 +37,28 @@ struct ERC20: Decodable{
 }
 struct ERC20Info: Decodable {
     let name: String?
-    let decimal: Int?
+    var decimals: Dec?
     let symbol: String?
 }
+struct Dec: Decodable {
+    let decString: String
+    let decInt: Int
+    
+    init(from decoder: Decoder) throws {
+        let container =  try decoder.singleValueContainer()
+        
+        // Check for a boolean
+        do {
+            decString = try container.decode(String.self)
+            decInt = 0
+        } catch {
+            // Check for an integer
+            decInt = try container.decode(Int.self)
+            decString = ""
+        }
+    }
+}
+
 struct ether: Decodable{
     let balance: Double?
 }
