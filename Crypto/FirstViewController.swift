@@ -122,14 +122,64 @@ class FirstViewController: UIViewController{
                 self.ani4.removeFromSuperview()
                 self.ani2.loopAnimation = true
                 self.view.addSubview(self.ani1)
+                ani1.translatesAutoresizingMaskIntoConstraints = false
+                ani1.contentMode = .scaleToFill
+
+                let ani1Lead = ani1.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
+                ani1Lead.constant = 11.5
+                let ani1Bot = ani1.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+                ani1Bot.constant = -3
+                let ani1h = ani1.heightAnchor.constraint(equalToConstant: 45)
+                let ani1w = ani1.widthAnchor.constraint(equalToConstant: 45)
+                let cons1:[NSLayoutConstraint] = [ani1Lead, ani1Bot, ani1h, ani1w]
+                NSLayoutConstraint.activate(cons1)
+                self.view.layoutIfNeeded()
                 self.ani1.play{ (finished) in
                     self.ani1.removeFromSuperview()
                     self.view.addSubview(self.ani2)
+                    
+                    self.ani2.translatesAutoresizingMaskIntoConstraints = false
+                    self.ani2.contentMode = .scaleToFill
+                    
+                    let ani2Lead = self.ani2.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
+                    ani2Lead.constant = 11.5
+                    let ani2Bot = self.ani2.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+                    ani2Bot.constant = -3
+                    let ani2h = self.ani2.heightAnchor.constraint(equalToConstant: 45)
+                    let ani2w = self.ani2.widthAnchor.constraint(equalToConstant: 45)
+                    let cons2:[NSLayoutConstraint] = [ani2Lead, ani2Bot, ani2h, ani2w]
+                    NSLayoutConstraint.activate(cons2)
+                    self.view.layoutIfNeeded()
                     self.ani2.play{ (finished) in
                         self.ani2.removeFromSuperview()
-                        self.view.addSubview(self.ani3)
+                        self.view.addSubview(self.self.ani3)
+                        
+                        self.ani3.translatesAutoresizingMaskIntoConstraints = false
+                        self.ani3.contentMode = .scaleToFill
+                        
+                        let ani3Lead = self.ani3.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
+                        ani3Lead.constant = 11.5
+                        let ani3Bot = self.ani3.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+                        ani3Bot.constant = -3
+                        let ani3h = self.ani3.heightAnchor.constraint(equalToConstant: 45)
+                        let ani3w = self.ani3.widthAnchor.constraint(equalToConstant: 45)
+                        let cons3:[NSLayoutConstraint] = [ani3Lead, ani3Bot, ani3h, ani3w]
+                        NSLayoutConstraint.activate(cons3)
+                        self.view.layoutIfNeeded()
                         self.ani3.play{ (finished) in
                             self.view.addSubview(self.ani4)
+                            self.ani4.translatesAutoresizingMaskIntoConstraints = false
+                            self.ani4.contentMode = .scaleToFill
+                            let ani4Lead = self.ani4.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
+                            ani4Lead.constant = 11.5
+                            let ani4Bot = self.ani4.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+                            ani4Bot.constant = -3
+                            let ani4h = self.ani4.heightAnchor.constraint(equalToConstant: 45)
+                            let ani4w = self.ani4.widthAnchor.constraint(equalToConstant: 45)
+                            let cons4:[NSLayoutConstraint] = [ani4Lead, ani4Bot, ani4h, ani4w]
+                            NSLayoutConstraint.activate(cons4)
+                            self.view.layoutIfNeeded()
+                            
                             self.ani4.play{ (finished) in
                                 if !self.succeed{
                                     self.unfinished()
@@ -484,10 +534,16 @@ class FirstViewController: UIViewController{
     func setupRefresh() {
         bg.frame.origin = CGPoint(x: 18, y: 180)
         self.view.addSubview(bg)
-        ani1.frame = CGRect(x: 11.5, y: 173.5, width: 45, height: 45)
-        ani2.frame = CGRect(x: 11.5, y: 173.5, width: 45, height: 45)
-        ani3.frame = CGRect(x: 11.5, y: 173.5, width: 45, height: 45)
-        ani4.frame = CGRect(x: 11.5, y: 173.5, width: 45, height: 45)
+        ani1.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
+        ani2.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
+        ani3.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
+        ani4.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
+        
+        
+        
+        
+        
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(FirstViewController.reload))
         tap.numberOfTapsRequired = 1
         tap.numberOfTouchesRequired = 1
@@ -507,6 +563,31 @@ class FirstViewController: UIViewController{
         ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
         ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
         self.view.addSubview(self.ani1)
+        
+        ani1.translatesAutoresizingMaskIntoConstraints = false
+        ani1.contentMode = .scaleToFill
+        bg.translatesAutoresizingMaskIntoConstraints = false
+        bg.contentMode = .scaleToFill
+        
+        
+        let bgLead = bg.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
+        bgLead.constant = 18
+        let bgBot = bg.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+        bgBot.constant = -10
+        let bgh = bg.heightAnchor.constraint(equalToConstant: 31.5)
+        let bgw = bg.widthAnchor.constraint(equalToConstant: 31.5)
+        
+        
+        let ani1Lead = ani1.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
+        ani1Lead.constant = 11.5
+        let ani1Bot = ani1.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
+        ani1Bot.constant = -3
+        let ani1h = ani1.heightAnchor.constraint(equalToConstant: 45)
+        let ani1w = ani1.widthAnchor.constraint(equalToConstant: 45)
+        
+        let cons:[NSLayoutConstraint] = [ani1Lead, ani1Bot, ani1h, ani1w, bgLead, bgBot, bgh, bgw]
+        NSLayoutConstraint.activate(cons)
+        self.view.layoutIfNeeded()
     }
     
     
@@ -631,11 +712,11 @@ class FirstViewController: UIViewController{
             superView.top?.alpha = 0
             self.add?.frame.origin.y = 60
             self.total.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            self.bg.frame.origin.y = 60
-            self.ani1.frame.origin.y = 53.5
-            self.ani2.frame.origin.y = 53.5
-            self.ani3.frame.origin.y = 53.5
-            self.ani4.frame.origin.y = 53.5
+            self.bg.frame.origin.y = 59
+            self.ani1.frame.origin.y = 52
+            self.ani2.frame.origin.y = 52
+            self.ani3.frame.origin.y = 52
+            self.ani4.frame.origin.y = 52
             self.addFrame.origin.y = 60
             self.fadeMore()
         }, completion: ({ (end) in
