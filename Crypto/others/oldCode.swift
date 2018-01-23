@@ -31,7 +31,7 @@ import Foundation
 //}
 
 //  www.data.ripple.com/v2/accounts/rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn/balances
-
+//  https://data.ripple.com/v2/accounts/rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn/balances
 
 
 //let neo = Cell(name: "NEO", tag: "Neo Tracker", amount: "0", price: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCells: [Cell]())

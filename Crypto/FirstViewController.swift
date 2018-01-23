@@ -20,9 +20,12 @@ class FirstViewController: UIViewController{
     @IBOutlet weak var total: UILabel!
     var keys = [String: String]()
     var all:[CMC]!
+    var c:currency!
     var impact = UIImpactFeedbackGenerator(style: .heavy)
     let disGroup = DispatchGroup()
     let disGroup2 = DispatchGroup()
+    let disGroup3 = DispatchGroup()
+
     var loading = false
     var cellArray = [Cell]()
     
@@ -40,7 +43,7 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
-
+        
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
@@ -55,6 +58,8 @@ class FirstViewController: UIViewController{
         
         addAddButton(on: addOn)
         setupRefresh()
+        cellArray[0].address = "r3MeEnYZY9fAd5pGjAWf4dfJsQBVY9FZRL"
+
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
             self.reload(self)
         }
@@ -94,7 +99,7 @@ class FirstViewController: UIViewController{
                 }
             }
         }
-
+        
     }
     
     var succeed = true
@@ -104,7 +109,7 @@ class FirstViewController: UIViewController{
             let alert = UIAlertController(title: "No Connection", message: "Please connect to the internet and refresh again", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
             self.present(alert, animated: true, completion: nil)
-
+            
         }
         else{
             if !loading{
@@ -118,13 +123,15 @@ class FirstViewController: UIViewController{
                 }
                 
                 Construct{(completion) in self.all = completion}
+                Currency{(completion) in self.c = completion!}
+                
                 self.ani3.removeFromSuperview()
                 self.ani4.removeFromSuperview()
                 self.ani2.loopAnimation = true
                 self.view.addSubview(self.ani1)
                 ani1.translatesAutoresizingMaskIntoConstraints = false
                 ani1.contentMode = .scaleToFill
-
+                
                 let ani1Lead = ani1.leadingAnchor.constraint(equalTo: self.banner.leadingAnchor)
                 ani1Lead.constant = 11.5
                 let ani1Bot = ani1.bottomAnchor.constraint(equalTo: self.banner.bottomAnchor)
@@ -194,16 +201,17 @@ class FirstViewController: UIViewController{
                 
                 disGroup.notify(queue: .main){
                     self.ani2.loopAnimation = false
+                    self.addCurrencies()
                 }
                 
                 disGroup2.notify(queue: .main){
                     self.table.reloadData()
                     self.reloadSubTable()
-
+                    
                     self.saveCells()
                     let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
                     self.total.text = "$" + format!
-                    print(self.cellArray)
+                    //                    print(self.cellArray)
                 }
             }
         }
@@ -253,7 +261,7 @@ class FirstViewController: UIViewController{
                         
                         
                     }
-//                    c.subCells = c.subCells!
+                    //                    c.subCells = c.subCells!
                     
                     for i in neo{
                         if c.subCells.isEmpty{
@@ -280,7 +288,7 @@ class FirstViewController: UIViewController{
                     }
                     
                     
-                    c.updateMore()
+                    
                 }
                 else{
                     print("fail")
@@ -319,7 +327,7 @@ class FirstViewController: UIViewController{
                             newSubcells.append(i)
                         }
                     }
-                    print(newSubcells)
+                    
                     
                     for x in newSubcells{
                         let exp: Int
@@ -331,7 +339,6 @@ class FirstViewController: UIViewController{
                         }
                         let divisor = Double(10 ^ exp)
                         let t = Double(x.balance!) / divisor
-                        
                         let p = Double(self.getPrice(name: (x.tokenInfo?.symbol!.lowercased())!))!
                         let new = Cell(name: x.tokenInfo!.symbol!, tag: x.tokenInfo!.name!, amount: String(describing: t), price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
                         c.subCells!.append(new)
@@ -343,24 +350,24 @@ class FirstViewController: UIViewController{
                     
                     if eth.tokens != nil && !(eth.tokens?.isEmpty)!{
                         for i in eth.tokens!{
-                                for j in c.subCells{
-                                    if i.tokenInfo?.symbol?.lowercased() == j.name.lowercased() {
-                                        if let p = Double(self.getPrice(name: j.name.lowercased())){
-                                            let exp: Int
-                                            if i.tokenInfo?.decimals?.decInt == 0 {
-                                                exp = Int((i.tokenInfo?.decimals?.decString)!)!
-                                            }
-                                            else{
-                                                exp = (i.tokenInfo?.decimals?.decInt)!
-                                            }
-                                            let divisor: Double = Double(truncating: pow(10, exp) as NSNumber)
-                                            let t = Double(i.balance!) / divisor
-                                            j.amount = String(describing: t)
-                                            j.balance = String(describing: (t * p))
-                                            j.price = String(describing: p)
-                                            
+                            for j in c.subCells{
+                                if i.tokenInfo?.symbol?.lowercased() == j.name.lowercased() {
+                                    if let p = Double(self.getPrice(name: j.name.lowercased())){
+                                        let exp: Int
+                                        if i.tokenInfo?.decimals?.decInt == 0 {
+                                            exp = Int((i.tokenInfo?.decimals?.decString)!)!
                                         }
+                                        else{
+                                            exp = (i.tokenInfo?.decimals?.decInt)!
+                                        }
+                                        let divisor: Double = Double(truncating: pow(10, exp) as NSNumber)
+                                        let t = Double(i.balance!) / divisor
+                                        j.amount = String(describing: t)
+                                        j.balance = String(describing: (t * p))
+                                        j.price = String(describing: p)
+                                        
                                     }
+                                }
                                 
                             }
                         }
@@ -371,7 +378,7 @@ class FirstViewController: UIViewController{
                     
                     
                     
-                c.updateMore()
+                    
                     
                 }
                 else{
@@ -382,7 +389,68 @@ class FirstViewController: UIViewController{
         else if c.name == "Bitcoin"{
             
         }
-        
+            
+        else if c.name == "XRP"{
+            var xrp:[XRP]!
+            xrpBalance(c){(completion) in xrp = completion}
+            var already = [String]()
+            for k in c.subCells{
+                already.append(k.name)
+            }
+            print(c.subCells)
+            disGroup.notify(queue: .main){
+                var dict = [String:Double]()
+                
+                
+                
+                if let list = xrp{
+                    for i in list{
+                        
+                        if let amount = Double(i.value!){
+                            if amount != 0{
+                                
+                                if dict[i.currency!] != nil{
+                                    dict[i.currency!]! += amount
+                                }
+                                else{
+                                    dict[i.currency!] = amount
+                                }
+                            }
+                        }
+                    }
+                }
+                let xrpArray = Array(dict)
+                for i in xrpArray{
+                    if i.key == "XRP"{
+                        c.amount = String(describing: i.value)
+                        c.price = self.getPrice(name: "xrp")
+                        c.balance = String(i.value * Double(self.getPrice(name: "xrp"))!)
+                        
+                    }
+                    else{
+                        if !already.contains(i.key){
+                            print(i.key,": ",self.getPrice(name: i.key))
+                            if let p = Double(self.getPrice(name: i.key)){
+                                let new = Cell(name: i.key, tag: i.key, amount: String(i.value), price: String(p), balance: String(Double(i.value) * p), address: c.address, subCells: [Cell]())
+                                c.subCells.append(new)
+                            }
+                        }
+                        else{
+                            for p in c.subCells{
+                                if i.key.lowercased() == p.name.lowercased(){
+                                    if let p = Double(self.getPrice(name: p.name)){
+                                        c.amount = String(describing: i.value)
+                                        c.price = String(p)
+                                        c.balance = String(i.value * p)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        c.updateMore()
         return c
         
         
@@ -397,6 +465,9 @@ class FirstViewController: UIViewController{
             self.impact.impactOccurred()
         }
     }
+    
+    
+    //A_SYNC
     func Construct(completion: @escaping ([CMC]?) -> ()){
         self.disGroup.enter()
         
@@ -414,7 +485,38 @@ class FirstViewController: UIViewController{
                     
                     let coin = try JSONDecoder().decode([CMC].self, from: data)
                     
+                    
+                    
                     print("cmc")
+                    self.disGroup.leave()
+                    done = true
+                    completion(coin)
+                    
+                } catch let jsonErr {
+                    print("Error serializing json:", jsonErr)
+                }
+            }
+            }.resume()
+    }
+    
+    
+    func Currency(completion: @escaping (currency?) -> ()){
+        self.disGroup.enter()
+        
+        var done = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
+            if !done{
+                self.disGroup.leave()
+                completion(nil)
+            }
+        }
+        guard let url = URL(string: "https://api.fixer.io/latest?base=USD") else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                do {
+                    
+                    let coin = try JSONDecoder().decode(currency.self, from: data)
+                    print("currency")
                     self.disGroup.leave()
                     done = true
                     completion(coin)
@@ -425,7 +527,6 @@ class FirstViewController: UIViewController{
             }.resume()
     }
     
-
     func neoBalance(_ c: Cell, completion: @escaping ([NEO]) -> ()){
         self.disGroup.enter()
         var done = false
@@ -459,7 +560,7 @@ class FirstViewController: UIViewController{
             }.resume()
     }
     
-
+    
     
     func ethBalance(_ c:Cell, completion: @escaping (ETH) -> ()){
         self.disGroup.enter()
@@ -490,7 +591,40 @@ class FirstViewController: UIViewController{
             }.resume()
     }
     
-
+    
+    func xrpBalance(_ c:Cell, completion: @escaping ([XRP]) -> ()){
+        self.disGroup.enter()
+        var done = false
+        let link = "https://data.ripple.com/v2/accounts/" + c.address + "/balances"
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
+            if !done{
+                self.disGroup.leave()
+                completion([XRP]())
+            }
+        }
+        
+        guard let url = URL(string: link) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                do {
+                    let balance = try JSONDecoder().decode(XRPN.self, from: data)
+                    
+                    if balance.result == "success"{
+                        done = true
+                    }
+                    else{
+                        done = false
+                    }
+                    print("xrp")
+                    self.disGroup.leave()
+                    completion(balance.balances!)
+                } catch let jsonErr {
+                    print("Error serializing json:", jsonErr)
+                }
+            }
+            }.resume()
+    }
+    
     
     func getPrice(name: String) -> String{
         for j in self.all{
@@ -527,6 +661,23 @@ class FirstViewController: UIViewController{
     }
     
     
+    func addCurrencies(){
+        all.append(CMC(name: "USD", rank: "", symbol: "USD", price_usd: "1", price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "AUD", rank: "", symbol: "AUD", price_usd: String(c.rates.AUD), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "CAD", rank: "", symbol: "CAD", price_usd: String(c.rates.CAD), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "CNY", rank: "", symbol: "CNY", price_usd: String(c.rates.CNY), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "BRL", rank: "", symbol: "BRL", price_usd: String(c.rates.BRL), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "KRW", rank: "", symbol: "KRW", price_usd: String(c.rates.KRW), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "EUR", rank: "", symbol: "EUR", price_usd: String(c.rates.EUR), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "GBP", rank: "", symbol: "GBP", price_usd: String(c.rates.GBP), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "MXN", rank: "", symbol: "MXN", price_usd: String(c.rates.MXN), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "JPY", rank: "", symbol: "JPY", price_usd: String(c.rates.JPY), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "SGD", rank: "", symbol: "SGD", price_usd: String(c.rates.SGD), price_btc: "", percent_change_24h: ""))
+    }
+    
+    
+    
+    
     
     let bg = UIImageView(image: UIImage(named:"refresh"))
     
@@ -538,12 +689,6 @@ class FirstViewController: UIViewController{
         ani2.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
         ani3.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
         ani4.frame = CGRect(x: 0, y: 173.5, width: 45, height: 45)
-        
-        
-        
-        
-        
-        
         let tap = UITapGestureRecognizer(target: self, action: #selector(FirstViewController.reload))
         tap.numberOfTapsRequired = 1
         tap.numberOfTouchesRequired = 1
@@ -735,13 +880,13 @@ class FirstViewController: UIViewController{
     }
     func hideAdd(){
         let superView = parent as! ViewController
-
-
+        
+        
         
         self.cellArray.remove(at: self.cellArray.count-1)
         let indx = IndexPath(row: self.cellArray.count, section: 0)
         let x = self.table.cellForRow(at: indx) as! CustomTableViewCell
-
+        
         self.table.performBatchUpdates({
             table.isEditing = false
             self.table.deleteRows(at: [indx], with: .fade)
@@ -797,11 +942,11 @@ class FirstViewController: UIViewController{
                 }
             }))
         }
-
         
-    
         
-
+        
+        
+        
     }
     
     
@@ -848,20 +993,20 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
                     cash += Double(i.balance!) ?? 0.0
                 }
             }
-
+            
             cash = cleanUp(cash)
             let format = nF.string(from: NSNumber(value: cash))
             cell.money?.text = "$" + format!
             let placeholder = Cell(name: "", tag: " ", amount: " ", price: "", balance: " ", address: " ", subCells: [Cell]())
             cell.cells = [placeholder]
             if cur.more.count > 0{
-            cell.cells.append(cur)
-            for i in 0..<Int(cur.more)!{
-                cell.cells.append(cur.subCells![i])
-            }
+                cell.cells.append(cur)
+                for i in 0..<Int(cur.more)!{
+                    cell.cells.append(cur.subCells![i])
+                }
             }
             cell.subTable.separatorColor = UIColor(named: "bg")
-
+            
         }
         cell.subTable.layer.cornerRadius = 10
         if cell.extended{
@@ -891,9 +1036,9 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         
         
     }
-
     
-
+    
+    
     //needs work
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let movedObject = self.cellArray[sourceIndexPath.row]
@@ -903,11 +1048,11 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         // To check for correctness enable: self.tableView.reloadData()
     }
     
-
     
     
     
-    }
+    
+}
 
 
 

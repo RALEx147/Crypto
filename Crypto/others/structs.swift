@@ -9,6 +9,23 @@
 import Foundation
 import UIKit
 
+struct currency: Decodable {
+    let rates: rates
+}
+struct rates: Decodable {
+    let AUD: Double
+    let CAD: Double
+    let EUR: Double
+    let GBP: Double
+    let CNY: Double
+    let JPY: Double
+    let SGD: Double
+    let MXN: Double
+    let KRW: Double
+    let BRL: Double
+    
+}
+
 struct CMC: Decodable{
     let name: String?
     let rank: String?
@@ -23,6 +40,18 @@ struct NEON: Decodable {
 struct NEO: Decodable {
     var name: String?
     let total: String?
+    var price_usd: Double?
+    
+}
+
+struct XRPN: Decodable {
+    let result: String?
+    let balances: [XRP]?
+}
+
+struct XRP: Decodable {
+    var currency: String?
+    let value: String?
     var price_usd: Double?
     
 }
