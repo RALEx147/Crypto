@@ -15,6 +15,7 @@ struct CMC: Decodable{
     let symbol: String?
     let price_usd: String?
     let price_btc: String?
+    let percent_change_24h: String?
 }
 struct NEON: Decodable {
     let balances: [NEO]

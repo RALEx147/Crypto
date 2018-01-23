@@ -29,6 +29,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     var imgs = [UIView]()
     let disGroup = DispatchGroup()
     
+    //this is the most disgusting this i have done in my life
     @IBOutlet weak var name0: UILabel!
     @IBOutlet weak var price0: UILabel!
     @IBOutlet weak var name1: UILabel!

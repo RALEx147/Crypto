@@ -193,25 +193,8 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         super.awakeFromNib()
         subTable.delegate = self
         subTable.dataSource = self
-//        self.subTable.alpha = 0
-//        var end:String.Index!
-//
-//        if let str = moreLabel.text{
-//            if str.count > 0{
-//                end = str.index(str.startIndex, offsetBy: 1)
-//                self.num = Int(str[str.startIndex..<end])!
-//            }
-//
-//        }
-//        for _ in 0...num{
-//            kk.append("placeholder")
-//        }
-
-        
         self.layoutIfNeeded()
-        
         bottomCons.isActive = false
-        
             self.newAddress.font = UIFont(name: "STHeitiSC-Medium", size: 22.0)
         newAddress.font = newAddress.font.withSize(22)
         

@@ -50,6 +50,7 @@
 		918F08D81FF33D5E0082AC9A /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D41FF33D5E0082AC9A /* 3.json */; };
 		918F08DA1FF33D5E0082AC9A /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D61FF33D5E0082AC9A /* 2.json */; };
 		91A8B8711FF4AE1C002CFF05 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8B8701FF4AE1C002CFF05 /* FirstViewController.swift */; };
+		91C7B43C201647EB00EDF5FC /* PriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */; };
 		91E10E8B1FE9070300F65228 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914B4BAE1FC8F7C400968A3E /* MainInterface.storyboard */; };
 		91E5E59A1FF4967B006B06B6 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		91E5E59B1FF4967B006B06B6 /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -163,6 +164,7 @@
 		918F08D61FF33D5E0082AC9A /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
 		919B5CB71FF4A67500F2D917 /* structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = structs.swift; sourceTree = "<group>"; };
 		91A8B8701FF4AE1C002CFF05 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTableViewCell.swift; sourceTree = "<group>"; };
 		91E10E851FE8C36C00F65228 /* Crypto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crypto.entitlements; sourceTree = "<group>"; };
 		91E10E861FE8C3BF00F65228 /* Crypto Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto Widget.entitlements"; sourceTree = "<group>"; };
 		91E5E5981FF49677006B06B6 /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 		918F08D21FF33CEA0082AC9A /* others */ = {
 			isa = PBXGroup;
 			children = (
+				91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */,
 				9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */,
 				919B5CB71FF4A67500F2D917 /* structs.swift */,
 				91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */,
@@ -573,6 +576,7 @@
 				9129AD991FF4C97400EF04C0 /* CustomTableViewCell.swift in Sources */,
 				91A8B8711FF4AE1C002CFF05 /* FirstViewController.swift in Sources */,
 				910B0D141FF6FC0D0028E76C /* structs.swift in Sources */,
+				91C7B43C201647EB00EDF5FC /* PriceTableViewCell.swift in Sources */,
 				91383F1E1FFF1FB00000ECB7 /* connection.swift in Sources */,
 				910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */,
 				910A81931FA4DC75001F868A /* AppDelegate.swift in Sources */,

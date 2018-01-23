@@ -142,6 +142,7 @@ class ViewController: UIViewController {
     func toPrice(){
         self.v1.alpha = 0
         self.v2.alpha = 1
+        self.view2.refresh()
     }
     
     func toPriceAnimate(){
