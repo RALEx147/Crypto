@@ -40,6 +40,7 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
+
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)

@@ -125,6 +125,7 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
         return "Error"
     }
     
+    @IBOutlet var bannerHeight: NSLayoutConstraint!
     func color(_ name:String) -> Bool{
         let change = getChange(name)
         let letter = change[change.startIndex]

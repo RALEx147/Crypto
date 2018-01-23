@@ -70,7 +70,7 @@ class ViewController: UIViewController {
     
     var topOn = false
     var top:LOTAnimationView?
-    let topFrame = CGRect(x: 18, y: 30, width: 84, height: 45)
+    let topFrame = CGRect(x: 0, y: 0, width: 84, height: 45)
     func addTopButton(on: Bool){
         if top != nil {
             top?.removeFromSuperview()
@@ -80,9 +80,25 @@ class ViewController: UIViewController {
         top = LOTAnimationView(name: animation)
         top?.isUserInteractionEnabled = true
         top?.frame = topFrame
+        
         top?.contentMode = .scaleAspectFill
         addTopGeus()
+        
+        
+        
         self.view.addSubview(top!)
+        top?.translatesAutoresizingMaskIntoConstraints = false
+        top?.contentMode = .scaleToFill
+        
+        let leadingTop = top?.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
+        leadingTop?.constant = 20
+        let topTop = top?.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+        topTop?.constant = 10
+        let h = top?.heightAnchor.constraint(equalToConstant: 45)
+        let w = top?.widthAnchor.constraint(equalToConstant: 84)
+        let cons:[NSLayoutConstraint] = [leadingTop!, topTop!, h!, w!]
+        NSLayoutConstraint.activate(cons)
+        self.view.layoutIfNeeded()
     }
     func addTopGeus(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(ViewController.toggleMenu(recognizer:)))
@@ -93,14 +109,14 @@ class ViewController: UIViewController {
         if !topOn {
             self.toPriceAnimate()
             top?.play(completion: { (success:Bool) in
-                self.toPrice()
+                
                 self.topOn = true
                 self.addTopButton(on: self.topOn)
             })
         }else{
-            self.toKeyAnimate()
+            self.toKey()
             top?.play(completion: { (success:Bool) in
-                self.toKey()
+                
                 self.topOn = false
                 self.addTopButton(on: self.topOn)
             })
@@ -112,15 +128,31 @@ class ViewController: UIViewController {
     
     
     func toKey(){
-        self.v2.alpha = 0
+        
+        
+        self.view2?.bannerHeight.constant = v1BH!
+        UIView.animate(withDuration: 0.48, delay: 0, options: .curveEaseOut, animations: {
+            self.view2.table.alpha = 0
+            self.view2.lbl.alpha = 0
+            self.view2.add.alpha = 0
+            self.view2.view.layoutIfNeeded()
+            self.view.layoutIfNeeded()
+        }, completion: ({ (end) in
+            self.toKeyAnimate()
+        }))
+        
         self.view1.reload(self)
     }
     
     func toKeyAnimate(){
         self.v1.alpha = 1
-        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseOut, animations: {
-            self.view1?.table.alpha = 1
-            self.view1?.table.alpha = 1
+        self.v2.alpha = 0
+        
+        UIView.animate(withDuration: 0.33, delay: 0.1, options: .curveEaseOut, animations: {
+            let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
+            for i in cells {
+                i.alpha = 1
+            }
             self.view1?.total.alpha = 1
             self.view1?.ani1.alpha = 1
             self.view1?.ani2.alpha = 1
@@ -128,26 +160,36 @@ class ViewController: UIViewController {
             self.view1?.ani4.alpha = 1
             self.view1?.add?.alpha = 1
             self.view1?.bg.alpha = 1
-            self.view1?.add?.frame = self.addFrame
             
-            self.view1?.bg.frame = self.aniBGFrame
-            self.view1?.ani1.frame = self.ani1Frame
-            self.view1?.ani2.frame = self.ani2Frame
-            self.view1?.ani3.frame = self.ani3Frame
-            self.view1?.ani4.frame = self.ani4Frame
-            self.view1.banner.frame = self.bannerFrame
-        }, completion: ({ (end) in }))
+            
+        }, completion: ({ (end) in
+            self.view2?.bannerHeight.constant = self.v2BH! - 2
+            self.view2.view.layoutIfNeeded()
+        }))
     }
     
     func toPrice(){
         self.v1.alpha = 0
         self.v2.alpha = 1
+        
         self.view2.refresh()
+        UIView.animate(withDuration: 0.23, delay: 0.2, options: .curveEaseOut, animations: {
+            self.view2.table.alpha = 1
+            self.view2.lbl.alpha = 1
+            self.view2.add.alpha = 1
+        }, completion: { (_) in
+            self.view1?.bannerHeight.constant = self.v1BH! + 2
+            self.view1.view.layoutIfNeeded()
+        })
     }
     
     func toPriceAnimate(){
-        UIView.animate(withDuration: 0.23, delay: 0, options: .curveEaseOut, animations: {
-            self.view1?.table.alpha = 0
+        
+        
+        self.view1?.bannerHeight.constant = v2BH!
+        
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            self.view1.view.layoutIfNeeded()
             self.view1?.total.alpha = 0
             self.view1?.add?.alpha = 0
             self.view1?.ani1.alpha = 0
@@ -155,16 +197,23 @@ class ViewController: UIViewController {
             self.view1?.ani3.alpha = 0
             self.view1?.ani4.alpha = 0
             self.view1?.bg.alpha = 0
-            self.view1?.add?.frame.origin.y = -20
-            self.view1?.ani1.frame.origin.y = -20
-            self.view1?.ani2.frame.origin.y = -20
-            self.view1?.ani3.frame.origin.y = -20
-            self.view1?.ani4.frame.origin.y = -20
-            self.view1?.bg.frame.origin.y = -20
-            self.view1?.banner.frame.origin.y = -128
-        }, completion: ({ (end) in}))
+            
+            self.view.layoutIfNeeded()
+        }) { (_) in}
+        UIView.animate(withDuration: 0.22, delay: 0.26, options: .curveEaseOut, animations: {
+
+                let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
+                for i in cells {
+                    i.alpha = 0.01
+                }
+            
+            
+            
+        }, completion: ({ (end) in
+            self.toPrice()
+            
+        }))
     }
-    
     
     
     
@@ -176,6 +225,9 @@ class ViewController: UIViewController {
     var ani3Frame:CGRect!
     var ani4Frame:CGRect!
     var aniBGFrame:CGRect!
+    var bannerFrame2:CGRect!
+    var v2BH:CGFloat!
+    var v1BH:CGFloat!
     
     func setupFrame() {
         
@@ -186,6 +238,10 @@ class ViewController: UIViewController {
         ani3Frame = CGRect(x: (self.view1?.ani3.frame.origin.x)!, y: (self.view1?.ani3.frame.origin.y)! , width: (self.view1?.ani3.frame.width)!, height: (self.view1?.ani3.frame.height)!)
         ani4Frame = CGRect(x: (self.view1?.ani4.frame.origin.x)!, y: (self.view1?.ani4.frame.origin.y)! , width: (self.view1?.ani4.frame.width)!, height: (self.view1?.ani4.frame.height)!)
         aniBGFrame = CGRect(x: (self.view1?.bg.frame.origin.x)!, y: (self.view1?.bg.frame.origin.y)! , width: (self.view1?.bg.frame.width)!, height: (self.view1?.bg.frame.height)!)
+        bannerFrame2 = CGRect(x: (self.view2?.banner.frame.origin.x)!, y: (self.view2?.banner.frame.origin.y)! , width: (self.view.frame.width), height: (self.view2?.banner.frame.height)!)
+        v2BH = (view2?.bannerHeight.constant)! + 2
+        v1BH = (view1?.bannerHeight.constant)! - 2
+        
     }
     
     
