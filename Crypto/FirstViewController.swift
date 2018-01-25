@@ -44,6 +44,8 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
+
+
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
@@ -209,6 +211,11 @@ class FirstViewController: UIViewController{
                 disGroup2.notify(queue: .main){
                     self.table.reloadData()
                     self.reloadSubTable()
+                    
+                    for i in self.cellArray{
+                        i.updateMore()
+                    }
+                    
                     self.saveCells()
                     let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
                     self.total.text = "$" + format!
@@ -265,14 +272,14 @@ class FirstViewController: UIViewController{
                     
                     
                     for i in neo{
-                        if c.subCells.isEmpty{
+                        if i.name?.lowercased() != "neo"{
                             for j in c.subCells!{
                                 if i.name?.lowercased() == j.name.lowercased() {
-                                    c.amount = i.total
+                                    j.amount = i.total
                                     if let t = (Double(i.total!)), let p = Double(self.getPrice(name: j.name.lowercased())){
-                                        c.balance = String(describing: (t * p))
-                                        c.price = String(describing: p)
-                                        c.amount = String(describing: t)
+                                        j.balance = String(describing: (t * p))
+                                        j.price = String(describing: p)
+                                        
                                     }
                                 }
                             }
@@ -373,14 +380,6 @@ class FirstViewController: UIViewController{
                             }
                         }
                     }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                 }
                 else{
                     self.succeed = false
@@ -391,9 +390,12 @@ class FirstViewController: UIViewController{
             var btc:BTC!
             btcBalance(c){(completion) in btc = completion}
             disGroup.notify(queue: .main){
+                if Double(btc.balance) > 0.0 {
                 c.balance = String(Double(self.getPrice(name: "btc"))! * btc.balance)
                 c.amount = String(btc.balance)
                 c.price = self.getPrice(name: "btc")
+                }
+                
             }
         }
             
@@ -956,9 +958,9 @@ class FirstViewController: UIViewController{
             self.add?.frame.origin.y = 60
             let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
             self.cellArray.append(add)
+            self.reloadSubMore()
+            self.reloadSubTable()
             self.table.performBatchUpdates({
-                self.reloadSubMore()
-                self.reloadSubTable()
                 self.table.isEditing = true
                 self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .fade)
             }) { (_) in self.table.reloadData()}
@@ -968,7 +970,7 @@ class FirstViewController: UIViewController{
     }
     func hideAdd(){
         let superView = parent as! ViewController
-        
+        print(cellArray)
         
         
         self.cellArray.remove(at: self.cellArray.count-1)

@@ -37,10 +37,20 @@ import Foundation
 //
 //
 //let eth = Cell(name: "ETH", tag: "Ether", amount: "0", price: "0", balance: "0", address: "0x345d1c8c4657c4BF228c0a9c247649Ea533B5D87", subCells: [Cell]())
+//let b = Cell(name: "BTC", tag: "satoshi's stack", amount: "0", price: "0", balance: "0", address: "16rCmCmbuWDhPjWTrpQGaU3EPdZF7MTdUk", subCells: [Cell]())
+
+//let x = Cell(name: "XRP", tag: "jew", amount: "0", price: "0", balance: "0", address: "r9hEDb4xBGRfBCcX3E4FirDWQBAYtpxC8K", subCells: [Cell]())
+
 //self.cellArray.append(neo)
+
 //self.cellArray.append(neo2)
 //
 //self.cellArray.append(eth)
+//self.cellArray.append(x)
+
+//self.cellArray.append(b)
+
 //
 //self.saveCells()
+
 

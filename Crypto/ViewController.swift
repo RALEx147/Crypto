@@ -134,6 +134,8 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.48, delay: 0, options: .curveEaseOut, animations: {
             self.view2.table.alpha = 0
             self.view2.lbl.alpha = 0
+            self.view2.search.alpha = 0
+            self.view2.blurView.alpha = 0
             self.view2.add.alpha = 0
             self.view2.view.layoutIfNeeded()
             self.view.layoutIfNeeded()

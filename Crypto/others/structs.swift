@@ -111,7 +111,7 @@ class Cell: NSObject, NSCoding{
     var balance:String!
     var subCells:[Cell]!
     
-    override var description: String { return "name:\(name!), tag:\(tag ?? ""), more:\(more ?? ""), price:\(price!) amount:\(amount!), balance:\(balance!), address:\(address!), subCells: \(String(describing: subCells))"}
+    override var description: String { return "name:\(name!)\n tag:\(tag ?? "")\n more:\(more ?? "")\n price:\(price!)\n amount:\(amount!)\n balance:\(balance!)\n address:\(address!)\n subCells: \n\n\(String(describing: subCells))\n---------------------\n"}
     
     override init() {
         super.init()

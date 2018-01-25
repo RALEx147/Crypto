@@ -530,6 +530,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <searchBar alpha="0.0" contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="gk7-F8-KMd">
+                                <rect key="frame" x="23" y="112" width="331" height="56"/>
+                                <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="xG3-J4-Q11"/>
+                                </constraints>
+                                <offsetWrapper key="searchTextPositionAdjustment" horizontal="-1" vertical="1"/>
+                                <offsetWrapper key="searchFieldBackgroundPositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="delegate" destination="vzf-Jf-A4L" id="guT-RU-pTh"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -540,10 +559,14 @@
                             <constraint firstItem="xz8-TF-ute" firstAttribute="top" secondItem="6Fy-19-koo" secondAttribute="bottom" constant="13" id="N2t-93-Xog"/>
                             <constraint firstItem="6Fy-19-koo" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" id="Spe-SR-PKE"/>
                             <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="wee-3C-pgT" secondAttribute="trailing" id="TIg-ym-p4G"/>
+                            <constraint firstItem="gk7-F8-KMd" firstAttribute="centerX" secondItem="Hhe-Kw-jGO" secondAttribute="centerX" constant="1" id="Wt3-ot-tIj"/>
                             <constraint firstItem="xz8-TF-ute" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" constant="16" id="Z3C-Ok-NnG"/>
                             <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="yQh-MT-Lc6" secondAttribute="trailing" constant="21" id="byh-ih-C5S"/>
+                            <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="gk7-F8-KMd" secondAttribute="trailing" constant="21" id="g4A-WR-S5G"/>
                             <constraint firstAttribute="bottom" secondItem="wee-3C-pgT" secondAttribute="bottom" id="lCj-30-JhE"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xz8-TF-ute" secondAttribute="trailing" constant="20" symbolic="YES" id="obf-bt-1Mx"/>
+                            <constraint firstItem="gk7-F8-KMd" firstAttribute="top" secondItem="6Fy-19-koo" secondAttribute="bottom" constant="17" id="oy4-4J-whc"/>
+                            <constraint firstItem="gk7-F8-KMd" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" constant="23" id="v2P-dm-ogQ"/>
                             <constraint firstItem="yQh-MT-Lc6" firstAttribute="top" secondItem="6Fy-19-koo" secondAttribute="bottom" constant="12" id="w4w-On-lf5"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Hhe-Kw-jGO"/>
@@ -552,11 +575,23 @@
                         <outlet property="add" destination="yQh-MT-Lc6" id="sJH-Gp-vNJ"/>
                         <outlet property="banner" destination="6Fy-19-koo" id="Yxj-pi-F3A"/>
                         <outlet property="bannerHeight" destination="hSC-vf-fQ7" id="Bpf-lk-nZj"/>
+                        <outlet property="ddd" destination="xG3-J4-Q11" id="jMp-4O-NFM"/>
                         <outlet property="lbl" destination="xz8-TF-ute" id="h2a-Gy-3Lc"/>
+                        <outlet property="search" destination="gk7-F8-KMd" id="kL8-Rf-7jc"/>
+                        <outlet property="searchDisplayController" destination="dYa-Ha-Wpv" id="8Q4-3b-e2K"/>
                         <outlet property="table" destination="wee-3C-pgT" id="ZhY-YE-cyg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XOz-eS-tZ2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="dYa-Ha-Wpv">
+                    <connections>
+                        <outlet property="delegate" destination="vzf-Jf-A4L" id="ifH-7x-ztM"/>
+                        <outlet property="searchBar" destination="gk7-F8-KMd" id="fEK-7L-pOn"/>
+                        <outlet property="searchContentsController" destination="vzf-Jf-A4L" id="L92-CL-Elr"/>
+                        <outlet property="searchResultsDataSource" destination="vzf-Jf-A4L" id="R1L-jf-gfi"/>
+                        <outlet property="searchResultsDelegate" destination="vzf-Jf-A4L" id="auJ-W1-Bgj"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="2224.8000000000002" y="680.5097451274363"/>
         </scene>

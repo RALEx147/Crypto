@@ -25,14 +25,16 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let supper = FirstViewController()
         let cell = subTable.dequeueReusableCell(withIdentifier: "subCell") as! SubTableViewCell
+        
         let cur = cells[indexPath.row]
         
         
         var p =  Double(cur.price!) ?? 0.0
         p = supper.cleanUp(p)
-                let pFormat = supper.nF.string(from: NSNumber(value: p))
+        let pFormat = supper.nF.string(from: NSNumber(value: p))
         cell.price.text = "$" + pFormat!
         if let i = UIImage(named: cur.name!){
             cell.img.image = i
@@ -136,6 +138,12 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         let up = self.superview as! UITableView
         
         if extended{
+            for i in (up.visibleCells as! Array<CustomTableViewCell>){
+                if !i.extended{
+                    i.more(i.moreIcon)
+                }
+            }
+            print()
             up.beginUpdates()
             
             UIView.transition(with: sender as UIView, duration: 0.4, options: .transitionCrossDissolve, animations: {
@@ -150,6 +158,8 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 self.dropShadown.constant = self.dropShadown.constant + 20
                 UIView.animate(withDuration: 0.4, animations: {
                     self.layoutIfNeeded()
+                }, completion: { (_) in
+                    self.subTable.reloadData()
                 })
             })
         }
@@ -167,8 +177,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             }, completion: { (_) in
                 up.endUpdates()
                 self.dropShadown.constant = self.dropShadown.constant - 20
+                
                 UIView.animate(withDuration: 0.4, animations: {
                     self.layoutIfNeeded()
+                }, completion: { (_) in
+                    self.subTable.reloadData()
                 })
             })
             
@@ -186,7 +199,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     @IBOutlet var toView: NSLayoutConstraint!
     
-    var num = 0
+    
     override func awakeFromNib() {
         
 
@@ -195,7 +208,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         subTable.dataSource = self
         self.layoutIfNeeded()
         bottomCons.isActive = false
-            self.newAddress.font = UIFont(name: "STHeitiSC-Medium", size: 22.0)
+        self.newAddress.font = UIFont(name: "STHeitiSC-Medium", size: 22.0)
         newAddress.font = newAddress.font.withSize(22)
         
     }
