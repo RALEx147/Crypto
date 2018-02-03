@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Lottie
 
+let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BRL"]
 
 class FirstViewController: UIViewController{
     
@@ -20,7 +21,6 @@ class FirstViewController: UIViewController{
     @IBOutlet weak var total: UILabel!
     var keys = [String: String]()
     var all:[CMC]!
-    let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BRL"]
     var c:currency!
     var impact = UIImpactFeedbackGenerator(style: .heavy)
     let disGroup = DispatchGroup()
@@ -44,7 +44,6 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
-
 
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
@@ -119,8 +118,8 @@ class FirstViewController: UIViewController{
                 self.ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
                 
                 
-                Currency{(completion) in self.c = completion!}
-                Construct{(completion) in self.all = completion}
+                Currency{(completion) in self.c = completion ?? self.c}
+                Construct{(completion) in self.all = completion ?? self.all}
 
                 
                 
@@ -438,7 +437,7 @@ class FirstViewController: UIViewController{
                     }
                     else{
                         if !already.contains(i.key){
-                            if self.currNames.contains(i.key){
+                            if currNames.contains(i.key){
                                 if let p = Double(self.getCurrency( i.key)){
                                     let new = Cell(name: i.key, tag: i.key, amount: String(i.value), price: String(p), balance: String(Double(i.value) * p), address: c.address, subCells: [Cell]())
                                     c.subCells.append(new)
@@ -455,7 +454,7 @@ class FirstViewController: UIViewController{
                             for u in c.subCells{
                                 if i.key.lowercased() == u.name.lowercased(){
                                     c.amount = String(describing: i.value)
-                                    if self.currNames.contains(i.key){
+                                    if currNames.contains(i.key){
                                         print(i.key, self.getCurrency(u.name))
                                         if let p = Double(self.getCurrency(u.name)){
                                             u.price = String(p)

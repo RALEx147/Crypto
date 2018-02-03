@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ZPN.png",
+      "filename" : "PPT.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ZPN@2x.png",
+      "filename" : "PPT@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ZPN@3x.png",
+      "filename" : "PPT@3x.png",
       "scale" : "3x"
     }
   ],

@@ -30,6 +30,7 @@
 		9113C0E91FE9EC39005170A4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9113C0E71FE9EC39005170A4 /* MainInterface.storyboard */; };
 		9113C0ED1FE9EC39005170A4 /* CryptoSiriUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9113C0E11FE9EC39005170A4 /* CryptoSiriUI.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9113C0F01FE9EC39005170A4 /* CryptoSiri.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9113C0D81FE9EC39005170A4 /* CryptoSiri.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9117B06C201959100031337C /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9117B06B201959100031337C /* SearchTableViewCell.swift */; };
 		9129AD991FF4C97400EF04C0 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */; };
 		91383F1E1FFF1FB00000ECB7 /* connection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91383F1D1FFF1FB00000ECB7 /* connection.swift */; };
 		91383F201FFF39890000ECB7 /* SubTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */; };
@@ -142,6 +143,7 @@
 		9113C0E51FE9EC39005170A4 /* IntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentViewController.swift; sourceTree = "<group>"; };
 		9113C0E81FE9EC39005170A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		9113C0EA1FE9EC39005170A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9117B06B201959100031337C /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		91383F1D1FFF1FB00000ECB7 /* connection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = connection.swift; sourceTree = "<group>"; };
 		91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubTableViewCell.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 		918F08D21FF33CEA0082AC9A /* others */ = {
 			isa = PBXGroup;
 			children = (
+				9117B06B201959100031337C /* SearchTableViewCell.swift */,
 				91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */,
 				9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */,
 				919B5CB71FF4A67500F2D917 /* structs.swift */,
@@ -577,6 +580,7 @@
 				91A8B8711FF4AE1C002CFF05 /* FirstViewController.swift in Sources */,
 				910B0D141FF6FC0D0028E76C /* structs.swift in Sources */,
 				91C7B43C201647EB00EDF5FC /* PriceTableViewCell.swift in Sources */,
+				9117B06C201959100031337C /* SearchTableViewCell.swift in Sources */,
 				91383F1E1FFF1FB00000ECB7 /* connection.swift in Sources */,
 				910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */,
 				910A81931FA4DC75001F868A /* AppDelegate.swift in Sources */,
