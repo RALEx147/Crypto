@@ -208,12 +208,13 @@ class FirstViewController: UIViewController{
                 }
                 
                 disGroup2.notify(queue: .main){
-                    self.table.reloadData()
-                    self.reloadSubTable()
-                    
                     for i in self.cellArray{
                         i.updateMore()
                     }
+                    self.table.reloadData()
+                    self.reloadSubTable()
+                    
+                    
                     
                     self.saveCells()
                     let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
@@ -929,8 +930,10 @@ class FirstViewController: UIViewController{
         self.bannerHeight.constant = 100
         self.totalHeight.constant = 10
         superView.gradient.constant = 30
-        
-        table.reloadData()
+//
+//        table.reloadData()
+//        self.reloadSubTable()
+
         
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             let head = self.table.tableHeaderView
@@ -969,7 +972,7 @@ class FirstViewController: UIViewController{
     }
     func hideAdd(){
         let superView = parent as! ViewController
-        print(cellArray)
+        
         
         
         self.cellArray.remove(at: self.cellArray.count-1)
@@ -1006,13 +1009,13 @@ class FirstViewController: UIViewController{
                 
                 
             }, completion: ({ (end) in
-                self.table.reloadData()
+//                self.table.reloadData()
                 
                 if end{
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                         
                         if !x.addBool{
-                            x.height.constant = x.height.constant - 80
+                            x.height.constant = 75
                             x.updateConstraints()
                             x.layoutIfNeeded()
                             x.newAddress.alpha = 0
@@ -1021,10 +1024,19 @@ class FirstViewController: UIViewController{
                             x.neoButton.alpha = 0
                             x.xrpButton.alpha = 0
                             x.ethButton.alpha = 0
+                            x.sub.alpha = 0
+                            x.lab.alpha = 0
+                            x.imgg.alpha = 0
                             x.addCoin.alpha = 1
                             x.bottomCons.isActive = false
                             x.subBottom.isActive = true
                             x.addBool = !x.addBool
+//                            for i in self.cellArray{
+//                                i.updateMore()
+//                            }
+//                            self.table.reloadData()
+//                            self.reloadSubTable()
+                            
                         }
                         
                     }
@@ -1060,18 +1072,19 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         cell.cellView?.layer.cornerRadius = 10
         cell.name?.text = cur.tag
         cell.tagg?.text = cur.name + ": " + cur.address
-        if cur.name == ""{
+        if cur.address == ""{
             cell.money?.text = ""
             cell.moreLabel.text = ""
             cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
             cell.addCoin.isUserInteractionEnabled = true
-            cell.moreIcon.isUserInteractionEnabled = false
-            cell.moreIcon.isHidden = true
+//            cell.moreIcon.isUserInteractionEnabled = false
+            cell.moreIcon.alpha = 0
         }
         else{
             var cash = Double(cur.balance!) ?? 0.0
             cell.imagee?.image = UIImage(named: cur.name!)
             let more = cur.more!
+            
             cell.addCoin.setImage(UIImage(), for: .normal)
             cell.moreIcon.isUserInteractionEnabled = true
             cell.addCoin.isUserInteractionEnabled = false
@@ -1086,7 +1099,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             cash = cleanUp(cash)
             let format = nF.string(from: NSNumber(value: cash))
             cell.money?.text = "$" + format!
-            let placeholder = Cell(name: "", tag: " ", amount: " ", price: "", balance: " ", address: " ", subCells: [Cell]())
+            let placeholder = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
             cell.cells = [placeholder]
             if cur.more.count > 0{
                 cell.cells.append(cur)

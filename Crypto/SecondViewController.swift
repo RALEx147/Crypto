@@ -83,8 +83,11 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
         Construct {(completion) in self.all = completion ?? self.all}
         
         disGroup3.notify(queue: .main){
-            self.refreshControl.endRefreshing()
-            self.table.reloadData()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
+                self.refreshControl.endRefreshing()
+                self.table.reloadData()
+            }
+            
         }
     }
     

@@ -96,32 +96,27 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         self.addSubview(lab)
     }
     
-    let imgg = UIImageView()
-    let sub = UIView()
+   
+    @IBOutlet var sub: UIView!
+    
+    @IBOutlet var imgg: UIImageView!
+    
+    
     let lab = UILabel()
     @IBAction func xrpPress(_ sender: Any) {
         imgg.image = #imageLiteral(resourceName: "XRP")
         
         
         lab.text = "XRP Public Key"
-        
-        self.addSubview(sub)
 
-        
-        
         let up = self.superview as! UITableView
-        
-        
         self.height.constant = self.height.constant + 80
         up.beginUpdates()
-        
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
             self.sub.alpha = 1
         })
-        
         UIView.animate(withDuration: 0.3, delay: 0.1, options: .curveEaseOut, animations: {
             self.layoutIfNeeded()
-            
         }, completion: { (_) in
             up.endUpdates()
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
@@ -136,36 +131,17 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     }
     
     @IBAction func ltcPress(_ sender: Any) {
-        let sub = UIView()
-        let imgg = UIImageView(image: #imageLiteral(resourceName: "LTC"))
-        let lab = UILabel()
-        sub.backgroundColor = UIColor(named: "bg")
-
-        self.addSubview(sub)
-        self.addSubview(imgg)
-        self.addSubview(lab)
+   
     }
     
     @IBAction func ethPress(_ sender: Any) {
-        let sub = UIView()
-        let imgg = UIImageView(image: #imageLiteral(resourceName: "ETH"))
-        let lab = UILabel()
-        sub.backgroundColor = UIColor(named: "bg")
+        
 
-        self.addSubview(sub)
-        self.addSubview(imgg)
-        self.addSubview(lab)
     }
     
     @IBAction func btcPress(_ sender: Any) {
-        let sub = UIView()
-        let imgg = UIImageView(image: #imageLiteral(resourceName: "BTC"))
-        let lab = UILabel()
-        sub.backgroundColor = UIColor(named: "bg")
-
-        self.addSubview(sub)
-        self.addSubview(imgg)
-        self.addSubview(lab)
+        
+  
     }
     
     
@@ -194,7 +170,6 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             bottomCons.isActive = true
             subBottom.isActive = false
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
-//                self.updateConstraints()
                 self.layoutIfNeeded()
                 self.addCoin.alpha = 0
                 
@@ -216,13 +191,14 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             self.height.constant = self.ogheight
             up.beginUpdates()
             UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
-//                self.updateConstraints()
                 self.layoutIfNeeded()
             }) { (_) in
-                up.endUpdates()
                 self.imgg.alpha = 0
                 self.lab.alpha = 0
                 self.sub.alpha = 0
+                up.endUpdates()
+                
+                self.newAddress.alpha = 0
                 self.addCoin.alpha = 1
                 self.bottomCons.isActive = false
                 self.subBottom.isActive = true
@@ -318,7 +294,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         bottomCons.isActive = false
         self.newAddress.font = UIFont(name: "STHeitiSC-Medium", size: 22.0)
         newAddress.font = newAddress.font.withSize(22)
-        ogheight = self.height.constant
+        ogheight = 75
         setupInput()
         
         
@@ -327,41 +303,9 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     }
     
     func setupInput(){
-        self.addSubview(sub)
-        self.addSubview(imgg)
-        self.addSubview(lab)
-        imgg.alpha = 0
-        sub.alpha = 0
-        lab.alpha = 0
-        sub.backgroundColor = UIColor(named: "bg")
-        
-        
-        sub.translatesAutoresizingMaskIntoConstraints = false
-        sub.contentMode = .scaleToFill
-        let bgTop = sub.topAnchor.constraint(equalTo: cellView!.topAnchor)
-        bgTop.constant = 43
-        let bgBot = sub.bottomAnchor.constraint(equalTo: cellView!.bottomAnchor)
-        bgBot.constant = -20
-        let bgLead = sub.leadingAnchor.constraint(equalTo: cellView!.leadingAnchor)
-        bgLead.constant = 24
-        let bgTrail = sub.trailingAnchor.constraint(equalTo: cellView!.trailingAnchor)
-        bgTrail.constant = -24
-        let cons1:[NSLayoutConstraint] = [bgTop, bgLead, bgTrail, bgBot]
-        NSLayoutConstraint.activate(cons1)
-        
-        imgg.translatesAutoresizingMaskIntoConstraints = false
-        imgg.contentMode = .scaleToFill
-        let imgLead = imgg.leadingAnchor.constraint(equalTo: sub.leadingAnchor)
-        imgLead.constant = 12
-        let imgTop = imgg.topAnchor.constraint(equalTo: sub.topAnchor)
-        imgTop.constant = 10
-        let imgh = imgg.heightAnchor.constraint(equalToConstant: 27.7)
-        let imgw = imgg.widthAnchor.constraint(equalToConstant: 27.7)
-        let cons2:[NSLayoutConstraint] = [imgLead, imgTop, imgh, imgw]
-        NSLayoutConstraint.activate(cons2)
-        
+ 
         sub.layer.cornerRadius = 10
-        self.layoutIfNeeded()
+        
         
 
     }
