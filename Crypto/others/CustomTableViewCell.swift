@@ -52,6 +52,9 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         let nFormat = supper.nF.string(from: NSNumber(value: num))
         cell.amount?.text =  nFormat! + " " + cur.name!
         
+        cell.img.layer.minificationFilter = kCAFilterTrilinear
+        cell.img.layer.minificationFilterBias = 0.03
+        
         
         var cash = Double(cur.balance!) ?? 0.0
         cash = supper.cleanUp(cash)

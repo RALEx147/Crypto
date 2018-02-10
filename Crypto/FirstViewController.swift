@@ -45,6 +45,7 @@ class FirstViewController: UIViewController{
     override func viewDidLoad() {
         self.loadCells()
 
+        
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
@@ -213,7 +214,6 @@ class FirstViewController: UIViewController{
                     }
                     self.table.reloadData()
                     self.reloadSubTable()
-                    
                     
                     
                     self.saveCells()
@@ -1071,16 +1071,19 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         let cur = self.cellArray[indexPath.row]
         cell.cellView?.layer.cornerRadius = 10
         cell.name?.text = cur.tag
+        cell.imgg.layer.minificationFilter = kCAFilterTrilinear
+        cell.imgg.layer.minificationFilterBias = 0.03
         cell.tagg?.text = cur.name + ": " + cur.address
         if cur.address == ""{
+            cell.tagg?.text = ""
             cell.money?.text = ""
             cell.moreLabel.text = ""
             cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
             cell.addCoin.isUserInteractionEnabled = true
-//            cell.moreIcon.isUserInteractionEnabled = false
             cell.moreIcon.alpha = 0
         }
         else{
+            
             var cash = Double(cur.balance!) ?? 0.0
             cell.imagee?.image = UIImage(named: cur.name!)
             let more = cur.more!
@@ -1141,14 +1144,26 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     
-    //needs work
+    
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let movedObject = self.cellArray[sourceIndexPath.row]
         self.cellArray.remove(at: sourceIndexPath.row)
         self.cellArray.insert(movedObject, at: destinationIndexPath.row)
+        self.saveCells()
         NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(cellArray)")
         // To check for correctness enable: self.tableView.reloadData()
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+            
+            self.cellArray.remove(at: indexPath.row)
+            self.table.deleteRows(at: [indexPath], with: .automatic)
+            self.saveCells()
+        }
+    }
+
     
     
     
