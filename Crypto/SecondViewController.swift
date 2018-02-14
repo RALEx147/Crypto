@@ -3,34 +3,36 @@
 //  Kucoin
 //
 //  Created by Robert Alexander on 10/28/17.
-//  Copyright © 2017 Robert Alexander. All rights reserved.
+//  Copyright © 2017 Robert Alexander. v.all rights reserved.
 //
 
 import UIKit
 import Lottie
 
-class SecondViewController: UIViewController, UISearchBarDelegate {
+class SecondViewController: UIViewController {
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+    
     
     
     
     var CCCoins = [String]()
-    var all = [CMC]()
     var blurView: UIVisualEffectView!
-    var showArray = [CMC]()
     let bgView = UIView()
     let disGroup3 = DispatchGroup()
     let refreshControl = UIRefreshControl()
-
-    @IBOutlet var search: UISearchBar!
+    
     @IBOutlet var table: UITableView!
     @IBOutlet var add: UIButton!
     @IBOutlet var lbl: UILabel!
     @IBOutlet var ddd: NSLayoutConstraint!
     @IBOutlet weak var banner: UIImageView!
-
-    @IBOutlet var searchTable: UITableView!
     
     
+    @IBOutlet var textversion: UITextField!
+    
+    @IBOutlet var cont: UIView!
     
     
     
@@ -54,33 +56,30 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
         
         
         
-
         
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         //let words = searchBar.text
         
     }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-
+    
+    func delaget(){
         UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
-            self.search.alpha = 0
+            self.v.search.alpha = 0
             self.blurView.alpha = 0
             self.bgView.alpha = 0
-            self.searchTable.alpha = 0
+            self.v.searchTable.alpha = 0
+            self.textversion.alpha = 0
+            self.cont.isUserInteractionEnabled = false
+            
         })
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        showArray = all.filter { (cmc) -> Bool in
-            return (cmc.name?.lowercased().contains(searchText.lowercased()))!
-        }
-    }
     
     
     
     @objc func refresh(){
-        Construct {(completion) in self.all = completion ?? self.all}
+        Construct {(completion) in self.v.all = completion ?? self.v.all}
         
         disGroup3.notify(queue: .main){
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
@@ -93,7 +92,7 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
     
     func save(){UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCCoins, forKey: "CCCoins")}
     func load() {CCCoins = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCCoins") as? [String] ?? [])!}
-
+    
     
     func Construct(completion: @escaping ([CMC]?) -> ()){
         self.disGroup3.enter()
@@ -124,7 +123,7 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
     }
     
     func getPrice(_ name: String) -> String{
-        for j in self.all{
+        for j in self.v.all{
             let i = j.name?.lowercased()
             let k = j.symbol?.lowercased()
             if i == name.lowercased() || k == name.lowercased(){
@@ -135,7 +134,7 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
     }
     
     func getChange(_ name: String) -> String{
-        for j in self.all{
+        for j in self.v.all{
             let i = j.name?.lowercased()
             let k = j.symbol?.lowercased()
             if i == name.lowercased() || k == name.lowercased(){
@@ -154,18 +153,26 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
     }
     
     
+    var v:SearchViewController!
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "vv"{
+            v = segue.destination as? SearchViewController
+        }
+        
+    }
+    
     @IBAction func addCoin(_ sender: Any) {
         UIView.animate(withDuration: 0.3, animations: {
-            self.search.alpha = 1
+            
+            self.v.search.alpha = 1
             self.blurView.alpha = 0.9
             self.bgView.alpha = 0.5
-            self.searchTable.alpha = 1
+            self.v.searchTable.alpha = 1
+            self.textversion.alpha = 1
+            self.cont.isUserInteractionEnabled = true
+            self.v.searchTable.reloadData()
         })
         
-        showArray.append(all[1])
-        showArray.append(all[12])
-        showArray.append(all[5])
-
         
     }
     func setupConstr() {
@@ -212,21 +219,15 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
         bgView.clipsToBounds = true
         blurView.layer.cornerRadius = 19
         bgView.layer.cornerRadius = 19
-        search.clipsToBounds = true
-        search.layer.cornerRadius = 16
-        
-        
-        search.backgroundImage = #imageLiteral(resourceName: "Background")
         view.backgroundColor = UIColor(named: "bg")
-        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor(named: "pink")!], for: .normal)
+       
         
         
         
         self.view.addSubview(blurView)
         self.view.addSubview(bgView)
-        self.view.bringSubview(toFront: searchTable)
-        self.view.bringSubview(toFront: search)
-
+        self.view.bringSubview(toFront: self.cont)
+        
     }
     
     func setupRefresh() {
@@ -239,7 +240,7 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
         refreshControl.tintColor = UIColor(named: "loading")
         
         
-        Construct {(completion) in self.all = completion ?? self.all}
+        Construct {(completion) in self.v.all = completion ?? self.v.all}
         disGroup3.notify(queue: .main){
             self.table.reloadData()
         }
@@ -255,17 +256,11 @@ class SecondViewController: UIViewController, UISearchBarDelegate {
 
 extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.table{
-            return CCCoins.count
-        }
-        else if tableView == self.searchTable{
-            return showArray.count
-        }
-        return 0
+        return CCCoins.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == self.table{
         let cell = table.dequeueReusableCell(withIdentifier: "cellprice") as! PriceTableViewCell
         let name = self.CCCoins[indexPath.row]
         cell.cellView.layer.cornerRadius = 8
@@ -276,16 +271,9 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
         
         let clr = color(name) ? UIColor(named: "myGreen") : UIColor(named: "myRed")
         cell.color.backgroundColor = clr
-            return cell
-
-        }
-        else if tableView == self.searchTable{
-            let cell = searchTable.dequeueReusableCell(withIdentifier: "cell") as! SearchTableViewCell
-            return cell
-
-        }
-        return UITableViewCell()
-
+        return cell
+        
+        
     }
     
 }

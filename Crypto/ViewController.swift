@@ -44,7 +44,7 @@ class ViewController: UIViewController {
         if segue.identifier == "seg1"{
             view1 = segue.destination as? FirstViewController
         }
-        else{
+        else if segue.identifier == "seg2"{
             view2 = segue.destination as? SecondViewController
         }
     }
@@ -134,7 +134,7 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.48, delay: 0, options: .curveEaseOut, animations: {
             self.view2.table.alpha = 0
             self.view2.lbl.alpha = 0
-            self.view2.search.alpha = 0
+//            self.view2.search.alpha = 0
             self.view2.blurView.alpha = 0
             self.view2.add.alpha = 0
             self.view2.view.layoutIfNeeded()

@@ -69,7 +69,7 @@ struct ETH: Decodable {
 }
 struct ERC20: Decodable{
     let tokenInfo: ERC20Info?
-    let balance: Int?
+    let balance: Double?
 }
 struct ERC20Info: Decodable {
     let name: String?
