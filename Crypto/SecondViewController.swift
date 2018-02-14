@@ -9,8 +9,16 @@
 import UIKit
 import Lottie
 
-class SecondViewController: UIViewController {
-    func updateSearchResults(for searchController: UISearchController) {
+class SecondViewController: UIViewController, ContDelegate {
+    func updateArray(name: String) {
+        CCCoins.append(name)
+        delaget()
+        save()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.6) {
+            self.table.performBatchUpdates({
+                self.table.insertRows(at: [IndexPath(row: self.CCCoins.count-1, section: 0)], with: .fade)
+            }) { (_) in self.table.reloadData()}
+        }
         
     }
     
@@ -52,7 +60,7 @@ class SecondViewController: UIViewController {
         setupRefresh()
         setupLbl()
         load()
-        
+        self.v.delag = self
         
         
         
@@ -274,6 +282,34 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
         
         
+    }
+    
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print("Deleted")
+            
+            self.CCCoins.remove(at: indexPath.row)
+            self.table.deleteRows(at: [indexPath], with: .automatic)
+            self.save()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+   
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteButton = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
+            self.table.dataSource?.tableView!(self.table, commit: .delete, forRowAt: indexPath)
+            
+            return
+        })
+        
+        deleteButton.backgroundColor = UIColor(named: "pink")
+        
+        return [deleteButton]
     }
     
 }

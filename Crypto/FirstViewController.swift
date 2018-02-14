@@ -1132,11 +1132,16 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.row == self.cellArray.count-1{
-            return false
+        if self.isEditing{
+            if indexPath.row == self.cellArray.count-1{
+                return false
+            }
+            else{
+                return true
+            }
         }
         else{
-            return true
+            return false
         }
         
         
