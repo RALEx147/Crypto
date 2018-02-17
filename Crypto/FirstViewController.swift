@@ -26,7 +26,7 @@ class FirstViewController: UIViewController{
     let disGroup = DispatchGroup()
     let disGroup2 = DispatchGroup()
     let disGroup3 = DispatchGroup()
-
+    
     var loading = false
     var cellArray = [Cell]()
     
@@ -44,7 +44,7 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
-
+        
         
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
@@ -121,7 +121,7 @@ class FirstViewController: UIViewController{
                 
                 Currency{(completion) in self.c = completion ?? self.c}
                 Construct{(completion) in self.all = completion ?? self.all}
-
+                
                 
                 
                 for i in self.cellArray.indices{
@@ -129,7 +129,7 @@ class FirstViewController: UIViewController{
                 }
                 
                 
-
+                
                 self.ani3.removeFromSuperview()
                 self.ani4.removeFromSuperview()
                 self.ani2.loopAnimation = true
@@ -390,13 +390,23 @@ class FirstViewController: UIViewController{
             var btc:BTC!
             btcBalance(c){(completion) in btc = completion}
             disGroup.notify(queue: .main){
-                if Double(btc.balance) > 0.0 {
-                c.balance = String(Double(self.getPrice(name: "btc"))! * btc.balance)
-                c.amount = String(btc.balance)
-                c.price = self.getPrice(name: "btc")
+                if Double(btc.balance) >= 0.0 {
+                    c.balance = String(Double(self.getPrice(name: "btc"))! * btc.balance)
+                    c.amount = String(btc.balance)
+                    c.price = self.getPrice(name: "btc")
                 }
                 
             }
+        }
+        else if c.name == "LTC"{
+            var ltc:LTC!
+            ltcBalance(c){(completion) in ltc = completion}
+            if Double(ltc.confirmed_balance) >= 0.0 {
+                c.balance = String(Double(self.getPrice(name: "ltc"))! * ltc.confirmed_balance)
+                c.amount = String(ltc.confirmed_balance)
+                c.price = self.getPrice(name: "ltc")
+            }
+            
         }
             
         else if c.name == "XRP"{
@@ -445,10 +455,10 @@ class FirstViewController: UIViewController{
                                 }
                             }
                             else{
-                            if let p = Double(self.getPrice(name: i.key)){
-                                let new = Cell(name: i.key, tag: i.key, amount: String(i.value), price: String(p), balance: String(Double(i.value) * p), address: c.address, subCells: [Cell]())
-                                c.subCells.append(new)
-                            }
+                                if let p = Double(self.getPrice(name: i.key)){
+                                    let new = Cell(name: i.key, tag: i.key, amount: String(i.value), price: String(p), balance: String(Double(i.value) * p), address: c.address, subCells: [Cell]())
+                                    c.subCells.append(new)
+                                }
                             }
                         }
                         else{
@@ -676,6 +686,35 @@ class FirstViewController: UIViewController{
             }.resume()
     }
     
+    
+    func ltcBalance(_ c:Cell, completion: @escaping (LTC) -> ()){
+        self.disGroup.enter()
+        var done = false
+        let link = "https://chain.so/api/v2/get_address_balance/LTC/" + c.address
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
+            if !done{
+                self.disGroup.leave()
+                let l = LTC(confirmed_balance: -999)
+                completion(l)
+            }
+        }
+        guard let url = URL(string: link) else { return }
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                do {
+                    let balance = try JSONDecoder().decode(LTCN.self, from: data)
+                    if balance.status == "success"{
+                        print("ltc")
+                        self.disGroup.leave()
+                        done = true
+                        completion(balance.data)
+                    }
+                } catch let jsonErr {
+                    print("Error serializing json:", jsonErr)
+                }
+            }
+            }.resume()
+    }
     
     
     
@@ -930,11 +969,11 @@ class FirstViewController: UIViewController{
         self.bannerHeight.constant = 100
         self.totalHeight.constant = 10
         superView.gradient.constant = 30
-//
-//        table.reloadData()
-//        self.reloadSubTable()
-
+        //
+        //        table.reloadData()
+        //        self.reloadSubTable()
         
+        becomeEdit = true
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             let head = self.table.tableHeaderView
             head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! - 5)
@@ -970,6 +1009,7 @@ class FirstViewController: UIViewController{
         
         
     }
+    var becomeEdit:Bool = false
     func hideAdd(){
         let superView = parent as! ViewController
         
@@ -978,7 +1018,7 @@ class FirstViewController: UIViewController{
         self.cellArray.remove(at: self.cellArray.count-1)
         let indx = IndexPath(row: self.cellArray.count, section: 0)
         let x = self.table.cellForRow(at: indx) as! CustomTableViewCell
-        
+        becomeEdit = false
         self.table.performBatchUpdates({
             table.isEditing = false
             self.table.deleteRows(at: [indx], with: .fade)
@@ -1009,7 +1049,7 @@ class FirstViewController: UIViewController{
                 
                 
             }, completion: ({ (end) in
-//                self.table.reloadData()
+                //                self.table.reloadData()
                 
                 if end{
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
@@ -1031,11 +1071,11 @@ class FirstViewController: UIViewController{
                             x.bottomCons.isActive = false
                             x.subBottom.isActive = true
                             x.addBool = !x.addBool
-//                            for i in self.cellArray{
-//                                i.updateMore()
-//                            }
-//                            self.table.reloadData()
-//                            self.reloadSubTable()
+                            //                            for i in self.cellArray{
+                            //                                i.updateMore()
+                            //                            }
+                            //                            self.table.reloadData()
+                            //                            self.reloadSubTable()
                             
                         }
                         
@@ -1132,7 +1172,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if self.isEditing{
+        if becomeEdit{
             if indexPath.row == self.cellArray.count-1{
                 return false
             }
@@ -1168,7 +1208,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
             self.saveCells()
         }
     }
-
+    
     
     
     

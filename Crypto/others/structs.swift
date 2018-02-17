@@ -49,6 +49,15 @@ struct NEO: Decodable {
 struct BTC: Decodable {
     let balance: Double
 }
+struct LTCN: Decodable {
+    let status: String
+    let data: LTC
+}
+struct LTC: Decodable {
+    let confirmed_balance: Double
+}
+
+
 
 struct XRPN: Decodable {
     let result: String?

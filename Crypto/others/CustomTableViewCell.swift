@@ -90,15 +90,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     @IBOutlet var btcButton: UIButton!
     
     
-    @IBAction func neoPress(_ sender: Any) {
-        imgg.image = #imageLiteral(resourceName: "NEO")
 
-        sub.backgroundColor = UIColor(named: "bg")
-        self.addSubview(sub)
-        self.addSubview(imgg)
-        self.addSubview(lab)
-    }
-    
    
     @IBOutlet var sub: UIView!
     
@@ -106,12 +98,41 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     
     let lab = UILabel()
+    
+    @IBAction func neoPress(_ sender: Any) {
+        imgg.image = #imageLiteral(resourceName: "NEO")
+        lab.text = "NEO Public Key"
+        extendAdd()
+    }
+    
     @IBAction func xrpPress(_ sender: Any) {
         imgg.image = #imageLiteral(resourceName: "XRP")
-        
-        
         lab.text = "XRP Public Key"
-
+        extendAdd()
+    }
+    
+    @IBAction func ltcPress(_ sender: Any) {
+        imgg.image = #imageLiteral(resourceName: "LTC")
+        lab.text = "LTC Public Key"
+        extendAdd()
+    }
+    
+    @IBAction func ethPress(_ sender: Any) {
+        imgg.image = #imageLiteral(resourceName: "ETH")
+        lab.text = "ETH Public Key"
+        extendAdd()
+    }
+    
+    @IBAction func btcPress(_ sender: Any) {
+        imgg.image = #imageLiteral(resourceName: "BTC")
+        lab.text = "BTC Public Key"
+        extendAdd()
+    }
+    
+    
+    
+    
+    func extendAdd(){
         let up = self.superview as! UITableView
         self.height.constant = self.height.constant + 80
         up.beginUpdates()
@@ -127,30 +148,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 self.lab.alpha = 1
             })
         })
-
-
-
-       
     }
-    
-    @IBAction func ltcPress(_ sender: Any) {
-   
-    }
-    
-    @IBAction func ethPress(_ sender: Any) {
-        
-
-    }
-    
-    @IBAction func btcPress(_ sender: Any) {
-        
-  
-    }
-    
-    
-    
-    
-    
     
     
     

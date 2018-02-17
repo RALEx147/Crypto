@@ -99,7 +99,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$783,234" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="k6D-i7-d3W">
-                                <rect key="frame" x="78" y="105" width="220.5" height="70"/>
+                                <rect key="frame" x="85" y="115" width="207" height="50"/>
                                 <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="50"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -481,7 +481,7 @@
                                                     <rect key="frame" x="12" y="3.5" width="350" height="33"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PBa-7A-q9r">
-                                                            <rect key="frame" x="10" y="5.5" width="40" height="22.5"/>
+                                                            <rect key="frame" x="10" y="9" width="43" height="16"/>
                                                             <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -504,13 +504,13 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YtY-wA-9T9">
-                                                    <rect key="frame" x="232" y="9" width="40" height="22.5"/>
+                                                    <rect key="frame" x="229" y="12.5" width="43" height="16"/>
                                                     <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9Gb-mq-IzY">
-                                                    <rect key="frame" x="287.5" y="10" width="61" height="25.5"/>
+                                                    <rect key="frame" x="287.5" y="14" width="61" height="18"/>
                                                     <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="18"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -559,12 +559,12 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price Tracker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xz8-TF-ute">
-                                <rect key="frame" x="16" y="108" width="197" height="43.5"/>
+                                <rect key="frame" x="16" y="108" width="191" height="31"/>
                                 <fontDescription key="fontDescription" name="STHeitiSC-Medium" family="Heiti SC" pointSize="31"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <containerView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H2n-V3-e00">
+                            <containerView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H2n-V3-e00">
                                 <rect key="frame" x="22" y="110" width="331" height="547"/>
                                 <connections>
                                     <segue destination="Vz5-0g-HWc" kind="embed" identifier="vv" id="a7u-9Q-xE7"/>
@@ -580,7 +580,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="6Fy-19-koo" secondAttribute="trailing" id="3Fx-yv-Chc"/>
-                            <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="H2n-V3-e00" secondAttribute="trailing" constant="21" id="4td-cX-pxl"/>
+                            <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="H2n-V3-e00" secondAttribute="trailing" constant="22" id="4td-cX-pxl"/>
                             <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="tf5-81-Zw1" secondAttribute="trailing" constant="30" id="5uN-TI-ens"/>
                             <constraint firstAttribute="top" secondItem="6Fy-19-koo" secondAttribute="top" id="642-q3-x2M"/>
                             <constraint firstItem="wee-3C-pgT" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" id="Bq1-Tt-TMe"/>
@@ -592,7 +592,7 @@
                             <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="wee-3C-pgT" secondAttribute="trailing" id="TIg-ym-p4G"/>
                             <constraint firstItem="xz8-TF-ute" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" constant="16" id="Z3C-Ok-NnG"/>
                             <constraint firstItem="Hhe-Kw-jGO" firstAttribute="trailing" secondItem="yQh-MT-Lc6" secondAttribute="trailing" constant="21" id="byh-ih-C5S"/>
-                            <constraint firstItem="H2n-V3-e00" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" constant="23" id="eeb-cJ-IEp"/>
+                            <constraint firstItem="H2n-V3-e00" firstAttribute="leading" secondItem="Hhe-Kw-jGO" secondAttribute="leading" constant="22" id="eeb-cJ-IEp"/>
                             <constraint firstItem="H2n-V3-e00" firstAttribute="top" secondItem="6Fy-19-koo" secondAttribute="bottom" constant="15" id="fY6-Zi-3S0"/>
                             <constraint firstAttribute="bottom" secondItem="wee-3C-pgT" secondAttribute="bottom" id="lCj-30-JhE"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="xz8-TF-ute" secondAttribute="trailing" constant="20" symbolic="YES" id="obf-bt-1Mx"/>
