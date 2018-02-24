@@ -9,17 +9,23 @@
 import UIKit
 import Lottie
 
+
+
 class SecondViewController: UIViewController, ContDelegate {
     func updateArray(name: String) {
-        CCCoins.append(name)
-        delaget()
-        save()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.6) {
-            self.table.performBatchUpdates({
-                self.table.insertRows(at: [IndexPath(row: self.CCCoins.count-1, section: 0)], with: .fade)
-            }) { (_) in self.table.reloadData()}
+        if !CCCoins.contains(name){
+            CCCoins.append(name)
+            delaget()
+            save()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.6) {
+                self.v.search.text = ""
+                self.v.search.resignFirstResponder()
+                self.table.performBatchUpdates({
+                    self.table.insertRows(at: [IndexPath(row: self.CCCoins.count-1, section: 0)], with: .fade)
+                }) { (_) in self.table.reloadData()}
+            }
+            
         }
-        
     }
     
     
@@ -170,6 +176,7 @@ class SecondViewController: UIViewController, ContDelegate {
     }
     
     @IBAction func addCoin(_ sender: Any) {
+
         UIView.animate(withDuration: 0.3, animations: {
             
             self.v.search.alpha = 1
@@ -303,7 +310,6 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteButton = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
             self.table.dataSource?.tableView!(self.table, commit: .delete, forRowAt: indexPath)
-            
             return
         })
         

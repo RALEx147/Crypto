@@ -314,9 +314,12 @@ class FirstViewController: UIViewController{
                 
                 if eth.ETH?.balance != nil{
                     c.amount = String(describing: eth.ETH!.balance!)
-                    c.balance = String(describing: (eth.ETH?.balance)! * Double(self.getPrice(name: "ethereum"))!)
-                    c.price = self.getPrice(name: "ethereum")
                     
+                    if let p = Double(self.getPrice(name: c.name.lowercased())){
+                        c.balance = String(describing: (eth.ETH!.balance! * p))
+                        c.price = String(describing: p)
+                        
+                    }
                     
                     
                     
@@ -390,10 +393,12 @@ class FirstViewController: UIViewController{
             var btc:BTC!
             btcBalance(c){(completion) in btc = completion}
             disGroup.notify(queue: .main){
-                if Double(btc.balance) >= 0.0 {
-                    c.balance = String(Double(self.getPrice(name: "btc"))! * btc.balance)
-                    c.amount = String(btc.balance)
-                    c.price = self.getPrice(name: "btc")
+                if btc != nil && Double(btc.balance) >= 0.0{
+                    if let p = Double(self.getPrice(name: c.name.lowercased())){
+                        c.balance = String(describing: (btc.balance * p))
+                        c.price = String(describing: p)
+                        c.amount = String(describing: btc.balance)
+                    }
                 }
                 
             }
@@ -401,10 +406,15 @@ class FirstViewController: UIViewController{
         else if c.name == "LTC"{
             var ltc:LTC!
             ltcBalance(c){(completion) in ltc = completion}
-            if Double(ltc.confirmed_balance) >= 0.0 {
-                c.balance = String(Double(self.getPrice(name: "ltc"))! * ltc.confirmed_balance)
-                c.amount = String(ltc.confirmed_balance)
-                c.price = self.getPrice(name: "ltc")
+            disGroup.notify(queue: .main){
+                if Double(ltc.confirmed_balance) >= 0.0 {
+                    if let p = Double(self.getPrice(name: c.name.lowercased())){
+                        
+                        c.balance = String(p * ltc.confirmed_balance)
+                        c.amount = String(ltc.confirmed_balance)
+                        c.price = String(describing: p)
+                    }
+                }
             }
             
         }
@@ -441,9 +451,12 @@ class FirstViewController: UIViewController{
                 let xrpArray = Array(dict)
                 for i in xrpArray{
                     if i.key == "XRP"{
-                        c.amount = String(describing: i.value)
-                        c.price = self.getPrice(name: "xrp")
-                        c.balance = String(i.value * Double(self.getPrice(name: "xrp"))!)
+                        if let p = Double(self.getPrice(name: c.name.lowercased())){
+                            
+                            c.amount = String(describing: i.value)
+                            c.price = String(describing: p)
+                            c.balance = String(i.value * p)
+                        }
                         
                     }
                     else{
@@ -756,11 +769,13 @@ class FirstViewController: UIViewController{
     
     
     func getPrice(name: String) -> String{
-        for j in self.all{
-            let i = j.name?.lowercased()
-            let k = j.symbol?.lowercased()
-            if i == name.lowercased() || k == name.lowercased(){
-                return j.price_usd!
+        if self.all != nil{
+            for j in self.all{
+                let i = j.name?.lowercased()
+                let k = j.symbol?.lowercased()
+                if i == name.lowercased() || k == name.lowercased(){
+                    return j.price_usd!
+                }
             }
         }
         return "Not Found"
@@ -907,17 +922,22 @@ class FirstViewController: UIViewController{
     }
     @IBAction func toggleMenu (recognizer:UITapGestureRecognizer) {
         if !addOn {
-            self.showAdd()
-            add?.play(completion: { (success:Bool) in
-                self.addOn = true
-                self.addAddButton(on: self.addOn)
-            })
+            if showBool{
+                self.showAdd()
+                add?.play(completion: { (success:Bool) in
+                    self.addOn = true
+                    self.addAddButton(on: self.addOn)
+                })
+            }
         }else{
-            self.hideAdd()
-            add?.play(completion: { (success:Bool) in
-                self.addOn = false
-                self.addAddButton(on: self.addOn)
-            })
+            if hideBool{
+                self.hideAdd()
+                add?.play(completion: { (success:Bool) in
+                    self.addOn = false
+                    self.addAddButton(on: self.addOn)
+                })
+            }
+            
         }
     }
     
@@ -964,12 +984,15 @@ class FirstViewController: UIViewController{
     
     
     @IBOutlet weak var bannerHeight: NSLayoutConstraint!
+    
+    var showBool = true
     func showAdd(){
+        showBool = false
         let superView = parent as! ViewController
         self.bannerHeight.constant = 100
         self.totalHeight.constant = 10
         superView.gradient.constant = 30
-        //
+       
         //        table.reloadData()
         //        self.reloadSubTable()
         
@@ -998,32 +1021,38 @@ class FirstViewController: UIViewController{
         }, completion: ({ (end) in
             self.add?.frame.origin.y = 60
             let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
-            self.cellArray.append(add)
+            self.cellArray.insert(add, at: 0)
             self.reloadSubMore()
             self.reloadSubTable()
+
             self.table.performBatchUpdates({
                 self.table.isEditing = true
-                self.table.insertRows(at: [IndexPath(row: self.cellArray.count-1, section: 0)], with: .fade)
-            }) { (_) in self.table.reloadData()}
+                self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+            }) { (_) in self.table.reloadData()
+                self.showBool = true}
         }))
         
         
     }
     var becomeEdit:Bool = false
+    var hideBool = true
     func hideAdd(){
+        hideBool = false
         let superView = parent as! ViewController
         
         
         
-        self.cellArray.remove(at: self.cellArray.count-1)
-        let indx = IndexPath(row: self.cellArray.count, section: 0)
+        
+        self.cellArray.remove(at: 0)
+        let indx = IndexPath(row: 0, section: 0)
         let x = self.table.cellForRow(at: indx) as! CustomTableViewCell
         becomeEdit = false
+        
         self.table.performBatchUpdates({
             table.isEditing = false
             self.table.deleteRows(at: [indx], with: .fade)
         }) { (_) in
-            UIView.animate(withDuration: 0.24, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
                 let head = self.table.tableHeaderView
                 head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! + 5)
                 self.bannerHeight.constant = 223
@@ -1050,7 +1079,7 @@ class FirstViewController: UIViewController{
                 
             }, completion: ({ (end) in
                 //                self.table.reloadData()
-                
+                self.hideBool = true
                 if end{
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                         
@@ -1067,7 +1096,17 @@ class FirstViewController: UIViewController{
                             x.sub.alpha = 0
                             x.lab.alpha = 0
                             x.imgg.alpha = 0
+                            x.line.alpha = 0
+                            x.done.alpha = 0
+                            x.back.alpha = 0
+                            x.address.alpha = 0
+                            x.nickname.alpha = 0
+                            x.qr.alpha = 0
                             x.addCoin.alpha = 1
+                            x.address.text = ""
+                            x.nickname.text = ""
+                            x.done.setImage(UIImage(named: "undone"), for: .normal)
+                            x.done.isUserInteractionEnabled = false
                             x.bottomCons.isActive = false
                             x.subBottom.isActive = true
                             x.addBool = !x.addBool
@@ -1164,21 +1203,16 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.row == self.cellArray.count-1{
-            return false
+        if becomeEdit{
+            return indexPath.row != 0
         }
         else{
-            return true
+            return false
         }
     }
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if becomeEdit{
-            if indexPath.row == self.cellArray.count-1{
-                return false
-            }
-            else{
-                return true
-            }
+            return indexPath.row != 0
         }
         else{
             return false
@@ -1210,10 +1244,6 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    
-    
-    
-    
 }
 
 
@@ -1229,17 +1259,6 @@ class NeverClearView: UIView {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

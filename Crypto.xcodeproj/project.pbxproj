@@ -19,8 +19,6 @@
 		910B0D161FF735950028E76C /* 1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D151FF735950028E76C /* 1.json */; };
 		910B0D1B1FF735AF0028E76C /* add1.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D171FF735AE0028E76C /* add1.json */; };
 		910B0D1C1FF735AF0028E76C /* add2.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D181FF735AF0028E76C /* add2.json */; };
-		910B0D1D1FF735AF0028E76C /* STHeiti-Medium.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D191FF735AF0028E76C /* STHeiti-Medium.ttc */; };
-		910B0D1E1FF735AF0028E76C /* STHeiti-Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D1A1FF735AF0028E76C /* STHeiti-Light.ttc */; };
 		910B0D211FF735B90028E76C /* top2old.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D1F1FF735B90028E76C /* top2old.json */; };
 		910B0D221FF735B90028E76C /* top1old.json in Resources */ = {isa = PBXBuildFile; fileRef = 910B0D201FF735B90028E76C /* top1old.json */; };
 		910F1EF11FF999FA0096F3A9 /* oldCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910F1EF01FF999FA0096F3A9 /* oldCode.swift */; };
@@ -45,8 +43,8 @@
 		914BAE1D1FEBA0D800861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		914BAE1E1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		914BAE1F1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
-		916439041FF8902500622324 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 916439021FF8902400622324 /* top2.json */; };
-		916439051FF8902500622324 /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 916439031FF8902500622324 /* top1.json */; };
+		9164BB3D203E691000C40F93 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3B203E690F00C40F93 /* top2.json */; };
+		9164BB3E203E691000C40F93 /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3C203E690F00C40F93 /* top1.json */; };
 		918F08D71FF33D5E0082AC9A /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D31FF33D5E0082AC9A /* 4.json */; };
 		918F08D81FF33D5E0082AC9A /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D41FF33D5E0082AC9A /* 3.json */; };
 		918F08DA1FF33D5E0082AC9A /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D61FF33D5E0082AC9A /* 2.json */; };
@@ -56,6 +54,10 @@
 		91E10E8B1FE9070300F65228 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914B4BAE1FC8F7C400968A3E /* MainInterface.storyboard */; };
 		91E5E59A1FF4967B006B06B6 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		91E5E59B1FF4967B006B06B6 /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		91FFE4CC20397A6200AB5B0D /* STHeitiSC-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */; };
+		91FFE4CD20397A6500AB5B0D /* STHeitiSC-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CA203979BD00AB5B0D /* STHeitiSC-Medium.ttf */; };
+		91FFE4CE20397AAB00AB5B0D /* STHeitiSC-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */; };
+		91FFE4CF20397AAB00AB5B0D /* STHeitiSC-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CA203979BD00AB5B0D /* STHeitiSC-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,8 +133,6 @@
 		910B0D151FF735950028E76C /* 1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = 1.json; path = ../../../../../Desktop/local/1.json; sourceTree = "<group>"; };
 		910B0D171FF735AE0028E76C /* add1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add1.json; path = ../../../../../Desktop/local/add1.json; sourceTree = "<group>"; };
 		910B0D181FF735AF0028E76C /* add2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = add2.json; path = ../../../../../Desktop/local/add2.json; sourceTree = "<group>"; };
-		910B0D191FF735AF0028E76C /* STHeiti-Medium.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeiti-Medium.ttc"; path = "../../../../../Desktop/local/STHeiti-Medium.ttc"; sourceTree = "<group>"; };
-		910B0D1A1FF735AF0028E76C /* STHeiti-Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeiti-Light.ttc"; path = "../../../../../Desktop/local/STHeiti-Light.ttc"; sourceTree = "<group>"; };
 		910B0D1F1FF735B90028E76C /* top2old.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2old.json; path = ../../../../../Desktop/local/top2old.json; sourceTree = "<group>"; };
 		910B0D201FF735B90028E76C /* top1old.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1old.json; path = ../../../../../Desktop/local/top1old.json; sourceTree = "<group>"; };
 		910F1EF01FF999FA0096F3A9 /* oldCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = oldCode.swift; sourceTree = "<group>"; };
@@ -160,8 +160,8 @@
 		914BAE131FEBA02800861C31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		914BAE151FEBA02800861C31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		914BAE1C1FEBA05200861C31 /* Crypto PubKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto PubKeys.entitlements"; sourceTree = "<group>"; };
-		916439021FF8902400622324 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = ../../../../../Desktop/top2.json; sourceTree = "<group>"; };
-		916439031FF8902500622324 /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = ../../../../../Desktop/top1.json; sourceTree = "<group>"; };
+		9164BB3B203E690F00C40F93 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = ../../../../../Desktop/local/old/top2.json; sourceTree = "<group>"; };
+		9164BB3C203E690F00C40F93 /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = ../../../../../Desktop/local/old/top1.json; sourceTree = "<group>"; };
 		918F08D31FF33D5E0082AC9A /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
 		918F08D41FF33D5E0082AC9A /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
 		918F08D61FF33D5E0082AC9A /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
@@ -172,6 +172,8 @@
 		91E10E851FE8C36C00F65228 /* Crypto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crypto.entitlements; sourceTree = "<group>"; };
 		91E10E861FE8C3BF00F65228 /* Crypto Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto Widget.entitlements"; sourceTree = "<group>"; };
 		91E5E5981FF49677006B06B6 /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
+		91FFE4CA203979BD00AB5B0D /* STHeitiSC-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeitiSC-Medium.ttf"; path = "../../../../../Desktop/local/STHeitiSC-Medium.ttf"; sourceTree = "<group>"; };
+		91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeitiSC-Light.ttf"; path = "../../../../../Desktop/local/STHeitiSC-Light.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,10 +335,10 @@
 				910B0D181FF735AF0028E76C /* add2.json */,
 				910B0D201FF735B90028E76C /* top1old.json */,
 				910B0D1F1FF735B90028E76C /* top2old.json */,
-				916439031FF8902500622324 /* top1.json */,
-				916439021FF8902400622324 /* top2.json */,
-				910B0D1A1FF735AF0028E76C /* STHeiti-Light.ttc */,
-				910B0D191FF735AF0028E76C /* STHeiti-Medium.ttc */,
+				9164BB3C203E690F00C40F93 /* top1.json */,
+				9164BB3B203E690F00C40F93 /* top2.json */,
+				91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */,
+				91FFE4CA203979BD00AB5B0D /* STHeitiSC-Medium.ttf */,
 			);
 			path = others;
 			sourceTree = "<group>";
@@ -519,21 +521,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91FFE4CC20397A6200AB5B0D /* STHeitiSC-Light.ttf in Resources */,
+				91FFE4CD20397A6500AB5B0D /* STHeitiSC-Medium.ttf in Resources */,
 				910A819C1FA4DC75001F868A /* Assets.xcassets in Resources */,
 				910B0D1B1FF735AF0028E76C /* add1.json in Resources */,
-				916439051FF8902500622324 /* top1.json in Resources */,
 				918F08D81FF33D5E0082AC9A /* 3.json in Resources */,
+				9164BB3D203E691000C40F93 /* top2.json in Resources */,
 				910B0D221FF735B90028E76C /* top1old.json in Resources */,
-				910B0D1D1FF735AF0028E76C /* STHeiti-Medium.ttc in Resources */,
 				918F08DA1FF33D5E0082AC9A /* 2.json in Resources */,
-				916439041FF8902500622324 /* top2.json in Resources */,
+				9164BB3E203E691000C40F93 /* top1.json in Resources */,
 				910B0D161FF735950028E76C /* 1.json in Resources */,
 				918F08D71FF33D5E0082AC9A /* 4.json in Resources */,
 				910B0D211FF735B90028E76C /* top2old.json in Resources */,
 				910B0D1C1FF735AF0028E76C /* add2.json in Resources */,
 				910A819F1FA4DC75001F868A /* LaunchScreen.storyboard in Resources */,
 				910A819A1FA4DC75001F868A /* Main.storyboard in Resources */,
-				910B0D1E1FF735AF0028E76C /* STHeiti-Light.ttc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,6 +562,8 @@
 			files = (
 				914BAE081FEB98F100861C31 /* Assets.xcassets in Resources */,
 				91E10E8B1FE9070300F65228 /* MainInterface.storyboard in Resources */,
+				91FFE4CE20397AAB00AB5B0D /* STHeitiSC-Light.ttf in Resources */,
+				91FFE4CF20397AAB00AB5B0D /* STHeitiSC-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

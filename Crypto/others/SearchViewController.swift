@@ -18,6 +18,9 @@ protocol ContDelegate {
 
 
 class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResultsUpdating, SearchCellDelegate{
+    
+
+    
     func updateSearchResults(for searchController: UISearchController) {
         searchTable.reloadData()
     }
@@ -32,7 +35,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResul
     var showArray = [CMC]()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+
+        
+        
         search.clipsToBounds = true
         search.layer.cornerRadius = 16
         searchTable.layer.cornerRadius = 10
@@ -64,19 +71,23 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResul
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         search.endEditing(true)
         searchTable.reloadData()
-
+        
     }
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let superv = parent as! SecondViewController
+        
         showArray = all.filter { (cmc) -> Bool in
             return ((cmc.name?.lowercased().contains(searchText.lowercased()))! ||   (cmc.symbol?.lowercased().contains(searchText.lowercased()))! )
+            
         }
         searchTable.reloadData()
     }
-
+    
     var delag: ContDelegate?
     func addTouched(name: String) {
         delag?.updateArray(name: name)
+
     }
     
 }
@@ -95,13 +106,15 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        let superv = parent as! SecondViewController
+
         let cell = searchTable.dequeueReusableCell(withIdentifier: "cell") as! SearchTableViewCell
         cell.lb.text = self.search.text == "" ? all[indexPath.row].name : showArray[indexPath.row].name
         cell.rank.text = self.search.text == "" ? all[indexPath.row].rank : showArray[indexPath.row].rank
         cell.rank.text?.insert("#", at: (cell.rank.text?.startIndex)!)
         cell.view.layer.cornerRadius = 7
         cell.delegate = self
+        
 
         return cell
         

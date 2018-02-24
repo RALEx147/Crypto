@@ -135,7 +135,9 @@ class ViewController: UIViewController {
             self.view2.table.alpha = 0
             self.view2.lbl.alpha = 0
 //            self.view2.search.alpha = 0
-            self.view2.blurView.alpha = 0
+//            self.view2.blurView.alpha = 0
+            self.view2.delaget()
+            self.view2.v.search.text = ""
             self.view2.add.alpha = 0
             self.view2.view.layoutIfNeeded()
             self.view.layoutIfNeeded()
