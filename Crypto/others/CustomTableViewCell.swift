@@ -7,10 +7,10 @@
 //
 
 import UIKit
-protocol CustomTableViewCellDelegate {
-    func tappedAddCoin(cell:CustomTableViewCell)
-    func tappedMore(cell:CustomTableViewCell)
+protocol DoneDelagate : class {
+    func pressdone(type: String, address: String, nick: String)
 }
+
 
 class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
@@ -246,8 +246,13 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         })
     }
     
+    weak var delagate: DoneDelagate?
     @IBAction func toDone(_ sender: Any) {
-        print("done")
+        let txxt = lab.text!
+        let id = txxt.index((txxt.startIndex), offsetBy: 3)
+        let coinName = txxt.prefix(upTo: id)
+        
+        delagate?.pressdone(type: String(coinName), address: address.text!, nick: nickname.text!)
     }
     
     

@@ -15,8 +15,12 @@ class SecondViewController: UIViewController, ContDelegate {
     func updateArray(name: String) {
         if !CCCoins.contains(name){
             CCCoins.append(name)
+            CCPrice.append("0.0")
+            CCChange.append("0.0%")
+            CCColor.append("green")
             delaget()
             save()
+            
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.6) {
                 self.v.search.text = ""
                 self.v.search.resignFirstResponder()
@@ -32,6 +36,9 @@ class SecondViewController: UIViewController, ContDelegate {
     
     
     var CCCoins = [String]()
+    var CCPrice = [String]()
+    var CCChange = [String]()
+    var CCColor = [String]()
     var blurView: UIVisualEffectView!
     let bgView = UIView()
     let disGroup3 = DispatchGroup()
@@ -66,9 +73,10 @@ class SecondViewController: UIViewController, ContDelegate {
         setupRefresh()
         setupLbl()
         load()
+//        save()
+
         self.v.delag = self
-        
-        
+
         
         
     }
@@ -104,8 +112,21 @@ class SecondViewController: UIViewController, ContDelegate {
         }
     }
     
-    func save(){UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCCoins, forKey: "CCCoins")}
-    func load() {CCCoins = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCCoins") as? [String] ?? [])!}
+    func save(){
+        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCCoins, forKey: "CCCoins")
+        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCPrice, forKey: "CCPrice")
+        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCChange, forKey: "CCChange")
+        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCColor, forKey: "CCColor")
+
+        
+    }
+    func load() {
+        CCCoins = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCCoins") as? [String] ?? [])!
+        CCPrice = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCPrice") as? [String] ?? [])!
+        CCChange = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCChange") as? [String] ?? [])!
+        CCColor = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCColor") as? [String] ?? [])!
+
+    }
     
     
     func Construct(completion: @escaping ([CMC]?) -> ()){
@@ -176,19 +197,19 @@ class SecondViewController: UIViewController, ContDelegate {
     }
     
     @IBAction func addCoin(_ sender: Any) {
-
-        UIView.animate(withDuration: 0.3, animations: {
+        if !self.v.all.isEmpty{
+            UIView.animate(withDuration: 0.3, animations: {
+                
+                self.v.search.alpha = 1
+                self.blurView.alpha = 0.9
+                self.bgView.alpha = 0.5
+                self.v.searchTable.alpha = 1
+                self.textversion.alpha = 1
+                self.cont.isUserInteractionEnabled = true
+                self.v.searchTable.reloadData()
+            })
             
-            self.v.search.alpha = 1
-            self.blurView.alpha = 0.9
-            self.bgView.alpha = 0.5
-            self.v.searchTable.alpha = 1
-            self.textversion.alpha = 1
-            self.cont.isUserInteractionEnabled = true
-            self.v.searchTable.reloadData()
-        })
-        
-        
+        }
     }
     func setupConstr() {
         blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -235,7 +256,7 @@ class SecondViewController: UIViewController, ContDelegate {
         blurView.layer.cornerRadius = 19
         bgView.layer.cornerRadius = 19
         view.backgroundColor = UIColor(named: "bg")
-       
+        
         
         
         
@@ -283,9 +304,28 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
         cell.name.text = name
         cell.price.text = getPrice(name)
         cell.change.text = getChange(name) + "%"
-        
         let clr = color(name) ? UIColor(named: "myGreen") : UIColor(named: "myRed")
         cell.color.backgroundColor = clr
+        
+        if cell.price.text == "Error"{
+            cell.price.text = self.CCPrice[indexPath.row]
+            cell.change.text = self.CCChange[indexPath.row]
+            if self.CCColor[indexPath.row] == "green"{
+                cell.color.backgroundColor = UIColor(named: "myGreen")
+            }
+            else{
+                cell.color.backgroundColor = UIColor(named: "myRed")
+            }
+        }
+        else{
+            CCPrice[indexPath.row] = getPrice(name)
+            CCChange[indexPath.row] = getChange(name) + "%"
+            CCColor[indexPath.row] = color(name) ? "red" : "green"
+
+
+            save()
+        }
+
         return cell
         
         
@@ -298,6 +338,10 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
             print("Deleted")
             
             self.CCCoins.remove(at: indexPath.row)
+            self.CCChange.remove(at: indexPath.row)
+            self.CCColor.remove(at: indexPath.row)
+            self.CCPrice.remove(at: indexPath.row)
+
             self.table.deleteRows(at: [indexPath], with: .automatic)
             self.save()
         }

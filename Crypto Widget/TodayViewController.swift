@@ -88,6 +88,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //if you look at this there is a reason
+        //i started out a rough project hard code
+        //but turned into real app and too lazy to change
+        
         prices.append(price0);prices.append(price1);prices.append(price2);prices.append(price3);prices.append(price4)
         prices.append(price5);prices.append(price6);prices.append(price7);prices.append(price8);prices.append(price9)
         names.append(name0);names.append(name1);names.append(name2);names.append(name3);names.append(name4);
@@ -139,7 +143,10 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                     
                     if changes[i].text![d] == "-"{imgs[i].backgroundColor = UIColor(named: "myRed")}
                     else if changes[i].text! == "0.0%"{}
-                    else{imgs[i].backgroundColor = UIColor(named: "myGreen");changes[i].text!.insert("+", at: String.Index.init(encodedOffset: 0))}
+                    else{
+                        imgs[i].backgroundColor = UIColor(named: "myGreen");
+                        changes[i].text!.insert("+", at: String.Index.init(encodedOffset: 0))
+                    }
                     self.view.sendSubview(toBack: imgs[i])
                 }
                 else{changes[i].text = "--"}

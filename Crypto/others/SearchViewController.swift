@@ -60,7 +60,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResul
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         let superv = parent as! SecondViewController
         self.search.text = ""
-        superv.delaget()
+        superv.delaget()//!!!WTF
     }
 
     
@@ -106,7 +106,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let superv = parent as! SecondViewController
 
         let cell = searchTable.dequeueReusableCell(withIdentifier: "cell") as! SearchTableViewCell
         cell.lb.text = self.search.text == "" ? all[indexPath.row].name : showArray[indexPath.row].name

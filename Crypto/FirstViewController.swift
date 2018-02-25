@@ -262,9 +262,9 @@ class FirstViewController: UIViewController{
                     
                     
                     for x in newSubcells{
-                        let t = (Double(x.total!))
-                        let p = Double(self.getPrice(name: x.name!.lowercased()))!
-                        let new = Cell(name: x.name!, tag: x.name!, amount: x.total!, price: String(describing: p), balance: String(describing: (t! * p)), address: c.address!, subCells: [Cell]())
+                        let t = (Double(x.total!)) ?? 0.0
+                        let p = Double(self.getPrice(name: x.name!.lowercased())) ?? 0.0
+                        let new = Cell(name: x.name!, tag: x.name!, amount: x.total!, price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
                         c.subCells!.append(new)
                         
                         
@@ -287,10 +287,12 @@ class FirstViewController: UIViewController{
                         
                         if i.name?.lowercased() == "neo"{
                             c.amount = i.total
-                            if let t = (Double(i.total!)), let p = Double(self.getPrice(name: c.name.lowercased())){
-                                c.balance = String(describing: (t * p))
-                                c.price = String(describing: p)
+                            if let t = (Double(i.total!)){
                                 c.amount = String(describing: t)
+                                if let p = Double(self.getPrice(name: c.name.lowercased())){
+                                    c.balance = String(describing: (t * p))
+                                    c.price = String(describing: p)
+                                }
                             }
                         }
                     }
@@ -332,10 +334,11 @@ class FirstViewController: UIViewController{
                     tempArr.append("ethereum")
                     
                     var newSubcells = [ERC20]()
-                    
-                    for i in eth.tokens!{
-                        if !tempArr.contains((i.tokenInfo?.name?.lowercased())!){
-                            newSubcells.append(i)
+                    if eth.tokens != nil{
+                        for i in eth.tokens!{
+                            if !tempArr.contains((i.tokenInfo?.name?.lowercased())!){
+                                newSubcells.append(i)
+                            }
                         }
                     }
                     
@@ -551,8 +554,10 @@ class FirstViewController: UIViewController{
         self.disGroup.enter()
         
         var done = false
+        var fail = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
+                fail = true
                 self.disGroup.leave()
                 completion(nil)
             }
@@ -567,7 +572,9 @@ class FirstViewController: UIViewController{
                     
                     
                     print("cmc")
-                    self.disGroup.leave()
+                    if !fail{
+                        self.disGroup.leave()
+                    }
                     done = true
                     completion(coin)
                     
@@ -609,10 +616,11 @@ class FirstViewController: UIViewController{
     func neoBalance(_ c: Cell, completion: @escaping ([NEO]) -> ()){
         self.disGroup.enter()
         var done = false
-        
+        var fail = false
         let link = "https://otcgo.cn/api/v1/balances/" + c.address
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
             if !done{
+                fail = true
                 self.disGroup.leave()
                 completion([NEO]())
             }
@@ -624,13 +632,16 @@ class FirstViewController: UIViewController{
                     let neo = try JSONDecoder().decode(NEON.self, from: data)
                     var output = [NEO]()
                     for i in neo.balances{
-                        if (i.name == "NEO" || i.total != "0") {
+                        let num = Double(i.total!) ?? 0.0
+                        if (i.name == "NEO" || num > 0.00001) {
                             output.append(i)
                         }
                     }
                     print("neo")
                     done = true
-                    self.disGroup.leave()
+                    if !fail{
+                        self.disGroup.leave()
+                    }
                     completion(output)
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
@@ -941,6 +952,27 @@ class FirstViewController: UIViewController{
         }
     }
     
+    func toggleMenuDelagate(){
+        if !addOn {
+            if showBool{
+                self.showAdd()
+                add?.play(completion: { (success:Bool) in
+                    self.addOn = true
+                    self.addAddButton(on: self.addOn)
+                })
+            }
+        }else{
+            if hideBool{
+                self.hideAdd()
+                add?.play(completion: { (success:Bool) in
+                    self.addOn = false
+                    self.addAddButton(on: self.addOn)
+                })
+            }
+            
+        }
+    }
+    
     
     func fadeMore(){
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
@@ -992,10 +1024,12 @@ class FirstViewController: UIViewController{
         self.bannerHeight.constant = 100
         self.totalHeight.constant = 10
         superView.gradient.constant = 30
-       
+        
         //        table.reloadData()
         //        self.reloadSubTable()
-        
+        self.reloadSubMore()
+        self.reloadSubTable()
+        self.reloadSubMore()
         becomeEdit = true
         UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
             let head = self.table.tableHeaderView
@@ -1022,14 +1056,15 @@ class FirstViewController: UIViewController{
             self.add?.frame.origin.y = 60
             let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
             self.cellArray.insert(add, at: 0)
-            self.reloadSubMore()
-            self.reloadSubTable()
-
+            
+            
             self.table.performBatchUpdates({
                 self.table.isEditing = true
                 self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
             }) { (_) in self.table.reloadData()
-                self.showBool = true}
+                self.showBool = true
+                
+            }
         }))
         
         
@@ -1132,7 +1167,26 @@ class FirstViewController: UIViewController{
     
 }
 
-extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
+extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneDelagate {
+    
+    func pressdone(type: String, address: String, nick: String) {
+        
+        toggleMenuDelagate()
+        
+        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
+        self.cellArray.insert(add, at: 0)
+        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+        
+        saveCells()
+        self.reload(self)
+        
+    }
+    
+    
+    
+    
+    
+    
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tableView.backgroundColor = UIColor(named: "bg")
@@ -1199,6 +1253,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource {
         else{
             cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: 45)
         }
+        cell.delagate = self
         return cell
     }
     
