@@ -13,6 +13,9 @@ import Lottie
 let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BRL"]
 
 class FirstViewController: UIViewController{
+    @IBAction func debug(_ sender: Any) {
+        print("ddasa")
+    }
     
     
     @IBOutlet weak var spacing: UIView!
@@ -331,6 +334,21 @@ class FirstViewController: UIViewController{
                             tempArr.append(j.tag.lowercased())
                         }
                     }
+                    //bad programming but too lazy and im rushing to get this done
+                    var currentNamesInSubcell = [String]()
+                    if eth.tokens != nil{
+                        for i in eth.tokens!{
+                            currentNamesInSubcell.append((i.tokenInfo?.symbol?.lowercased())!)
+                        }
+                    }
+                    
+                    for i in stride(from: c.subCells.count-1, to: -1, by: -1) {
+                        if !currentNamesInSubcell.contains(c.subCells[i].name.lowercased()){
+                            c.subCells.remove(at: i)
+                        }
+                    }
+                    
+                    
                     tempArr.append("ethereum")
                     
                     var newSubcells = [ERC20]()
@@ -344,19 +362,19 @@ class FirstViewController: UIViewController{
                     
                     
                     for x in newSubcells{
-                        let exp: Int
-                        if x.tokenInfo?.decimals?.decInt == 0 {
+                        var exp: Int = 0
+                        if x.tokenInfo?.decimals?.decInt == 0 && x.tokenInfo?.decimals?.decString != ""{
                             exp = Int((x.tokenInfo?.decimals?.decString)!)!
                         }
-                        else{
+                        else if x.tokenInfo?.decimals?.decInt != 0{
                             exp = (x.tokenInfo?.decimals?.decInt)!
                         }
                         let divisor = Double(10 ^ exp)
                         let t = Double(x.balance!) / divisor
-                        let p = Double(self.getPrice(name: (x.tokenInfo?.symbol!.lowercased())!))!
+                        if let p = Double(self.getPrice(name: (x.tokenInfo?.symbol!.lowercased())!)){
                         let new = Cell(name: x.tokenInfo!.symbol!, tag: x.tokenInfo!.name!, amount: String(describing: t), price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
-                        c.subCells!.append(new)
-                        
+                            c.subCells!.append(new)
+                        }
                         
                     }
                     
@@ -683,7 +701,7 @@ class FirstViewController: UIViewController{
     
     
     
-    func btcBalance(_ c:Cell, completion: @escaping (BTC) -> ()){
+    func btcBalance(_ c:Cell, completion: @escaping (BTC?) -> ()){
         self.disGroup.enter()
         var done = false
         let link = "https://blockexplorer.com/api/addr/" + c.address
@@ -705,13 +723,17 @@ class FirstViewController: UIViewController{
                     completion(balance)
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
+                    
+                    self.disGroup.leave()
+                    done = true
+                    completion(nil)
                 }
             }
             }.resume()
     }
     
     
-    func ltcBalance(_ c:Cell, completion: @escaping (LTC) -> ()){
+    func ltcBalance(_ c:Cell, completion: @escaping (LTC?) -> ()){
         self.disGroup.enter()
         var done = false
         let link = "https://chain.so/api/v2/get_address_balance/LTC/" + c.address
@@ -735,6 +757,8 @@ class FirstViewController: UIViewController{
                     }
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
+                    completion(nil)
+                    
                 }
             }
             }.resume()
@@ -975,6 +999,15 @@ class FirstViewController: UIViewController{
     
     
     func fadeMore(){
+//        var list = [CustomTableViewCell]()
+//        let rowCount = table.numberOfRowsInSection(section)
+//
+//
+//        for row in 0 ..< rowCount {
+//            let cell = table.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section)) as! CustomTableViewCell
+//            list.append(cell)
+//        }
+//
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
         for i in cells {
             i.moreLabel.alpha = 0
@@ -1019,6 +1052,7 @@ class FirstViewController: UIViewController{
     
     var showBool = true
     func showAdd(){
+        
         showBool = false
         let superView = parent as! ViewController
         self.bannerHeight.constant = 100
@@ -1163,27 +1197,131 @@ class FirstViewController: UIViewController{
         
         
     }
-    
+    var doneButtonTouched = false
     
 }
 
 extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneDelagate {
-    
     func pressdone(type: String, address: String, nick: String) {
-        
-        toggleMenuDelagate()
-        
-        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
-        self.cellArray.insert(add, at: 0)
-        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-        
-        saveCells()
-        self.reload(self)
-        
+        if !doneButtonTouched{
+            doneButtonTouched = true
+            let testCell = Cell(name: type, tag: " ", amount: "0", price: "0", balance: "0", address: address, subCells: [Cell]())
+            
+            //uggo coding
+            switch type{
+            case "BTC":
+                var checkIfNotFucked:BTC!
+               
+                btcBalance(testCell, completion: { (out)  in
+                    checkIfNotFucked = out
+                })
+                
+                disGroup.notify(queue: .main){
+                    self.doneButtonTouched = false
+                    print(checkIfNotFucked)
+                    if checkIfNotFucked != nil && checkIfNotFucked.balance >= 0 {
+                        self.toggleMenuDelagate()
+                        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
+                        self.cellArray.insert(add, at: 0)
+                        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.saveCells()
+                        self.reload(self)
+                    }
+                    else{
+                        print("EEEERRRRORR")
+                    }
+                }
+                
+                
+                
+                break
+            case "ETH":
+                var checkIfNotFucked:ETH!
+                ethBalance(testCell, completion: { (out)  in
+                    checkIfNotFucked = out
+                })
+                disGroup.notify(queue: .main){
+                    self.doneButtonTouched = false
+                    if checkIfNotFucked != nil{
+                        self.toggleMenuDelagate()
+                        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
+                        self.cellArray.insert(add, at: 0)
+                        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.saveCells()
+                        self.reload(self)
+                    }
+                }
+                break
+            case "XRP":
+                var checkIfNotFucked:[XRP]!
+                xrpBalance(testCell, completion: { (out)  in
+                    checkIfNotFucked = out
+                })
+                disGroup.notify(queue: .main){
+                    self.doneButtonTouched = false
+                    if checkIfNotFucked != nil{
+                        self.toggleMenuDelagate()
+                        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
+                        self.cellArray.insert(add, at: 0)
+                        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.saveCells()
+                        self.reload(self)
+                    }
+                }
+                break
+            case "NEO":
+                var checkIfNotFucked:[NEO]!
+                neoBalance(testCell, completion: { (out)  in
+                    checkIfNotFucked = out
+                })
+                disGroup.notify(queue: .main){
+                    self.doneButtonTouched = false
+                    if checkIfNotFucked != nil{
+                        self.toggleMenuDelagate()
+                        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
+                        self.cellArray.insert(add, at: 0)
+                        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.saveCells()
+                        self.reload(self)
+                    }
+                }
+                break
+            case "LTC":
+                var checkIfNotFucked:LTC!
+                ltcBalance(testCell, completion: { (out)  in
+                    checkIfNotFucked = out
+                })
+                disGroup.notify(queue: .main){
+                    self.doneButtonTouched = false
+                    if checkIfNotFucked != nil{
+                        self.toggleMenuDelagate()
+                        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
+                        self.cellArray.insert(add, at: 0)
+                        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                        self.saveCells()
+                        self.reload(self)
+                    }
+                }
+                break
+                
+            default:
+                break
+            }
+            
+            
+            
+            
+        }
     }
     
     
-    
+    func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        if (proposedDestinationIndexPath.row == 0) {
+            return IndexPath(row: 1, section: proposedDestinationIndexPath.section)
+        }
+        return proposedDestinationIndexPath
+    }
+
     
     
     
@@ -1280,12 +1418,14 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
     
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedObject = self.cellArray[sourceIndexPath.row]
-        self.cellArray.remove(at: sourceIndexPath.row)
-        self.cellArray.insert(movedObject, at: destinationIndexPath.row)
-        self.saveCells()
-        NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(cellArray)")
-        // To check for correctness enable: self.tableView.reloadData()
+        if destinationIndexPath.row != 0 {
+            let movedObject = self.cellArray[sourceIndexPath.row]
+            self.cellArray.remove(at: sourceIndexPath.row)
+            self.cellArray.insert(movedObject, at: destinationIndexPath.row)
+            self.saveCells()
+            NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(cellArray)")
+            // To check for correctness enable: self.tableView.reloadData()
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

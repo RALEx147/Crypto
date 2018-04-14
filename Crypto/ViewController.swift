@@ -29,12 +29,13 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var halo: UIImageView!
-    @IBOutlet weak var icon: UIImageView!
+    
     
     
     @IBOutlet weak var v2: UIView!
     @IBOutlet weak var v1: UIView!
     
+    @IBOutlet var icon: UIButton!
     
     
     
@@ -125,7 +126,11 @@ class ViewController: UIViewController {
     
     
     
+    @IBOutlet var debug: UIButton!
     
+    @IBAction func debug(_ sender: Any) {
+        print("agy")
+    }
     
     func toKey(){
         

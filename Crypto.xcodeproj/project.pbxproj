@@ -813,7 +813,7 @@
 				CODE_SIGN_ENTITLEMENTS = Crypto/Crypto.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -821,7 +821,7 @@
 				);
 				INFOPLIST_FILE = Crypto/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.Crypto;
+				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
@@ -837,7 +837,7 @@
 				CODE_SIGN_ENTITLEMENTS = Crypto/Crypto.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -845,7 +845,7 @@
 				);
 				INFOPLIST_FILE = Crypto/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.Crypto;
+				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
@@ -859,10 +859,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CryptoSiri/CryptoSiri.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				INFOPLIST_FILE = CryptoSiri/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.Crypto.CryptoSiri;
+				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain.CryptoSiri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -875,10 +875,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CryptoSiri/CryptoSiri.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				INFOPLIST_FILE = CryptoSiri/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.Crypto.CryptoSiri;
+				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain.CryptoSiri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -890,12 +890,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CryptoSiriUI/CryptoSiriUI.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				INFOPLIST_FILE = CryptoSiriUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.Crypto.CryptoSiriUI;
+				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain.CryptoSiriUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -906,8 +908,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CryptoSiriUI/CryptoSiriUI.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -915,8 +918,9 @@
 				);
 				INFOPLIST_FILE = CryptoSiriUI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.Crypto.CryptoSiriUI;
+				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain.CryptoSiriUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -928,10 +932,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Crypto Widget/Crypto Widget.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				INFOPLIST_FILE = "Crypto Widget/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.Crypto.Crypto-Widget";
+				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -944,10 +948,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Crypto Widget/Crypto Widget.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				INFOPLIST_FILE = "Crypto Widget/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.Crypto.Crypto-Widget";
+				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -960,10 +964,10 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Crypto PubKeys/Crypto PubKeys.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				INFOPLIST_FILE = "Crypto PubKeys/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.Crypto.Crypto-PubKeys";
+				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-PubKeys";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -976,7 +980,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "Crypto PubKeys/Crypto PubKeys.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 44WHLLW2EP;
+				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -984,7 +988,7 @@
 				);
 				INFOPLIST_FILE = "Crypto PubKeys/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.Crypto.Crypto-PubKeys";
+				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-PubKeys";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;

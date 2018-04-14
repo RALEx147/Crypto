@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.NavaDrag.Crypto</string>
+		<string>group.com.NavaDrag.CryptoKeychain</string>
 	</array>
 </dict>
 </plist>
