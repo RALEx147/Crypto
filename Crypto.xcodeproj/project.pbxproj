@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9107DC471FF2FD55002A48EA /* JHTAlertController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9107DC451FF2FD39002A48EA /* JHTAlertController.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		9107DC481FF2FD55002A48EA /* JHTAlertController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9107DC451FF2FD39002A48EA /* JHTAlertController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		910A81931FA4DC75001F868A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81921FA4DC75001F868A /* AppDelegate.swift */; };
 		910A81951FA4DC75001F868A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81941FA4DC75001F868A /* ViewController.swift */; };
 		910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81961FA4DC75001F868A /* SecondViewController.swift */; };
@@ -112,7 +110,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9107DC481FF2FD55002A48EA /* JHTAlertController.framework in Embed Frameworks */,
 				91E5E59B1FF4967B006B06B6 /* Lottie.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -121,7 +118,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9107DC451FF2FD39002A48EA /* JHTAlertController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JHTAlertController.framework; sourceTree = "<group>"; };
 		910A818F1FA4DC75001F868A /* Crypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		910A81921FA4DC75001F868A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		910A81941FA4DC75001F868A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -181,7 +177,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9107DC471FF2FD55002A48EA /* JHTAlertController.framework in Frameworks */,
 				91E5E59A1FF4967B006B06B6 /* Lottie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -284,7 +279,6 @@
 			isa = PBXGroup;
 			children = (
 				91E5E5981FF49677006B06B6 /* Lottie.framework */,
-				9107DC451FF2FD39002A48EA /* JHTAlertController.framework */,
 				914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */,
 				9113C0E21FE9EC39005170A4 /* IntentsUI.framework */,
 			);
@@ -444,7 +438,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Robert Alexander";
 				TargetAttributes = {
 					910A818E1FA4DC75001F868A = {
@@ -713,6 +707,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -720,6 +715,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -770,6 +766,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -777,6 +774,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

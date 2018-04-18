@@ -75,7 +75,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResul
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let superv = parent as! SecondViewController
+//        let superv = parent as! SecondViewController
         
         showArray = all.filter { (cmc) -> Bool in
             return ((cmc.name?.lowercased().contains(searchText.lowercased()))! ||   (cmc.symbol?.lowercased().contains(searchText.lowercased()))! )

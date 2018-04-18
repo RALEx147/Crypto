@@ -128,7 +128,7 @@ class ViewController: UIViewController {
     @IBOutlet var debug: UIButton!
     
     @IBAction func debug(_ sender: Any) {
-        print("agy")
+        print(view2.banner.frame.size.height)
     }
     
     func toKey(){
@@ -155,6 +155,7 @@ class ViewController: UIViewController {
     func toKeyAnimate(){
         self.v1.alpha = 1
         self.v2.alpha = 0
+        self.icon.alpha = 1
         
         UIView.animate(withDuration: 0.33, delay: 0.1, options: .curveEaseOut, animations: {
             let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
@@ -192,9 +193,7 @@ class ViewController: UIViewController {
     }
     
     func toPriceAnimate(){
-        
-        
-        self.view1?.bannerHeight.constant = v2BH!
+        self.view1?.bannerHeight.constant = view2.banner.frame.size.height
         
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
             self.view1.view.layoutIfNeeded()
@@ -209,11 +208,17 @@ class ViewController: UIViewController {
             self.view.layoutIfNeeded()
         }) { (_) in}
         UIView.animate(withDuration: 0.22, delay: 0.26, options: .curveEaseOut, animations: {
-
-                let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
+            
+            let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
+            if cells.count > 0{
                 for i in cells {
                     i.alpha = 0.01
                 }
+            }
+            else{
+                self.icon.alpha = 0.99
+            }
+            
             
             
             
@@ -247,15 +252,19 @@ class ViewController: UIViewController {
         ani4Frame = CGRect(x: (self.view1?.ani4.frame.origin.x)!, y: (self.view1?.ani4.frame.origin.y)! , width: (self.view1?.ani4.frame.width)!, height: (self.view1?.ani4.frame.height)!)
         aniBGFrame = CGRect(x: (self.view1?.bg.frame.origin.x)!, y: (self.view1?.bg.frame.origin.y)! , width: (self.view1?.bg.frame.width)!, height: (self.view1?.bg.frame.height)!)
         bannerFrame2 = CGRect(x: (self.view2?.banner.frame.origin.x)!, y: (self.view2?.banner.frame.origin.y)! , width: (self.view.frame.width), height: (self.view2?.banner.frame.height)!)
-        v2BH = (view2?.bannerHeight.constant)! + 2
+
+//        v2BH = (view2?.bannerHeight.constant)! + 2
+        
+        self.view2.view.layoutIfNeeded()
+        
+        v2BH = (view2.banner.frame.size.height) + 2
+
+//        v2BH = view2.banner.image?.size.height
+        
         v1BH = (view1?.bannerHeight.constant)! - 2
         
     }
     
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 }
 
 
