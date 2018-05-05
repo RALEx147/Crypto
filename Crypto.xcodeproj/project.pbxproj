@@ -41,8 +41,16 @@
 		914BAE1D1FEBA0D800861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		914BAE1E1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		914BAE1F1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
+		914C435D209D28FD006CD37D /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4353209D1F76006CD37D /* Alamofire.framework */; };
+		914C435E209D28FD006CD37D /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4353209D1F76006CD37D /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		914C435F209D28FD006CD37D /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4352209D1F76006CD37D /* CommonCrypto.framework */; };
+		914C4360209D28FD006CD37D /* CommonCrypto.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4352209D1F76006CD37D /* CommonCrypto.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		914C4361209D2917006CD37D /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4350209D1F46006CD37D /* Lottie.framework */; };
+		914C4362209D2917006CD37D /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4350209D1F46006CD37D /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9164BB3D203E691000C40F93 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3B203E690F00C40F93 /* top2.json */; };
 		9164BB3E203E691000C40F93 /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3C203E690F00C40F93 /* top1.json */; };
+		9180AE9D209D2F0000154A2D /* BinanceApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9180AE9B209D2EC600154A2D /* BinanceApi.framework */; };
+		9180AE9E209D2F0000154A2D /* BinanceApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9180AE9B209D2EC600154A2D /* BinanceApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		918F08D71FF33D5E0082AC9A /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D31FF33D5E0082AC9A /* 4.json */; };
 		918F08D81FF33D5E0082AC9A /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D41FF33D5E0082AC9A /* 3.json */; };
 		918F08DA1FF33D5E0082AC9A /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D61FF33D5E0082AC9A /* 2.json */; };
@@ -50,8 +58,6 @@
 		91C1FB4E2033E96400F347EF /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C1FB4D2033E96400F347EF /* SearchViewController.swift */; };
 		91C7B43C201647EB00EDF5FC /* PriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */; };
 		91E10E8B1FE9070300F65228 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 914B4BAE1FC8F7C400968A3E /* MainInterface.storyboard */; };
-		91E5E59A1FF4967B006B06B6 /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		91E5E59B1FF4967B006B06B6 /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91E5E5981FF49677006B06B6 /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		91FFE4CC20397A6200AB5B0D /* STHeitiSC-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */; };
 		91FFE4CD20397A6500AB5B0D /* STHeitiSC-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CA203979BD00AB5B0D /* STHeitiSC-Medium.ttf */; };
 		91FFE4CE20397AAB00AB5B0D /* STHeitiSC-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */; };
@@ -110,7 +116,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				91E5E59B1FF4967B006B06B6 /* Lottie.framework in Embed Frameworks */,
+				914C4360209D28FD006CD37D /* CommonCrypto.framework in Embed Frameworks */,
+				914C435E209D28FD006CD37D /* Alamofire.framework in Embed Frameworks */,
+				9180AE9E209D2F0000154A2D /* BinanceApi.framework in Embed Frameworks */,
+				914C4362209D2917006CD37D /* Lottie.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,8 +165,12 @@
 		914BAE131FEBA02800861C31 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		914BAE151FEBA02800861C31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		914BAE1C1FEBA05200861C31 /* Crypto PubKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto PubKeys.entitlements"; sourceTree = "<group>"; };
+		914C4350209D1F46006CD37D /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
+		914C4352209D1F76006CD37D /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
+		914C4353209D1F76006CD37D /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		9164BB3B203E690F00C40F93 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = ../../../../../Desktop/local/old/top2.json; sourceTree = "<group>"; };
 		9164BB3C203E690F00C40F93 /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = ../../../../../Desktop/local/old/top1.json; sourceTree = "<group>"; };
+		9180AE9B209D2EC600154A2D /* BinanceApi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BinanceApi.framework; path = Carthage/Build/iOS/BinanceApi.framework; sourceTree = "<group>"; };
 		918F08D31FF33D5E0082AC9A /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
 		918F08D41FF33D5E0082AC9A /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
 		918F08D61FF33D5E0082AC9A /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
@@ -167,7 +180,6 @@
 		91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTableViewCell.swift; sourceTree = "<group>"; };
 		91E10E851FE8C36C00F65228 /* Crypto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Crypto.entitlements; sourceTree = "<group>"; };
 		91E10E861FE8C3BF00F65228 /* Crypto Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto Widget.entitlements"; sourceTree = "<group>"; };
-		91E5E5981FF49677006B06B6 /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
 		91FFE4CA203979BD00AB5B0D /* STHeitiSC-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeitiSC-Medium.ttf"; path = "../../../../../Desktop/local/STHeitiSC-Medium.ttf"; sourceTree = "<group>"; };
 		91FFE4CB203979BD00AB5B0D /* STHeitiSC-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "STHeitiSC-Light.ttf"; path = "../../../../../Desktop/local/STHeitiSC-Light.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -177,7 +189,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91E5E59A1FF4967B006B06B6 /* Lottie.framework in Frameworks */,
+				914C435F209D28FD006CD37D /* CommonCrypto.framework in Frameworks */,
+				914C435D209D28FD006CD37D /* Alamofire.framework in Frameworks */,
+				914C4361209D2917006CD37D /* Lottie.framework in Frameworks */,
+				9180AE9D209D2F0000154A2D /* BinanceApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,7 +293,10 @@
 		914B4BA81FC8F7C400968A3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				91E5E5981FF49677006B06B6 /* Lottie.framework */,
+				9180AE9B209D2EC600154A2D /* BinanceApi.framework */,
+				914C4353209D1F76006CD37D /* Alamofire.framework */,
+				914C4352209D1F76006CD37D /* CommonCrypto.framework */,
+				914C4350209D1F46006CD37D /* Lottie.framework */,
 				914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */,
 				9113C0E21FE9EC39005170A4 /* IntentsUI.framework */,
 			);
@@ -307,6 +325,13 @@
 			path = "Crypto PubKeys";
 			sourceTree = "<group>";
 		};
+		914C435C209D1FEA006CD37D /* binance */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = binance;
+			sourceTree = "<group>";
+		};
 		918F08D21FF33CEA0082AC9A /* others */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +343,7 @@
 				91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */,
 				91383F1D1FFF1FB00000ECB7 /* connection.swift */,
 				910F1EF01FF999FA0096F3A9 /* oldCode.swift */,
+				914C435C209D1FEA006CD37D /* binance */,
 				910A81921FA4DC75001F868A /* AppDelegate.swift */,
 				910A819B1FA4DC75001F868A /* Assets.xcassets */,
 				910A819D1FA4DC75001F868A /* LaunchScreen.storyboard */,
@@ -816,6 +842,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = Crypto/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -840,6 +867,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INFOPLIST_FILE = Crypto/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

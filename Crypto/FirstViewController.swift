@@ -9,15 +9,18 @@
 import Foundation
 import UIKit
 import Lottie
+import CommonCrypto
+import Alamofire
 
 let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BRL"]
 
 class FirstViewController: UIViewController{
     @IBAction func debug(_ sender: Any) {
         print("ddasa")
+        
     }
     
-    
+ 
     @IBOutlet weak var spacing: UIView!
     @IBOutlet weak var banner: UIImageView!
     @IBOutlet weak var table: UITableView!
@@ -66,6 +69,7 @@ class FirstViewController: UIViewController{
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
             self.reload(self)
         }
+        
         
         
     }
@@ -439,6 +443,41 @@ class FirstViewController: UIViewController{
             }
             
         }
+        else if c.name == "BINANCE"{
+            var bnb: [BinanceCoins]!
+            bnbBalacne(c){(completion) in bnb = completion}
+            disGroup.notify(queue: .main){
+                var nameArr = [String]()
+                for i in c.subCells{
+                    nameArr.append(i.name)
+                }
+                c.balance = "0"
+                c.amount = "0"
+                c.price = "0"
+                for i in bnb{
+                    if !nameArr.contains(i.asset!){
+                        if let a = Double(i.free!), let p = Double(self.getPrice(name: i.asset!)){
+                            c.subCells.append(Cell(name: i.asset!, tag: "", amount: i.free!, price: self.getPrice(name: i.asset!), balance: String(describing: (a * p)), address: "", subCells: [Cell]()))
+                        }
+                    }
+                    else{
+                        for i in c.subCells{
+                            for j in bnb{
+                                if i.name!.lowercased() == j.asset!.lowercased(){
+                                    i.amount = j.free!
+                                    i.price = self.getPrice(name: j.asset!)
+                                    if let a = Double(j.free!), let p = Double(self.getPrice(name: j.asset!)){
+                                    i.balance = String(describing: (a * p))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+            
+        }
             
         else if c.name == "XRP"{
             var xrp:[XRP]!
@@ -448,6 +487,7 @@ class FirstViewController: UIViewController{
                 already.append(k.name)
             }
             print(c.subCells)
+            
             disGroup.notify(queue: .main){
                 var dict = [String:Double]()
                 
@@ -631,7 +671,7 @@ class FirstViewController: UIViewController{
             }.resume()
     }
     
-    func neoBalance(_ c: Cell, completion: @escaping ([NEO]) -> ()){
+    func neoBalance(_ c: Cell, completion: @escaping ([NEO]?) -> ()){
         self.disGroup.enter()
         var done = false
         var fail = false
@@ -663,6 +703,9 @@ class FirstViewController: UIViewController{
                     completion(output)
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
+                    self.disGroup.leave()
+                    done = true
+                    completion(nil)
                 }
             }
             }.resume()
@@ -670,7 +713,7 @@ class FirstViewController: UIViewController{
     
     
     
-    func ethBalance(_ c:Cell, completion: @escaping (ETH) -> ()){
+    func ethBalance(_ c:Cell, completion: @escaping (ETH?) -> ()){
         self.disGroup.enter()
         var done = false
         let link = "https://api.ethplorer.io/getAddressInfo/" + c.address + "?apiKey=freekey"
@@ -694,6 +737,9 @@ class FirstViewController: UIViewController{
                     completion(balance)
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
+                    self.disGroup.leave()
+                    done = true
+                    completion(nil)
                 }
             }
             }.resume()
@@ -757,6 +803,8 @@ class FirstViewController: UIViewController{
                     }
                 } catch let jsonErr {
                     print("Error serializing json:", jsonErr)
+                    self.disGroup.leave()
+                    done = true
                     completion(nil)
                     
                 }
@@ -800,6 +848,46 @@ class FirstViewController: UIViewController{
                 }
             }
             }.resume()
+    }
+    typealias CallBack = (_ result: [BinanceCoins]) -> Void
+    func bnbBalacne(_ c:Cell, completion: @escaping CallBack){
+        let seperate = c.address.split(separator: " ")
+        let apikey = String(seperate[0])
+        let secret = String(seperate[1])
+        let time = Int64(NSDate().timeIntervalSince1970*1000)
+        let signkey = "timestamp=\(time)"
+        let signature = signkey.hmac(base64key:secret)
+        let headers: HTTPHeaders = ["X-MBX-APIKEY": apikey]
+        var out = [BinanceCoins]()
+        self.disGroup.enter()
+        Alamofire.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
+            do {
+                let binance = try JSONDecoder().decode(Binance.self, from: response.data!)
+                
+                for i in binance.balances!{
+                    if let amount = Double(i.free!) {
+                        if amount > 0{
+                            out.append(i)
+                        }
+                    }
+                }
+                self.disGroup.leave()
+                let final = out.filter {
+                    if let price = Double(self.getPrice(name: $0.asset!)) {
+                        return Double($0.free!)! * price > 0.5
+                    }
+                    else{
+                        return false
+                    }
+                }
+                completion(final)
+            }
+            catch{
+                print("error")
+                self.disGroup.leave()
+            }
+            
+        }
     }
     
     
@@ -1204,6 +1292,7 @@ class FirstViewController: UIViewController{
 extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneDelagate {
     func pressdone(type: String, address: String, nick: String) {
         if !doneButtonTouched{
+            
             doneButtonTouched = true
             let testCell = Cell(name: type, tag: " ", amount: "0", price: "0", balance: "0", address: address, subCells: [Cell]())
             
@@ -1218,7 +1307,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
                 
                 disGroup.notify(queue: .main){
                     self.doneButtonTouched = false
-                    print(checkIfNotFucked)
+                    
                     if checkIfNotFucked != nil && checkIfNotFucked.balance >= 0 {
                         self.toggleMenuDelagate()
                         let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
@@ -1276,7 +1365,8 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
                 })
                 disGroup.notify(queue: .main){
                     self.doneButtonTouched = false
-                    if checkIfNotFucked != nil{
+                    
+                    if checkIfNotFucked != nil && !checkIfNotFucked.isEmpty{
                         self.toggleMenuDelagate()
                         let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
                         self.cellArray.insert(add, at: 0)
@@ -1344,7 +1434,12 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
         cell.name?.text = cur.tag
         cell.imgg.layer.minificationFilter = kCAFilterTrilinear
         cell.imgg.layer.minificationFilterBias = 0.03
-        cell.tagg?.text = cur.name + ": " + cur.address
+        if cur.name != "BINANCE"{
+            cell.tagg?.text = cur.name + ": " + cur.address
+        }
+        else{
+            cell.tagg?.text = cur.name
+        }
         if cur.address == ""{
             cell.tagg?.text = ""
             cell.money?.text = ""
@@ -1376,10 +1471,13 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
             let placeholder = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
             cell.cells = [placeholder]
             if cur.more.count > 0{
-                cell.cells.append(cur)
-                for i in 0..<Int(cur.more)!{
-                    cell.cells.append(cur.subCells![i])
+                if cur.name != "BINANCE"{
+                    cell.cells.append(cur)
                 }
+                    for i in 0..<Int(cur.more)!{
+                        cell.cells.append(cur.subCells![i])
+                    }
+                
             }
             cell.subTable.separatorColor = UIColor(named: "bg")
             
@@ -1456,6 +1554,25 @@ class NeverClearView: UIView {
 }
 
 
+extension String {
+    func hmac(base64key key: String) -> String {
+        let algorithm = CCHmacAlgorithm(kCCHmacAlgSHA256)
+        let keyLength = key.lengthOfBytes(using: .utf8)
+        let messageLength = self.lengthOfBytes(using: .utf8)
+        let digestLength = Int(CC_SHA256_DIGEST_LENGTH)
+        
+        var output = [UInt8](repeating: 0, count: digestLength)
+        
+        key.withCString { keyPtr in
+            self.withCString { messagePtr in
+                CCHmac(algorithm, keyPtr, keyLength, messagePtr, messageLength, &output)
+            }
+        }
+        
+        let result = output.map { b in String(format: "%02x", b) }.joined()
+        return result
+    }
+}
 
 
 

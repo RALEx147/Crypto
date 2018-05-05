@@ -9,15 +9,6 @@
 import UIKit
 import Lottie
 
-/*
- !!!!!
- LOTTIE ANIMATIONS
- BETTER TABLE VIEW/SCROLL VIEW
- PRICE BREAKDOWN
- ERC-20 INTEGRATION
- SEPHAMORES/ASYNC SOLUTION
- !!!!!
- */
 
 class ViewController: UIViewController {
     

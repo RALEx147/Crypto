@@ -108,6 +108,14 @@ struct ether: Decodable{
     let balance: Double?
 }
 
+struct Binance: Decodable {
+    let balances: [BinanceCoins]?
+}
+struct BinanceCoins: Decodable{
+    let asset: String?
+    let free: String?
+}
+
 
 class Cell: NSObject, NSCoding{
     
@@ -174,7 +182,6 @@ class Cell: NSObject, NSCoding{
     
     
 }
-
 
 
 
