@@ -16,7 +16,10 @@ let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BR
 
 class FirstViewController: UIViewController{
     @IBAction func debug(_ sender: Any) {
-        print("ddasa")
+        
+        CMCc { (con) in
+            print(con.count)
+        }
         
     }
     
@@ -226,7 +229,7 @@ class FirstViewController: UIViewController{
                     self.saveCells()
                     let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
                     self.total.text = "$" + format!
-                    print(self.cellArray)
+//                    print(self.cellArray)
                 }
             }
         }
@@ -308,7 +311,6 @@ class FirstViewController: UIViewController{
                     
                 }
                 else{
-                    print("fail")
                     self.succeed = false
                 }
             }
@@ -454,25 +456,30 @@ class FirstViewController: UIViewController{
                 c.balance = "0"
                 c.amount = "0"
                 c.price = "0"
-                for i in bnb{
-                    if !nameArr.contains(i.asset!){
-                        if let a = Double(i.free!), let p = Double(self.getPrice(name: i.asset!)){
-                            c.subCells.append(Cell(name: i.asset!, tag: "", amount: i.free!, price: self.getPrice(name: i.asset!), balance: String(describing: (a * p)), address: "", subCells: [Cell]()))
+                if bnb != nil{
+                    for i in bnb{
+                        if !nameArr.contains(i.asset!){
+                            if let a = Double(i.free!), let p = Double(self.getPrice(name: i.asset!)){
+                                c.subCells.append(Cell(name: i.asset!, tag: "", amount: i.free!, price: self.getPrice(name: i.asset!), balance: String(describing: (a * p)), address: "", subCells: [Cell]()))
+                            }
                         }
-                    }
-                    else{
-                        for i in c.subCells{
-                            for j in bnb{
-                                if i.name!.lowercased() == j.asset!.lowercased(){
-                                    i.amount = j.free!
-                                    i.price = self.getPrice(name: j.asset!)
-                                    if let a = Double(j.free!), let p = Double(self.getPrice(name: j.asset!)){
-                                    i.balance = String(describing: (a * p))
+                        else{
+                            for i in c.subCells{
+                                for j in bnb{
+                                    if i.name!.lowercased() == j.asset!.lowercased(){
+                                        i.amount = j.free!
+                                        i.price = self.getPrice(name: j.asset!)
+                                        if let a = Double(j.free!), let p = Double(self.getPrice(name: j.asset!)){
+                                            i.balance = String(describing: (a * p))
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                }
+                else {
+                    self.succeed = false
                 }
                 
             }
@@ -486,7 +493,7 @@ class FirstViewController: UIViewController{
             for k in c.subCells{
                 already.append(k.name)
             }
-            print(c.subCells)
+            
             
             disGroup.notify(queue: .main){
                 var dict = [String:Double]()
@@ -849,6 +856,7 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
+    
     typealias CallBack = (_ result: [BinanceCoins]) -> Void
     func bnbBalacne(_ c:Cell, completion: @escaping CallBack){
         let seperate = c.address.split(separator: " ")
@@ -860,8 +868,10 @@ class FirstViewController: UIViewController{
         let headers: HTTPHeaders = ["X-MBX-APIKEY": apikey]
         var out = [BinanceCoins]()
         self.disGroup.enter()
+        
         Alamofire.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
             do {
+
                 let binance = try JSONDecoder().decode(Binance.self, from: response.data!)
                 
                 for i in binance.balances!{
@@ -880,6 +890,7 @@ class FirstViewController: UIViewController{
                         return false
                     }
                 }
+                print("bnb")
                 completion(final)
             }
             catch{
@@ -889,6 +900,40 @@ class FirstViewController: UIViewController{
             
         }
     }
+    
+    
+    
+    //
+    
+    
+    typealias CMCallBack = (_ result: [CMC]) -> Void
+    func CMCc(completion: @escaping CMCallBack){
+        
+        self.disGroup.enter()
+        var out = [CMC]()
+        Alamofire.request("https://api.coinmarketcap.com/v2/ticker/?limit=0", method: .get).responseJSON {response in
+            do {
+                debugPrint(response)
+                let output = try JSONDecoder().decode(CMCC.self, from: response.data!)
+                
+                
+                for (_, data) in output.data{
+                    
+                    let temp = CMC(name: data.name, rank: String(describing: data.rank), symbol: data.symbol, price_usd: String(describing: data.quotes.USD.price),  percent_change_24h: String(describing: data.quotes.USD.percent_change_24h))
+                    out.append(temp)
+                }
+                print("cmcc")
+                self.disGroup.leave()
+                completion(out)
+            }
+            catch{
+                print("error")
+                self.disGroup.leave()
+            }
+            
+        }
+    }
+    //
     
     
     func getPrice(name: String) -> String{
@@ -929,17 +974,17 @@ class FirstViewController: UIViewController{
     
     
     func addCurrencies(){
-        all.append(CMC(name: "USD", rank: "", symbol: "USD", price_usd: "1", price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "AUD", rank: "", symbol: "AUD", price_usd: String(1 / c.rates.AUD), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "CAD", rank: "", symbol: "CAD", price_usd: String(1 / c.rates.CAD), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "CNY", rank: "", symbol: "CNY", price_usd: String(1 / c.rates.CNY), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "BRL", rank: "", symbol: "BRL", price_usd: String(1 / c.rates.BRL), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "KRW", rank: "", symbol: "KRW", price_usd: String(1 / c.rates.KRW), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "EUR", rank: "", symbol: "EUR", price_usd: String(1 / c.rates.EUR), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "GBP", rank: "", symbol: "GBP", price_usd: String(1 / c.rates.GBP), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "MXN", rank: "", symbol: "MXN", price_usd: String(1 / c.rates.MXN), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "JPY", rank: "", symbol: "JPY", price_usd: String(1 / c.rates.JPY), price_btc: "", percent_change_24h: ""))
-        all.append(CMC(name: "SGD", rank: "", symbol: "SGD", price_usd: String(1 / c.rates.SGD), price_btc: "", percent_change_24h: ""))
+        all.append(CMC(name: "USD", rank: "", symbol: "USD", price_usd: "1", percent_change_24h: ""))
+        all.append(CMC(name: "AUD", rank: "", symbol: "AUD", price_usd: String(1 / c.rates.AUD), percent_change_24h: ""))
+        all.append(CMC(name: "CAD", rank: "", symbol: "CAD", price_usd: String(1 / c.rates.CAD), percent_change_24h: ""))
+        all.append(CMC(name: "CNY", rank: "", symbol: "CNY", price_usd: String(1 / c.rates.CNY), percent_change_24h: ""))
+        all.append(CMC(name: "BRL", rank: "", symbol: "BRL", price_usd: String(1 / c.rates.BRL), percent_change_24h: ""))
+        all.append(CMC(name: "KRW", rank: "", symbol: "KRW", price_usd: String(1 / c.rates.KRW), percent_change_24h: ""))
+        all.append(CMC(name: "EUR", rank: "", symbol: "EUR", price_usd: String(1 / c.rates.EUR), percent_change_24h: ""))
+        all.append(CMC(name: "GBP", rank: "", symbol: "GBP", price_usd: String(1 / c.rates.GBP), percent_change_24h: ""))
+        all.append(CMC(name: "MXN", rank: "", symbol: "MXN", price_usd: String(1 / c.rates.MXN), percent_change_24h: ""))
+        all.append(CMC(name: "JPY", rank: "", symbol: "JPY", price_usd: String(1 / c.rates.JPY), percent_change_24h: ""))
+        all.append(CMC(name: "SGD", rank: "", symbol: "SGD", price_usd: String(1 / c.rates.SGD), percent_change_24h: ""))
     }
     
     

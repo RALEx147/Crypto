@@ -31,7 +31,6 @@ struct CMC: Decodable{
     let rank: String?
     let symbol: String?
     let price_usd: String?
-    let price_btc: String?
     let percent_change_24h: String?
 }
 struct NEON: Decodable {
@@ -116,6 +115,28 @@ struct BinanceCoins: Decodable{
     let free: String?
 }
 
+
+struct CMCC: Decodable{
+    struct inner: Decodable {
+        let rank: Int
+        let name: String
+        let symbol: String
+        let quotes: CMCC1
+    }
+
+    
+    let data: [String: inner]
+    
+    
+}
+
+struct CMCC1: Decodable{
+    let USD: CMCC2
+}
+struct CMCC2: Decodable{
+    let price: Double
+    let percent_change_24h: Double
+}
 
 class Cell: NSObject, NSCoding{
     
