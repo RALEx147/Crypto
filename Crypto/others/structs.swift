@@ -119,8 +119,8 @@ struct BinanceCoins: Decodable{
 struct CMCC: Decodable{
     struct inner: Decodable {
         let rank: Int
-        let name: String
-        let symbol: String
+        let name: String?
+        let symbol: String?
         let quotes: CMCC1
     }
 
@@ -134,8 +134,8 @@ struct CMCC1: Decodable{
     let USD: CMCC2
 }
 struct CMCC2: Decodable{
-    let price: Double
-    let percent_change_24h: Double
+    let price: Double?
+    let percent_change_24h: Double?
 }
 
 class Cell: NSObject, NSCoding{

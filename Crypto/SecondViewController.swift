@@ -8,7 +8,7 @@
 
 import UIKit
 import Lottie
-
+import Alamofire
 
 
 class SecondViewController: UIViewController, ContDelegate {
@@ -41,7 +41,7 @@ class SecondViewController: UIViewController, ContDelegate {
     var CCColor = [String]()
     var blurView: UIVisualEffectView!
     let bgView = UIView()
-    let disGroup3 = DispatchGroup()
+    let constGroup = DispatchGroup()
     let refreshControl = UIRefreshControl()
     
     @IBOutlet var table: UITableView!
@@ -101,15 +101,46 @@ class SecondViewController: UIViewController, ContDelegate {
     
     
     @objc func refresh(){
-        Construct {(completion) in self.v.all = completion ?? self.v.all}
-        
-        disGroup3.notify(queue: .main){
+        var n = 1
+        var out = [CMC]()
+        while n < 1700{
+            CMCc(n) { (con) in
+                for i in con{
+                    out.append(i)
+                }
+            }
+            n += 100
+        }
+        constGroup.notify(queue: .main){
+            out.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
+                
+                if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
+                    return Int(lhsTime)! < Int(rhsTime)!
+                }
+                
+                if lhs.rank == nil && rhs.rank == nil {
+                    // return true to stay at top
+                    return false
+                }
+                
+                if lhs.rank == nil {
+                    // return true to stay at top
+                    return false
+                }
+                
+                if rhs.rank == nil {
+                    // return false to stay at top
+                    return true
+                }
+                return false
+            })
+            self.v.all = out
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
                 self.refreshControl.endRefreshing()
                 self.table.reloadData()
             }
-            
         }
+
     }
     
     func save(){
@@ -129,33 +160,33 @@ class SecondViewController: UIViewController, ContDelegate {
     }
     
     
-    func Construct(completion: @escaping ([CMC]?) -> ()){
-        self.disGroup3.enter()
+    typealias CMCallBack = (_ result: [CMC]) -> Void
+    func CMCc(_ num: Int, completion: @escaping CMCallBack){
         
-        var done = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                self.disGroup3.leave()
-                completion(nil)
-            }
-        }
-        guard let url = URL(string: "https://api.coinmarketcap.com/v1/ticker/?limit=0") else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
+        self.constGroup.enter()
+        var out = [CMC]()
+        Alamofire.request("https://api.coinmarketcap.com/v2/ticker/?start=\(num)", method: .get).responseJSON {response in
+            do {
+                let output = try JSONDecoder().decode(CMCC.self, from: response.data!)
+                
+                
+                for (_, data) in output.data{
                     
-                    let coin = try JSONDecoder().decode([CMC].self, from: data)
-                    
-                    print("cmc")
-                    self.disGroup3.leave()
-                    done = true
-                    completion(coin)
-                } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    let temp = CMC(name: data.name, rank: String(describing: data.rank), symbol: data.symbol, price_usd: String(describing: data.quotes.USD.price),  percent_change_24h: String(describing: data.quotes.USD.percent_change_24h))
+                    out.append(temp)
                 }
+                print("cmcc")
+                self.constGroup.leave()
+                completion(out)
             }
-            }.resume()
+            catch{
+                print("error: " , error)
+                self.constGroup.leave()
+            }
+            
+        }
     }
+    
     
     func getPrice(_ name: String) -> String{
         for j in self.v.all{
@@ -276,10 +307,47 @@ class SecondViewController: UIViewController, ContDelegate {
         refreshControl.tintColor = UIColor(named: "loading")
         
         
-        Construct {(completion) in self.v.all = completion ?? self.v.all}
-        disGroup3.notify(queue: .main){
-            self.table.reloadData()
+        
+        var n = 1
+        var out = [CMC]()
+        while n < 1700{
+            CMCc(n) { (con) in
+                for i in con{
+                    out.append(i)
+                }
+            }
+            n += 100
         }
+        constGroup.notify(queue: .main){
+            out.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
+                
+                if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
+                    return Int(lhsTime)! < Int(rhsTime)!
+                }
+                
+                if lhs.rank == nil && rhs.rank == nil {
+                    // return true to stay at top
+                    return false
+                }
+                
+                if lhs.rank == nil {
+                    // return true to stay at top
+                    return false
+                }
+                
+                if rhs.rank == nil {
+                    // return false to stay at top
+                    return true
+                }
+                return false
+            })
+            self.v.all = out
+            
+            self.table.reloadData()
+            
+        }
+        
+       
     }
     
     

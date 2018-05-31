@@ -17,9 +17,6 @@ let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BR
 class FirstViewController: UIViewController{
     @IBAction func debug(_ sender: Any) {
         
-        CMCc { (con) in
-            print(con.count)
-        }
         
     }
     
@@ -35,6 +32,7 @@ class FirstViewController: UIViewController{
     let disGroup = DispatchGroup()
     let disGroup2 = DispatchGroup()
     let disGroup3 = DispatchGroup()
+    let constGroup = DispatchGroup()
     
     var loading = false
     var cellArray = [Cell]()
@@ -130,9 +128,16 @@ class FirstViewController: UIViewController{
                 
                 
                 Currency{(completion) in self.c = completion ?? self.c}
-                Construct{(completion) in self.all = completion ?? self.all}
-                
-                
+                var n = 1
+                var out = [CMC]()
+                while n < 1700{
+                    CMCc(n) { (con) in
+                        for i in con{
+                            out.append(i)
+                        }
+                    }
+                    n += 100
+                }
                 
                 for i in self.cellArray.indices{
                     self.cellArray[i] = self.updateCell(self.cellArray[i])
@@ -213,7 +218,32 @@ class FirstViewController: UIViewController{
                         }
                     }
                 }
-                
+                constGroup.notify(queue: .main){
+                    out.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
+                        
+                        if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
+                            return Int(lhsTime)! < Int(rhsTime)!
+                        }
+                        
+                        if lhs.rank == nil && rhs.rank == nil {
+                            // return true to stay at top
+                            return false
+                        }
+                        
+                        if lhs.rank == nil {
+                            // return true to stay at top
+                            return false
+                        }
+                        
+                        if rhs.rank == nil {
+                            // return false to stay at top
+                            return true
+                        }
+                        return false
+                    })
+                     self.all = out
+                    
+                }
                 disGroup.notify(queue: .main){
                     self.ani2.loopAnimation = false
                 }
@@ -229,7 +259,6 @@ class FirstViewController: UIViewController{
                     self.saveCells()
                     let format = self.nF.string(from: NSNumber(value: self.cleanUp(self.totalPrice())))
                     self.total.text = "$" + format!
-//                    print(self.cellArray)
                 }
             }
         }
@@ -615,41 +644,41 @@ class FirstViewController: UIViewController{
     
     
     //A_SYNC
-    func Construct(completion: @escaping ([CMC]?) -> ()){
-        self.disGroup.enter()
-        
-        var done = false
-        var fail = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                fail = true
-                self.disGroup.leave()
-                completion(nil)
-            }
-        }
-        guard let url = URL(string: "https://api.coinmarketcap.com/v1/ticker/?limit=0") else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    
-                    let coin = try JSONDecoder().decode([CMC].self, from: data)
-                    
-                    
-                    
-                    print("cmc")
-                    if !fail{
-                        self.disGroup.leave()
-                    }
-                    done = true
-                    completion(coin)
-                    
-                } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
-                }
-            }
-            }.resume()
-    }
-    
+//    func Construct(completion: @escaping ([CMC]?) -> ()){
+//        self.disGroup.enter()
+//        
+//        var done = false
+//        var fail = false
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
+//            if !done{
+//                fail = true
+//                self.disGroup.leave()
+//                completion(nil)
+//            }
+//        }
+//        guard let url = URL(string: "https://api.coinmarketcap.com/v1/ticker/?limit=0") else { return }
+//        URLSession.shared.dataTask(with: url) { (data, response, error) in
+//            if let data = data {
+//                do {
+//
+//                    let coin = try JSONDecoder().decode([CMC].self, from: data)
+//
+//
+//
+//                    print("cmc")
+//                    if !fail{
+//                        self.disGroup.leave()
+//                    }
+//                    done = true
+//                    completion(coin)
+//
+//                } catch let jsonErr {
+//                    print("CMC Error serializing json:", jsonErr)
+//                }
+//            }
+//            }.resume()
+//    }
+//
     
     func Currency(completion: @escaping (currency?) -> ()){
         self.disGroup3.enter()
@@ -672,7 +701,7 @@ class FirstViewController: UIViewController{
                     done = true
                     completion(coin)
                 } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    print("CURENCY Error serializing json:", jsonErr)
                 }
             }
             }.resume()
@@ -709,7 +738,7 @@ class FirstViewController: UIViewController{
                     }
                     completion(output)
                 } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    print("NEO Error serializing json:", jsonErr)
                     self.disGroup.leave()
                     done = true
                     completion(nil)
@@ -743,7 +772,7 @@ class FirstViewController: UIViewController{
                     done = true
                     completion(balance)
                 } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    print("ETH Error serializing json:", jsonErr)
                     self.disGroup.leave()
                     done = true
                     completion(nil)
@@ -775,7 +804,7 @@ class FirstViewController: UIViewController{
                     done = true
                     completion(balance)
                 } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    print("BTC Error serializing json:", jsonErr)
                     
                     self.disGroup.leave()
                     done = true
@@ -809,7 +838,7 @@ class FirstViewController: UIViewController{
                         completion(balance.data)
                     }
                 } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    print("LTC Error serializing json:", jsonErr)
                     self.disGroup.leave()
                     done = true
                     completion(nil)
@@ -851,7 +880,7 @@ class FirstViewController: UIViewController{
                     self.disGroup.leave()
                     completion(balance.balances!)
                 } catch let jsonErr {
-                    print("Error serializing json:", jsonErr)
+                    print("XRP Error serializing json:", jsonErr)
                 }
             }
             }.resume()
@@ -869,7 +898,10 @@ class FirstViewController: UIViewController{
         var out = [BinanceCoins]()
         self.disGroup.enter()
         
-        Alamofire.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
+        let manager = Alamofire.SessionManager.default
+        manager.session.configuration.timeoutIntervalForRequest = 15
+
+        manager.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
             do {
 
                 let binance = try JSONDecoder().decode(Binance.self, from: response.data!)
@@ -894,7 +926,7 @@ class FirstViewController: UIViewController{
                 completion(final)
             }
             catch{
-                print("error")
+                print("bnb error", error)
                 self.disGroup.leave()
             }
             
@@ -907,13 +939,12 @@ class FirstViewController: UIViewController{
     
     
     typealias CMCallBack = (_ result: [CMC]) -> Void
-    func CMCc(completion: @escaping CMCallBack){
+    func CMCc(_ num: Int, completion: @escaping CMCallBack){
         
-        self.disGroup.enter()
+        self.constGroup.enter()
         var out = [CMC]()
-        Alamofire.request("https://api.coinmarketcap.com/v2/ticker/?limit=0", method: .get).responseJSON {response in
+        Alamofire.request("https://api.coinmarketcap.com/v2/ticker/?start=\(num)", method: .get).responseJSON {response in
             do {
-                debugPrint(response)
                 let output = try JSONDecoder().decode(CMCC.self, from: response.data!)
                 
                 
@@ -923,17 +954,17 @@ class FirstViewController: UIViewController{
                     out.append(temp)
                 }
                 print("cmcc")
-                self.disGroup.leave()
+                self.constGroup.leave()
                 completion(out)
             }
             catch{
-                print("error")
-                self.disGroup.leave()
+                print("error: " , error)
+                self.constGroup.leave()
             }
             
         }
     }
-    //
+    
     
     
     func getPrice(name: String) -> String{
