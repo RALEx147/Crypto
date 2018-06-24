@@ -20,7 +20,7 @@ class FirstViewController: UIViewController{
         
     }
     
- 
+    
     @IBOutlet weak var spacing: UIView!
     @IBOutlet weak var banner: UIImageView!
     @IBOutlet weak var table: UITableView!
@@ -51,7 +51,6 @@ class FirstViewController: UIViewController{
     
     override func viewDidLoad() {
         self.loadCells()
-        
         
         table.estimatedRowHeight = 130
         table.rowHeight = UITableViewAutomaticDimension
@@ -138,11 +137,11 @@ class FirstViewController: UIViewController{
                     }
                     n += 100
                 }
-                
-                for i in self.cellArray.indices{
-                    self.cellArray[i] = self.updateCell(self.cellArray[i])
+                constGroup.notify(queue: .main){
+                    for i in self.cellArray.indices{
+                        self.cellArray[i] = self.updateCell(self.cellArray[i])
+                    }
                 }
-                
                 
                 
                 self.ani3.removeFromSuperview()
@@ -241,12 +240,12 @@ class FirstViewController: UIViewController{
                         }
                         return false
                     })
-                     self.all = out
-                    
+                    self.all = out
+                    self.disGroup.notify(queue: .main){
+                        self.ani2.loopAnimation = false
+                    }
                 }
-                disGroup.notify(queue: .main){
-                    self.ani2.loopAnimation = false
-                }
+                
                 
                 disGroup2.notify(queue: .main){
                     for i in self.cellArray{
@@ -268,6 +267,7 @@ class FirstViewController: UIViewController{
     
     func updateCell(_ c: Cell) -> Cell{
         succeed = true
+        
         if c.name.lowercased() == "neo"{
             var neo:[NEO]!
             neoBalance(c){(completion) in neo = completion}
@@ -407,7 +407,7 @@ class FirstViewController: UIViewController{
                         let divisor = Double(10 ^ exp)
                         let t = Double(x.balance!) / divisor
                         if let p = Double(self.getPrice(name: (x.tokenInfo?.symbol!.lowercased())!)){
-                        let new = Cell(name: x.tokenInfo!.symbol!, tag: x.tokenInfo!.name!, amount: String(describing: t), price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
+                            let new = Cell(name: x.tokenInfo!.symbol!, tag: x.tokenInfo!.name!, amount: String(describing: t), price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
                             c.subCells!.append(new)
                         }
                         
@@ -475,10 +475,12 @@ class FirstViewController: UIViewController{
             
         }
         else if c.name == "BINANCE"{
+            
             var bnb: [BinanceCoins]!
-            bnbBalacne(c){(completion) in bnb = completion}
-            disGroup.notify(queue: .main){
+            self.bnbBalacne(c){(completion) in bnb = completion}
+            self.disGroup.notify(queue: .main){
                 var nameArr = [String]()
+                var bnbArr = [String]()
                 for i in c.subCells{
                     nameArr.append(i.name)
                 }
@@ -486,6 +488,17 @@ class FirstViewController: UIViewController{
                 c.amount = "0"
                 c.price = "0"
                 if bnb != nil{
+                    
+                    for i in bnb{
+                        bnbArr.append(i.asset!.lowercased())
+                    }
+                    print(bnbArr)
+                    for i in stride(from: c.subCells.count-1, to: -1, by: -1) {
+                        if !bnbArr.contains(c.subCells[i].name.lowercased()){
+                            c.subCells.remove(at: i)
+                        }
+                    }
+                    
                     for i in bnb{
                         if !nameArr.contains(i.asset!){
                             if let a = Double(i.free!), let p = Double(self.getPrice(name: i.asset!)){
@@ -511,8 +524,8 @@ class FirstViewController: UIViewController{
                     self.succeed = false
                 }
                 
+                
             }
-            
         }
             
         else if c.name == "XRP"{
@@ -643,42 +656,7 @@ class FirstViewController: UIViewController{
     }
     
     
-    //A_SYNC
-//    func Construct(completion: @escaping ([CMC]?) -> ()){
-//        self.disGroup.enter()
-//        
-//        var done = false
-//        var fail = false
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-//            if !done{
-//                fail = true
-//                self.disGroup.leave()
-//                completion(nil)
-//            }
-//        }
-//        guard let url = URL(string: "https://api.coinmarketcap.com/v1/ticker/?limit=0") else { return }
-//        URLSession.shared.dataTask(with: url) { (data, response, error) in
-//            if let data = data {
-//                do {
-//
-//                    let coin = try JSONDecoder().decode([CMC].self, from: data)
-//
-//
-//
-//                    print("cmc")
-//                    if !fail{
-//                        self.disGroup.leave()
-//                    }
-//                    done = true
-//                    completion(coin)
-//
-//                } catch let jsonErr {
-//                    print("CMC Error serializing json:", jsonErr)
-//                }
-//            }
-//            }.resume()
-//    }
-//
+    
     
     func Currency(completion: @escaping (currency?) -> ()){
         self.disGroup3.enter()
@@ -900,10 +878,10 @@ class FirstViewController: UIViewController{
         
         let manager = Alamofire.SessionManager.default
         manager.session.configuration.timeoutIntervalForRequest = 15
-
+        
         manager.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
             do {
-
+                debugPrint(response)
                 let binance = try JSONDecoder().decode(Binance.self, from: response.data!)
                 
                 for i in binance.balances!{
@@ -913,16 +891,16 @@ class FirstViewController: UIViewController{
                         }
                     }
                 }
-                self.disGroup.leave()
+                
                 let final = out.filter {
-                    if let price = Double(self.getPrice(name: $0.asset!)) {
+                    if let price = Double(self.getPrice(name: $0.asset!.lowercased())) {
                         return Double($0.free!)! * price > 0.5
                     }
                     else{
                         return false
                     }
                 }
-                print("bnb")
+                self.disGroup.leave()
                 completion(final)
             }
             catch{
@@ -949,11 +927,11 @@ class FirstViewController: UIViewController{
                 
                 
                 for (_, data) in output.data{
-                    
-                    let temp = CMC(name: data.name, rank: String(describing: data.rank), symbol: data.symbol, price_usd: String(describing: data.quotes.USD.price),  percent_change_24h: String(describing: data.quotes.USD.percent_change_24h))
-                    out.append(temp)
+                    if let n = data.name, let r = data.rank, let p = data.quotes.USD.price, let p24 = data.quotes.USD.percent_change_24h, let s = data.symbol{
+                        let temp = CMC(name: n, rank: String(describing: r), symbol: s, price_usd: String(describing: p),  percent_change_24h: String(describing: p24))
+                        out.append(temp)
+                    }
                 }
-                print("cmcc")
                 self.constGroup.leave()
                 completion(out)
             }
@@ -1163,15 +1141,15 @@ class FirstViewController: UIViewController{
     
     
     func fadeMore(){
-//        var list = [CustomTableViewCell]()
-//        let rowCount = table.numberOfRowsInSection(section)
-//
-//
-//        for row in 0 ..< rowCount {
-//            let cell = table.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section)) as! CustomTableViewCell
-//            list.append(cell)
-//        }
-//
+        //        var list = [CustomTableViewCell]()
+        //        let rowCount = table.numberOfRowsInSection(section)
+        //
+        //
+        //        for row in 0 ..< rowCount {
+        //            let cell = table.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section)) as! CustomTableViewCell
+        //            list.append(cell)
+        //        }
+        //
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
         for i in cells {
             i.moreLabel.alpha = 0
@@ -1326,6 +1304,7 @@ class FirstViewController: UIViewController{
                             x.neoButton.alpha = 0
                             x.xrpButton.alpha = 0
                             x.ethButton.alpha = 0
+                            x.eosButton.alpha = 0
                             x.sub.alpha = 0
                             x.lab.alpha = 0
                             x.imgg.alpha = 0
@@ -1376,7 +1355,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
             switch type{
             case "BTC":
                 var checkIfNotFucked:BTC!
-               
+                
                 btcBalance(testCell, completion: { (out)  in
                     checkIfNotFucked = out
                 })
@@ -1487,7 +1466,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
         }
         return proposedDestinationIndexPath
     }
-
+    
     
     
     
@@ -1550,9 +1529,9 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
                 if cur.name != "BINANCE"{
                     cell.cells.append(cur)
                 }
-                    for i in 0..<Int(cur.more)!{
-                        cell.cells.append(cur.subCells![i])
-                    }
+                for i in 0..<Int(cur.more)!{
+                    cell.cells.append(cur.subCells![i])
+                }
                 
             }
             cell.subTable.separatorColor = UIColor(named: "bg")

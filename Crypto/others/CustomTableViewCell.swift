@@ -89,9 +89,8 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     @IBOutlet var ltcButton: UIButton!
     @IBOutlet var ethButton: UIButton!
     @IBOutlet var btcButton: UIButton!
-    
-    
-
+    @IBOutlet var eosButton: UIButton!
+    var           buttons:[UIButton]!
    
     @IBOutlet var sub: UIView!
     
@@ -131,6 +130,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         extendAdd()
     }
     
+    @IBAction func eosPress(_ sender: Any) {
+        imgg.image = #imageLiteral(resourceName: "EOS")
+        lab.text = "EOS Public Key"
+        extendAdd()
+    }
     
     @IBOutlet var address: UITextField!
     
@@ -142,6 +146,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         up.beginUpdates()
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
             self.sub.alpha = 1
+            if let loop = self.buttons{
+                for i in loop{
+                    i.alpha = 0
+                }
+            }
         })
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
             self.layoutIfNeeded()
@@ -234,6 +243,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             
             UIView.animate(withDuration: 0.1, delay: 0.3, options: .curveEaseOut, animations: {
                 self.sub.alpha = 0
+                if let loop = self.buttons{
+                    for i in loop{
+                        i.alpha = 1
+                    }
+                }
             })
             self.height.constant = self.height.constant - 45
 
@@ -284,11 +298,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 up.endUpdates()
                 UIView.animate(withDuration: 0.3, animations: {
                     self.newAddress.alpha = 1
-                    self.ltcButton.alpha = 1
-                    self.btcButton.alpha = 1
-                    self.ethButton.alpha = 1
-                    self.neoButton.alpha = 1
-                    self.xrpButton.alpha = 1
+                    if let loop = self.buttons{
+                        for i in loop{
+                            i.alpha = 1
+                        }
+                    }
                 })
 
             }
@@ -413,7 +427,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         sub.layer.cornerRadius = 10
         address.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
-       
+       buttons = [neoButton,eosButton, ltcButton, btcButton, ethButton, xrpButton]
         
         
     }

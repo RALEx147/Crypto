@@ -118,7 +118,7 @@ struct BinanceCoins: Decodable{
 
 struct CMCC: Decodable{
     struct inner: Decodable {
-        let rank: Int
+        let rank: Int?
         let name: String?
         let symbol: String?
         let quotes: CMCC1

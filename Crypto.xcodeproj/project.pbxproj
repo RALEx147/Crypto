@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1FFD802420C1A62E00D857BA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4353209D1F76006CD37D /* Alamofire.framework */; };
 		910A81931FA4DC75001F868A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81921FA4DC75001F868A /* AppDelegate.swift */; };
 		910A81951FA4DC75001F868A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81941FA4DC75001F868A /* ViewController.swift */; };
 		910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81961FA4DC75001F868A /* SecondViewController.swift */; };
@@ -216,6 +217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				914B4BAA1FC8F7C400968A3E /* NotificationCenter.framework in Frameworks */,
+				1FFD802420C1A62E00D857BA /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +475,9 @@
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
+							};
+							com.apple.Siri = {
+								enabled = 0;
 							};
 						};
 					};
@@ -959,6 +964,10 @@
 				CODE_SIGN_ENTITLEMENTS = "Crypto Widget/Crypto Widget.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Crypto Widget/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-Widget";
@@ -975,6 +984,10 @@
 				CODE_SIGN_ENTITLEMENTS = "Crypto Widget/Crypto Widget.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8CDVPJAQ5Z;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Crypto Widget/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-Widget";

@@ -150,7 +150,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TKV-CT-nbH">
-                                                                        <rect key="frame" x="489.5" y="12" width="43.5" height="21"/>
+                                                                        <rect key="frame" x="264.5" y="12" width="43.5" height="21"/>
                                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
                                                                         <color key="textColor" red="0.2639936050562357" green="0.26923948057667674" blue="0.27760152284263961" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -269,6 +269,17 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5s-66-fdB">
+                                                            <rect key="frame" x="32.5" y="97" width="88" height="37"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="88" id="CLP-iv-akz"/>
+                                                                <constraint firstAttribute="height" constant="37" id="dDg-pn-gjS"/>
+                                                            </constraints>
+                                                            <state key="normal" image="neoButton"/>
+                                                            <connections>
+                                                                <action selector="neoPress:" destination="bsd-5c-map" eventType="touchUpInside" id="aVW-re-PyN"/>
+                                                            </connections>
+                                                        </button>
                                                         <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sf9-b8-hbs">
                                                             <rect key="frame" x="130.5" y="97" width="88" height="37"/>
                                                             <constraints>
@@ -280,15 +291,15 @@
                                                                 <action selector="xrpPress:" destination="bsd-5c-map" eventType="touchUpInside" id="sgF-Dq-qxj"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5s-66-fdB">
-                                                            <rect key="frame" x="32.5" y="97" width="88" height="37"/>
+                                                        <button opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7n5-DA-otL" userLabel="Eos Button">
+                                                            <rect key="frame" x="228.5" y="97" width="88" height="37"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="88" id="CLP-iv-akz"/>
-                                                                <constraint firstAttribute="height" constant="37" id="dDg-pn-gjS"/>
+                                                                <constraint firstAttribute="width" constant="88" id="iZ2-uh-gr3"/>
+                                                                <constraint firstAttribute="height" constant="37" id="vGd-cE-2M3"/>
                                                             </constraints>
-                                                            <state key="normal" image="neoButton"/>
+                                                            <state key="normal" image="eosbuttonShade"/>
                                                             <connections>
-                                                                <action selector="neoPress:" destination="bsd-5c-map" eventType="touchUpInside" id="aVW-re-PyN"/>
+                                                                <action selector="eosPress:" destination="bsd-5c-map" eventType="touchUpInside" id="lEo-4E-q8Z"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wwf-Zg-03h">
@@ -416,6 +427,8 @@
                                                         <constraint firstItem="nA5-nO-HJS" firstAttribute="leading" secondItem="nde-Tc-Cu9" secondAttribute="leading" constant="10" id="Db3-Iu-pw3"/>
                                                         <constraint firstItem="cRu-jD-34H" firstAttribute="top" secondItem="5PI-st-B2B" secondAttribute="bottom" constant="12" id="GxY-9Q-YqD"/>
                                                         <constraint firstItem="AXq-iG-bUi" firstAttribute="leading" secondItem="nde-Tc-Cu9" secondAttribute="leading" constant="73" id="HGb-TR-Pjv"/>
+                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7n5-DA-otL" secondAttribute="trailing" constant="7" id="IAb-T3-0E1"/>
+                                                        <constraint firstItem="7n5-DA-otL" firstAttribute="top" secondItem="qie-Zj-Pjr" secondAttribute="bottom" constant="13" id="IUs-Ef-ELA"/>
                                                         <constraint firstAttribute="bottom" secondItem="kVx-6j-v67" secondAttribute="bottom" constant="22" id="LiX-QG-F5l"/>
                                                         <constraint firstItem="Xdu-c9-R2c" firstAttribute="trailing" secondItem="kVx-6j-v67" secondAttribute="trailing" constant="-18" id="Mvl-P1-jh2"/>
                                                         <constraint firstItem="6K6-E2-gsZ" firstAttribute="trailing" secondItem="kVx-6j-v67" secondAttribute="trailing" constant="-15" id="NY2-Jy-Idi"/>
@@ -433,6 +446,7 @@
                                                         <constraint firstItem="sf9-b8-hbs" firstAttribute="top" secondItem="vhK-rS-PpD" secondAttribute="bottom" constant="13" id="aTt-kt-SXp"/>
                                                         <constraint firstItem="G0J-rz-mxi" firstAttribute="leading" secondItem="nde-Tc-Cu9" secondAttribute="leading" constant="73" id="aij-rI-tgk"/>
                                                         <constraint firstItem="jft-M2-iGq" firstAttribute="centerX" secondItem="HtT-N4-t2D" secondAttribute="centerX" constant="1" id="alJ-Qr-eN8"/>
+                                                        <constraint firstItem="7n5-DA-otL" firstAttribute="leading" secondItem="sf9-b8-hbs" secondAttribute="trailing" constant="10" id="bM5-sQ-Ai3"/>
                                                         <constraint firstAttribute="trailing" secondItem="kVx-6j-v67" secondAttribute="trailing" constant="24" id="cuw-LA-MH2"/>
                                                         <constraint firstItem="f5s-66-fdB" firstAttribute="top" secondItem="wwf-Zg-03h" secondAttribute="bottom" constant="13" id="d1f-hM-0yg"/>
                                                         <constraint firstItem="5PI-st-B2B" firstAttribute="leading" secondItem="pJ4-dD-RkG" secondAttribute="trailing" constant="10" id="eIR-cE-ns7"/>
@@ -489,6 +503,7 @@
                                             <outlet property="content" destination="e4Q-Cy-91y" id="eHI-Pc-guw"/>
                                             <outlet property="done" destination="Xdu-c9-R2c" id="VYz-ri-BIt"/>
                                             <outlet property="dropShadown" destination="Wq0-SC-kkN" id="p3N-aN-i94"/>
+                                            <outlet property="eosButton" destination="7n5-DA-otL" id="oX1-S7-n24"/>
                                             <outlet property="ethButton" destination="vhK-rS-PpD" id="sYF-H1-iJG"/>
                                             <outlet property="height" destination="hbr-yC-RXb" id="jh4-0u-y42"/>
                                             <outlet property="imagee" destination="nA5-nO-HJS" id="kjm-h6-Q3d"/>
@@ -678,7 +693,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="halo" translatesAutoresizingMaskIntoConstraints="NO" id="k06-OZ-wUn">
-                                <rect key="frame" x="311" y="29" width="47" height="47"/>
+                                <rect key="frame" x="311.5" y="29" width="47" height="47"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -775,7 +790,7 @@
                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="50" id="Zk3-ar-fKD" customClass="SearchTableViewCell" customModule="Crypto" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="50" id="Zk3-ar-fKD" customClass="SearchTableViewCell" customModule="Crypto" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="34" width="331" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zk3-ar-fKD" id="gFV-rV-wFh">
@@ -783,7 +798,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4WL-eY-FFh">
-                                                    <rect key="frame" x="0.0" y="5" width="287" height="40"/>
+                                                    <rect key="frame" x="0.0" y="5" width="331" height="40"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n39-O2-QjG">
                                                             <rect key="frame" x="45" y="10" width="42" height="20.5"/>
@@ -799,7 +814,7 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ni-Fk-BVa">
-                                                    <rect key="frame" x="234" y="14.5" width="42" height="21"/>
+                                                    <rect key="frame" x="278" y="14.5" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="1" green="0.36078431372549019" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -874,6 +889,7 @@
         <image name="backk" width="25" height="25"/>
         <image name="btcButton" width="148" height="64"/>
         <image name="dropS" width="335" height="49"/>
+        <image name="eosbuttonShade" width="148" height="64"/>
         <image name="ethButton" width="148" height="64"/>
         <image name="gradient" width="376" height="98"/>
         <image name="halo" width="47" height="47"/>

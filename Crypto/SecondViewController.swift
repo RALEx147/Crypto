@@ -73,10 +73,10 @@ class SecondViewController: UIViewController, ContDelegate {
         setupRefresh()
         setupLbl()
         load()
-//        save()
-
+        //        save()
+        
         self.v.delag = self
-
+        
         
         
     }
@@ -140,7 +140,7 @@ class SecondViewController: UIViewController, ContDelegate {
                 self.table.reloadData()
             }
         }
-
+        
     }
     
     func save(){
@@ -148,7 +148,7 @@ class SecondViewController: UIViewController, ContDelegate {
         UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCPrice, forKey: "CCPrice")
         UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCChange, forKey: "CCChange")
         UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCColor, forKey: "CCColor")
-
+        
         
     }
     func load() {
@@ -156,7 +156,7 @@ class SecondViewController: UIViewController, ContDelegate {
         CCPrice = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCPrice") as? [String] ?? [])!
         CCChange = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCChange") as? [String] ?? [])!
         CCColor = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCColor") as? [String] ?? [])!
-
+        
     }
     
     
@@ -172,10 +172,13 @@ class SecondViewController: UIViewController, ContDelegate {
                 
                 for (_, data) in output.data{
                     
-                    let temp = CMC(name: data.name, rank: String(describing: data.rank), symbol: data.symbol, price_usd: String(describing: data.quotes.USD.price),  percent_change_24h: String(describing: data.quotes.USD.percent_change_24h))
-                    out.append(temp)
+                    
+                    if let n = data.name, let r = data.rank, let p = data.quotes.USD.price, let p24 = data.quotes.USD.percent_change_24h, let s = data.symbol{
+                        let temp = CMC(name: n, rank: String(describing: r), symbol: s, price_usd: String(describing: p),  percent_change_24h: String(describing: p24))
+                        out.append(temp)
+                    }
+                    
                 }
-                print("cmcc")
                 self.constGroup.leave()
                 completion(out)
             }
@@ -319,6 +322,7 @@ class SecondViewController: UIViewController, ContDelegate {
             n += 100
         }
         constGroup.notify(queue: .main){
+            
             out.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
                 
                 if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
@@ -347,7 +351,7 @@ class SecondViewController: UIViewController, ContDelegate {
             
         }
         
-       
+        
     }
     
     
@@ -389,11 +393,11 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
             CCPrice[indexPath.row] = getPrice(name)
             CCChange[indexPath.row] = getChange(name) + "%"
             CCColor[indexPath.row] = color(name) ? "red" : "green"
-
-
+            
+            
             save()
         }
-
+        
         return cell
         
         
@@ -409,7 +413,7 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
             self.CCChange.remove(at: indexPath.row)
             self.CCColor.remove(at: indexPath.row)
             self.CCPrice.remove(at: indexPath.row)
-
+            
             self.table.deleteRows(at: [indexPath], with: .automatic)
             self.save()
         }
@@ -418,7 +422,7 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-   
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteButton = UITableViewRowAction(style: .default, title: "Delete", handler: { (action, indexPath) in
             self.table.dataSource?.tableView!(self.table, commit: .delete, forRowAt: indexPath)

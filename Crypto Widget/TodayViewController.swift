@@ -8,6 +8,7 @@
 
 import UIKit
 import NotificationCenter
+import Alamofire
 
 struct CMC: Decodable{
     let name: String?
@@ -16,6 +17,29 @@ struct CMC: Decodable{
     let price_btc: String?
     let percent_change_24h: String?
 }
+
+struct CMCC: Decodable{
+    struct inner: Decodable {
+        let rank: Int?
+        let name: String?
+        let symbol: String?
+        let quotes: CMCC1
+    }
+    
+    
+    let data: [String: inner]
+    
+    
+}
+
+struct CMCC1: Decodable{
+    let USD: CMCC2
+}
+struct CMCC2: Decodable{
+    let price: Double?
+    let percent_change_24h: Double?
+}
+
 
 class TodayViewController: UIViewController, NCWidgetProviding {
     
@@ -27,7 +51,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     var names = [UILabel]()
     var changes = [UILabel]()
     var imgs = [UIView]()
-    let disGroup = DispatchGroup()
+    let constGroup = DispatchGroup()
     
     //this is the most disgusting this i have done in my life
     @IBOutlet weak var name0: UILabel!
@@ -158,10 +182,19 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getCMC{(completion: [CMC]) in
-            self.coins = completion
+        var n = 1
+        var out = [CMC]()
+        while n < 1700{
+            CMCc(n) { (con) in
+                for i in con{
+                    out.append(i)
+                }
+            }
+            n += 100
         }
-        disGroup.notify(queue: .main){
+        
+        constGroup.notify(queue: .main){
+            self.coins = out
             if self.user != nil{
                 var price = [String?](repeatElement(nil, count: 10))
                 var changes = [String?](repeatElement(nil, count: 10))
@@ -207,10 +240,20 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
-        getCMC{(completion: [CMC]) in
-            self.coins = completion
+        var n = 1
+        var out = [CMC]()
+        while n < 1700{
+            CMCc(n) { (con) in
+                for i in con{
+                    out.append(i)
+                }
+            }
+            n += 100
         }
-        disGroup.notify(queue: .main){
+        
+        
+        constGroup.notify(queue: .main){
+            self.coins = out
             if self.user != nil{
                 var price = [String?](repeatElement(nil, count: 10))
                 var changes = [String?](repeatElement(nil, count: 10))
@@ -269,21 +312,34 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         else{preferredContentSize = expanded ? CGSize(width: maxSize.width, height: 100) : maxSize}
     }
     
-    func getCMC(completion: @escaping ([CMC]) -> ()){
+    typealias CMCallBack = (_ result: [CMC]) -> Void
+    func CMCc(_ num: Int, completion: @escaping CMCallBack){
         
-        disGroup.enter()
-        guard let url = URL(string: "https://api.coinmarketcap.com/v1/ticker/?limit=0") else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let coin = try JSONDecoder().decode([CMC].self, from: data)
-                    
-                    self.disGroup.leave()
-                    completion(coin)
-                } catch let jsonErr {print("Error serializing json:", jsonErr)}
+        self.constGroup.enter()
+        var out = [CMC]()
+        Alamofire.request("https://api.coinmarketcap.com/v2/ticker/?start=\(num)", method: .get).responseJSON {response in
+            do {
+                let output = try JSONDecoder().decode(CMCC.self, from: response.data!)
+                
+                
+                for (_, data) in output.data{
+                    if let n = data.name, let r = data.rank, let p = data.quotes.USD.price, let p24 = data.quotes.USD.percent_change_24h, let s = data.symbol{
+                        let temp = CMC(name: n, rank: String(describing: r), price_usd: String(describing: p), price_btc: s,  percent_change_24h: String(describing: p24))
+                        out.append(temp)
+                    }
+                }
+                print("cmcc")
+                self.constGroup.leave()
+                completion(out)
             }
-            }.resume()
+            catch{
+                print("error: " , error)
+                self.constGroup.leave()
+            }
+            
+        }
     }
+    
     
     func getPrice(name: String) -> String?{
         if self.coins != nil{
