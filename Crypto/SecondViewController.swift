@@ -86,7 +86,7 @@ class SecondViewController: UIViewController, ContDelegate {
     }
     
     func delaget(){
-        UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.3, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.v.search.alpha = 0
             self.blurView.alpha = 0
             self.bgView.alpha = 0
@@ -214,11 +214,12 @@ class SecondViewController: UIViewController, ContDelegate {
     }
     
     @IBOutlet var bannerHeight: NSLayoutConstraint!
+    //true is green
     func color(_ name:String) -> Bool{
         let change = getChange(name)
         let letter = change[change.startIndex]
-        let out = (letter == "-") ? false : true
-        return out
+        
+        return (letter == "-") ? false : true
     }
     
     
@@ -296,7 +297,7 @@ class SecondViewController: UIViewController, ContDelegate {
         
         self.view.addSubview(blurView)
         self.view.addSubview(bgView)
-        self.view.bringSubview(toFront: self.cont)
+        self.view.bringSubviewToFront(self.cont)
         
     }
     
@@ -306,7 +307,7 @@ class SecondViewController: UIViewController, ContDelegate {
         } else {
             table.addSubview(refreshControl)
         }
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor(named: "loading")
         
         
@@ -382,19 +383,12 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
         if cell.price.text == "Error"{
             cell.price.text = self.CCPrice[indexPath.row]
             cell.change.text = self.CCChange[indexPath.row]
-            if self.CCColor[indexPath.row] == "green"{
-                cell.color.backgroundColor = UIColor(named: "myGreen")
-            }
-            else{
-                cell.color.backgroundColor = UIColor(named: "myRed")
-            }
+            cell.color.backgroundColor = (self.CCColor[indexPath.row] == "green") ? UIColor(named: "myGreen") : UIColor(named: "myRed")
         }
         else{
             CCPrice[indexPath.row] = getPrice(name)
             CCChange[indexPath.row] = getChange(name) + "%"
-            CCColor[indexPath.row] = color(name) ? "red" : "green"
-            
-            
+            CCColor[indexPath.row] = color(name) ? "green" : "red" 
             save()
         }
         
@@ -405,7 +399,7 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             

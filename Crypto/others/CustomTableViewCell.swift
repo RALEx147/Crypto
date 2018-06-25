@@ -52,7 +52,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         let nFormat = supper.nF.string(from: NSNumber(value: num))
         cell.amount?.text =  nFormat! + " " + cur.name!
         
-        cell.img.layer.minificationFilter = kCAFilterTrilinear
+        cell.img.layer.minificationFilter = convertToCALayerContentsFilter(convertFromCALayerContentsFilter(CALayerContentsFilter.trilinear))
         cell.img.layer.minificationFilterBias = 0.03
         
         
@@ -144,7 +144,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         let up = self.superview as! UITableView
         self.height.constant = self.height.constant + 45
         up.beginUpdates()
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.1, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.sub.alpha = 1
             if let loop = self.buttons{
                 for i in loop{
@@ -152,11 +152,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
                 }
             }
         })
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.layoutIfNeeded()
         }, completion: { (_) in
             up.endUpdates()
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.imgg.alpha = 1
                 self.lab.alpha = 1
                 self.done.alpha = 1
@@ -204,14 +204,14 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
 
         if bool{
             done.isUserInteractionEnabled = true
-            UIView.transition(with: done as UIView, duration: 0.24, options: .transitionCrossDissolve, animations: {
-                self.done.setImage(UIImage(named: "done"), for: .normal)
+            UIView.transition(with: done as UIView, duration: 0.24, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
+                self.done.setImage(UIImage(named: "done"), for: UIControl.State.normal)
             })
         }
         else{
             done.isUserInteractionEnabled = false
-            UIView.transition(with: done as UIView, duration: 0.1, options: .transitionCrossDissolve, animations: {
-                self.done.setImage(UIImage(named: "undone"), for: .normal)
+            UIView.transition(with: done as UIView, duration: 0.1, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
+                self.done.setImage(UIImage(named: "undone"), for: UIControl.State.normal)
             })
         }
     }
@@ -225,11 +225,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         let up = self.superview as! UITableView
         address.text = ""
         nickname.text = ""
-        self.done.setImage(UIImage(named: "undone"), for: .normal)
+        self.done.setImage(UIImage(named: "undone"), for: UIControl.State.normal)
         done.isUserInteractionEnabled = false
         address.resignFirstResponder()
         nickname.resignFirstResponder()
-        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.4, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.imgg.alpha = 0
             self.lab.alpha = 0
             self.done.alpha = 0
@@ -241,7 +241,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         }, completion: { (_) in
             up.beginUpdates()
             
-            UIView.animate(withDuration: 0.1, delay: 0.3, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.1, delay: 0.3, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.sub.alpha = 0
                 if let loop = self.buttons{
                     for i in loop{
@@ -251,7 +251,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             })
             self.height.constant = self.height.constant - 45
 
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }, completion: { (_) in
                 up.endUpdates()
@@ -289,7 +289,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             
             
             
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.layoutIfNeeded()
                 self.addCoin.alpha = 0
                 
@@ -311,7 +311,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             
             self.height.constant = self.ogheight
             up.beginUpdates()
-            UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }) { (_) in
                 self.imgg.alpha = 0
@@ -355,12 +355,12 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             print()
             up.beginUpdates()
             
-            UIView.transition(with: sender as UIView, duration: 0.4, options: .transitionCrossDissolve, animations: {
-                sender.setImage(UIImage(named: "moreI"), for: .normal)
+            UIView.transition(with: sender as UIView, duration: 0.4, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
+                sender.setImage(UIImage(named: "moreI"), for: UIControl.State.normal)
             }, completion: nil)
             
             subHeight.constant = subHeight.constant + CGFloat((cells.count - 1) * 44)
-            UIView.animate(withDuration: 0.6, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.6, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }, completion: { (_) in
                 up.endUpdates()
@@ -377,11 +377,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
             up.beginUpdates()
             subHeight.constant = subHeight.constant - CGFloat(Float(cells.count - 1) * 44)
             
-            UIView.transition(with: sender as UIView, duration: 0.4, options: .transitionCrossDissolve, animations: {
-                sender.setImage(UIImage(named: "more"), for: .normal)
+            UIView.transition(with: sender as UIView, duration: 0.4, options: UIView.AnimationOptions.transitionCrossDissolve, animations: {
+                sender.setImage(UIImage(named: "more"), for: UIControl.State.normal)
             }, completion: nil)
             
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 self.layoutIfNeeded()
             }, completion: { (_) in
                 up.endUpdates()
@@ -425,7 +425,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         lab.font = lab.font.withSize(18)
         ogheight = 75
         sub.layer.cornerRadius = 10
-        address.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        address.addTarget(self, action: #selector(textFieldDidChange(_:)), for: UIControl.Event.editingChanged)
 
        buttons = [neoButton,eosButton, ltcButton, btcButton, ethButton, xrpButton]
         
@@ -440,4 +440,14 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         // Configure the view for the selected state
     }
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToCALayerContentsFilter(_ input: String) -> CALayerContentsFilter {
+	return CALayerContentsFilter(rawValue: input)
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCALayerContentsFilter(_ input: CALayerContentsFilter) -> String {
+	return input.rawValue
 }

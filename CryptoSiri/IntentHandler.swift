@@ -22,10 +22,7 @@ class IntentHandler: INExtension{}
 extension IntentHandler: INCreateNoteIntentHandling{
     func handle(intent: INCreateNoteIntent, completion: @escaping (INCreateNoteIntentResponse) -> Void) {
         
-        var mm = INCreateNoteIntentResponseCode(rawValue: 0)
-        let w = NSUserActivity(activityType: "ok")
-        var l = INCreateNoteIntentResponse(code: mm!, userActivity: w)
-        completion(l)
+
     }
     
     

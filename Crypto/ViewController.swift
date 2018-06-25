@@ -126,7 +126,7 @@ class ViewController: UIViewController {
         
         
         self.view2?.bannerHeight.constant = v1BH!
-        UIView.animate(withDuration: 0.48, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.48, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.view2.table.alpha = 0
             self.view2.lbl.alpha = 0
 //            self.view2.search.alpha = 0
@@ -148,7 +148,7 @@ class ViewController: UIViewController {
         self.v2.alpha = 0
         self.icon.alpha = 1
         
-        UIView.animate(withDuration: 0.33, delay: 0.1, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.33, delay: 0.1, options: UIView.AnimationOptions.curveEaseOut, animations: {
             let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
             for i in cells {
                 i.alpha = 1
@@ -173,7 +173,7 @@ class ViewController: UIViewController {
         self.v2.alpha = 1
         
         self.view2.refresh()
-        UIView.animate(withDuration: 0.23, delay: 0.2, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.23, delay: 0.2, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.view2.table.alpha = 1
             self.view2.lbl.alpha = 1
             self.view2.add.alpha = 1
@@ -186,7 +186,7 @@ class ViewController: UIViewController {
     func toPriceAnimate(){
         self.view1?.bannerHeight.constant = view2.banner.frame.size.height
         
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
             self.view1.view.layoutIfNeeded()
             self.view1?.total.alpha = 0
             self.view1?.add?.alpha = 0
@@ -198,7 +198,7 @@ class ViewController: UIViewController {
             
             self.view.layoutIfNeeded()
         }) { (_) in}
-        UIView.animate(withDuration: 0.22, delay: 0.26, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.22, delay: 0.26, options: UIView.AnimationOptions.curveEaseOut, animations: {
             
             let cells = self.view1?.table.visibleCells as! Array<CustomTableViewCell>
             if cells.count > 0{

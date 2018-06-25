@@ -137,13 +137,13 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         else{
 
-            self.labl.setTitle(" ", for: .application)
-            self.labl.setTitle(" ", for: .disabled)
-            self.labl.setTitle(" ", for: .focused)
-            self.labl.setTitle(" ", for: .highlighted)
-            self.labl.setTitle(" ", for: .normal)
-            self.labl.setTitle(" ", for: .reserved)
-            self.labl.setTitle(" ", for: .selected)
+            self.labl.setTitle(" ", for: UIControl.State.application)
+            self.labl.setTitle(" ", for: UIControl.State.disabled)
+            self.labl.setTitle(" ", for: UIControl.State.focused)
+            self.labl.setTitle(" ", for: UIControl.State.highlighted)
+            self.labl.setTitle(" ", for: UIControl.State.normal)
+            self.labl.setTitle(" ", for: UIControl.State.reserved)
+            self.labl.setTitle(" ", for: UIControl.State.selected)
             
             prevPrice = UserDefaults().array(forKey: "prevPrice") as? [String] ?? prevPrice
             prevChange = UserDefaults().array(forKey: "prevChange") as? [String] ?? prevChange
@@ -171,7 +171,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                         imgs[i].backgroundColor = UIColor(named: "myGreen");
                         changes[i].text!.insert("+", at: String.Index.init(encodedOffset: 0))
                     }
-                    self.view.sendSubview(toBack: imgs[i])
+                    self.view.sendSubviewToBack(imgs[i])
                 }
                 else{changes[i].text = "--"}
             }

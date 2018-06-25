@@ -53,7 +53,7 @@ class FirstViewController: UIViewController{
         self.loadCells()
         
         table.estimatedRowHeight = 130
-        table.rowHeight = UITableViewAutomaticDimension
+        table.rowHeight = UITableView.automaticDimension
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
         total.font = total.font.withSize(50)
         let format = nF.string(from: NSNumber(value: cleanUp(totalPrice())))
@@ -113,7 +113,7 @@ class FirstViewController: UIViewController{
     
     @IBAction func reload(_ sender: Any) {
         if !Reachability.isConnectedToNetwork(){
-            let alert = UIAlertController(title: "No Connection", message: "Please connect to the internet and refresh again", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "No Connection", message: "Please connect to the internet and refresh again", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
             self.present(alert, animated: true, completion: nil)
             
@@ -1207,7 +1207,7 @@ class FirstViewController: UIViewController{
         self.reloadSubTable()
         self.reloadSubMore()
         becomeEdit = true
-        UIView.animate(withDuration: 0.3, delay: 0.08, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.08, options: UIView.AnimationOptions.curveEaseOut, animations: {
             let head = self.table.tableHeaderView
             head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! - 5)
             self.view.layoutIfNeeded()
@@ -1263,7 +1263,7 @@ class FirstViewController: UIViewController{
             table.isEditing = false
             self.table.deleteRows(at: [indx], with: .fade)
         }) { (_) in
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.2, delay: 0, options: UIView.AnimationOptions.curveEaseOut, animations: {
                 let head = self.table.tableHeaderView
                 head?.frame = CGRect(x: (head?.frame.origin.x)!, y: (head?.frame.origin.y)!, width: (head?.frame.width)!, height: (head?.frame.height)! + 5)
                 self.bannerHeight.constant = 223
@@ -1317,7 +1317,7 @@ class FirstViewController: UIViewController{
                             x.addCoin.alpha = 1
                             x.address.text = ""
                             x.nickname.text = ""
-                            x.done.setImage(UIImage(named: "undone"), for: .normal)
+                            x.done.setImage(UIImage(named: "undone"), for: UIControl.State.normal)
                             x.done.isUserInteractionEnabled = false
                             x.bottomCons.isActive = false
                             x.subBottom.isActive = true
@@ -1487,7 +1487,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
         let cur = self.cellArray[indexPath.row]
         cell.cellView?.layer.cornerRadius = 10
         cell.name?.text = cur.tag
-        cell.imgg.layer.minificationFilter = kCAFilterTrilinear
+        cell.imgg.layer.minificationFilter = convertToCALayerContentsFilter(convertFromCALayerContentsFilter(CALayerContentsFilter.trilinear))
         cell.imgg.layer.minificationFilterBias = 0.03
         if cur.name != "BINANCE"{
             cell.tagg?.text = cur.name + ": " + cur.address
@@ -1499,7 +1499,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
             cell.tagg?.text = ""
             cell.money?.text = ""
             cell.moreLabel.text = ""
-            cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: .normal)
+            cell.addCoin.setImage(#imageLiteral(resourceName: "addCoin"), for: UIControl.State.normal)
             cell.addCoin.isUserInteractionEnabled = true
             cell.moreIcon.alpha = 0
         }
@@ -1509,7 +1509,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
             cell.imagee?.image = UIImage(named: cur.name!)
             let more = cur.more!
             
-            cell.addCoin.setImage(UIImage(), for: .normal)
+            cell.addCoin.setImage(UIImage(), for: UIControl.State.normal)
             cell.moreIcon.isUserInteractionEnabled = true
             cell.addCoin.isUserInteractionEnabled = false
             cell.moreLabel?.text = ""
@@ -1581,7 +1581,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
         }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             
@@ -1632,3 +1632,13 @@ extension String {
 
 
 extension Double{func truncate(places : Int)-> Double{return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))}}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToCALayerContentsFilter(_ input: String) -> CALayerContentsFilter {
+	return CALayerContentsFilter(rawValue: input)
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCALayerContentsFilter(_ input: CALayerContentsFilter) -> String {
+	return input.rawValue
+}

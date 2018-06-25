@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1FFD802420C1A62E00D857BA /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4353209D1F76006CD37D /* Alamofire.framework */; };
+		1FE140CD20DFDA22007AA5BE /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE140CC20DFDA22007AA5BE /* Cell.swift */; };
+		1FFAE40120E1072800702176 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FFAE40020E1072800702176 /* Alamofire.framework */; };
+		1FFAE40220E1072800702176 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1FFAE40020E1072800702176 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		910A81931FA4DC75001F868A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81921FA4DC75001F868A /* AppDelegate.swift */; };
 		910A81951FA4DC75001F868A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81941FA4DC75001F868A /* ViewController.swift */; };
 		910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910A81961FA4DC75001F868A /* SecondViewController.swift */; };
@@ -42,16 +44,10 @@
 		914BAE1D1FEBA0D800861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		914BAE1E1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
 		914BAE1F1FEBA0D900861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
-		914C435D209D28FD006CD37D /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4353209D1F76006CD37D /* Alamofire.framework */; };
-		914C435E209D28FD006CD37D /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4353209D1F76006CD37D /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		914C435F209D28FD006CD37D /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4352209D1F76006CD37D /* CommonCrypto.framework */; };
-		914C4360209D28FD006CD37D /* CommonCrypto.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4352209D1F76006CD37D /* CommonCrypto.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		914C4361209D2917006CD37D /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4350209D1F46006CD37D /* Lottie.framework */; };
 		914C4362209D2917006CD37D /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4350209D1F46006CD37D /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9164BB3D203E691000C40F93 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3B203E690F00C40F93 /* top2.json */; };
 		9164BB3E203E691000C40F93 /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3C203E690F00C40F93 /* top1.json */; };
-		9180AE9D209D2F0000154A2D /* BinanceApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9180AE9B209D2EC600154A2D /* BinanceApi.framework */; };
-		9180AE9E209D2F0000154A2D /* BinanceApi.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9180AE9B209D2EC600154A2D /* BinanceApi.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		918F08D71FF33D5E0082AC9A /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D31FF33D5E0082AC9A /* 4.json */; };
 		918F08D81FF33D5E0082AC9A /* 3.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D41FF33D5E0082AC9A /* 3.json */; };
 		918F08DA1FF33D5E0082AC9A /* 2.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D61FF33D5E0082AC9A /* 2.json */; };
@@ -117,10 +113,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				914C4360209D28FD006CD37D /* CommonCrypto.framework in Embed Frameworks */,
-				914C435E209D28FD006CD37D /* Alamofire.framework in Embed Frameworks */,
-				9180AE9E209D2F0000154A2D /* BinanceApi.framework in Embed Frameworks */,
 				914C4362209D2917006CD37D /* Lottie.framework in Embed Frameworks */,
+				1FFAE40220E1072800702176 /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,6 +122,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1FE140CC20DFDA22007AA5BE /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		1FFAE40020E1072800702176 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		910A818F1FA4DC75001F868A /* Crypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		910A81921FA4DC75001F868A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		910A81941FA4DC75001F868A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -167,11 +163,8 @@
 		914BAE151FEBA02800861C31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		914BAE1C1FEBA05200861C31 /* Crypto PubKeys.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Crypto PubKeys.entitlements"; sourceTree = "<group>"; };
 		914C4350209D1F46006CD37D /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
-		914C4352209D1F76006CD37D /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
-		914C4353209D1F76006CD37D /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		9164BB3B203E690F00C40F93 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = ../../../../../Desktop/local/old/top2.json; sourceTree = "<group>"; };
 		9164BB3C203E690F00C40F93 /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = ../../../../../Desktop/local/old/top1.json; sourceTree = "<group>"; };
-		9180AE9B209D2EC600154A2D /* BinanceApi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BinanceApi.framework; path = Carthage/Build/iOS/BinanceApi.framework; sourceTree = "<group>"; };
 		918F08D31FF33D5E0082AC9A /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
 		918F08D41FF33D5E0082AC9A /* 3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 3.json; sourceTree = "<group>"; };
 		918F08D61FF33D5E0082AC9A /* 2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 2.json; sourceTree = "<group>"; };
@@ -190,10 +183,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				914C435F209D28FD006CD37D /* CommonCrypto.framework in Frameworks */,
-				914C435D209D28FD006CD37D /* Alamofire.framework in Frameworks */,
 				914C4361209D2917006CD37D /* Lottie.framework in Frameworks */,
-				9180AE9D209D2F0000154A2D /* BinanceApi.framework in Frameworks */,
+				1FFAE40120E1072800702176 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,7 +208,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				914B4BAA1FC8F7C400968A3E /* NotificationCenter.framework in Frameworks */,
-				1FFD802420C1A62E00D857BA /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,9 +285,7 @@
 		914B4BA81FC8F7C400968A3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9180AE9B209D2EC600154A2D /* BinanceApi.framework */,
-				914C4353209D1F76006CD37D /* Alamofire.framework */,
-				914C4352209D1F76006CD37D /* CommonCrypto.framework */,
+				1FFAE40020E1072800702176 /* Alamofire.framework */,
 				914C4350209D1F46006CD37D /* Lottie.framework */,
 				914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */,
 				9113C0E21FE9EC39005170A4 /* IntentsUI.framework */,
@@ -342,6 +330,7 @@
 				91C7B43B201647EB00EDF5FC /* PriceTableViewCell.swift */,
 				9129AD981FF4C97400EF04C0 /* CustomTableViewCell.swift */,
 				919B5CB71FF4A67500F2D917 /* structs.swift */,
+				1FE140CC20DFDA22007AA5BE /* Cell.swift */,
 				91383F1F1FFF39890000ECB7 /* SubTableViewCell.swift */,
 				91383F1D1FFF1FB00000ECB7 /* connection.swift */,
 				910F1EF01FF999FA0096F3A9 /* oldCode.swift */,
@@ -471,6 +460,7 @@
 				TargetAttributes = {
 					910A818E1FA4DC75001F868A = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -483,6 +473,7 @@
 					};
 					9113C0D71FE9EC39005170A4 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -492,6 +483,7 @@
 					};
 					9113C0E01FE9EC39005170A4 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -501,6 +493,7 @@
 					};
 					914B4BA61FC8F7C400968A3E = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -510,6 +503,7 @@
 					};
 					914BAE0C1FEBA02800861C31 = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -613,6 +607,7 @@
 				910B0D141FF6FC0D0028E76C /* structs.swift in Sources */,
 				91C7B43C201647EB00EDF5FC /* PriceTableViewCell.swift in Sources */,
 				9117B06C201959100031337C /* SearchTableViewCell.swift in Sources */,
+				1FE140CD20DFDA22007AA5BE /* Cell.swift in Sources */,
 				91383F1E1FFF1FB00000ECB7 /* connection.swift in Sources */,
 				91C1FB4E2033E96400F347EF /* SearchViewController.swift in Sources */,
 				910A81971FA4DC75001F868A /* SecondViewController.swift in Sources */,
@@ -855,7 +850,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -880,7 +875,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -896,7 +891,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain.CryptoSiri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -912,7 +907,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = NavaDrag.CryptoKeychain.CryptoSiri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -930,7 +925,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -953,7 +948,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -973,7 +968,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -993,7 +988,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1009,7 +1004,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-PubKeys";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1030,7 +1025,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "NavaDrag.CryptoKeychain.Crypto-PubKeys";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
