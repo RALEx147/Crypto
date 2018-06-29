@@ -20,34 +20,30 @@ class FirstViewController: UIViewController{
         
     }
     
-    
     @IBOutlet weak var spacing: UIView!
     @IBOutlet weak var banner: UIImageView!
     @IBOutlet weak var table: UITableView!
     @IBOutlet weak var total: UILabel!
-    var keys = [String: String]()
+    
+    var cellArray = [Cell]()
     var all:[CMC]!
     var c:currency!
     var impact = UIImpactFeedbackGenerator(style: .heavy)
+    let nF:NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        return numberFormatter
+    }()
     let disGroup = DispatchGroup()
     let disGroup2 = DispatchGroup()
     let disGroup3 = DispatchGroup()
     let constGroup = DispatchGroup()
     
     var loading = false
-    var cellArray = [Cell]()
-    
     let ani1 = LOTAnimationView(name: "1")
     let ani2 = LOTAnimationView(name: "2")
     let ani3 = LOTAnimationView(name: "3")
     let ani4 = LOTAnimationView(name: "4")
-    
-    
-    let nF:NumberFormatter = {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        return numberFormatter
-    }()
     
     override func viewDidLoad() {
         self.loadCells()
@@ -74,22 +70,6 @@ class FirstViewController: UIViewController{
         
     }
     
-    func totalPrice() -> Double{
-        var out: Double = 0.0
-        for i in cellArray.indices{
-            if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
-                for j in cellArray[i].subCells!.indices{
-                    out += Double(cellArray[i].subCells![j].balance) ?? 0.0
-                }
-            }
-            if let ss:Double = Double(cellArray[i].balance!){
-                out += ss
-            }
-        }
-        return out
-    }
-    
-    
     func saveCells(){
         UserDefaults.standard.setValue(NSKeyedArchiver.archivedData(withRootObject: cellArray), forKey: "cellArray")
         UserDefaults.standard.synchronize()
@@ -109,8 +89,22 @@ class FirstViewController: UIViewController{
         
     }
     
-    var succeed = true
+    func totalPrice() -> Double{
+        var out: Double = 0.0
+        for i in cellArray.indices{
+            if cellArray[i].subCells != nil && !(cellArray[i].subCells?.isEmpty)!{
+                for j in cellArray[i].subCells!.indices{
+                    out += Double(cellArray[i].subCells![j].balance) ?? 0.0
+                }
+            }
+            if let ss:Double = Double(cellArray[i].balance!){
+                out += ss
+            }
+        }
+        return out
+    }
     
+    var succeed = true
     @IBAction func reload(_ sender: Any) {
         if !Reachability.isConnectedToNetwork(){
             let alert = UIAlertController(title: "No Connection", message: "Please connect to the internet and refresh again", preferredStyle: UIAlertController.Style.alert)
@@ -208,7 +202,7 @@ class FirstViewController: UIViewController{
                             
                             self.ani4.play{ (finished) in
                                 if !self.succeed{
-                                    self.unfinished()
+                                    self.reloadFailed()
                                 }
                                 self.impact.impactOccurred()
                                 self.loading = false
@@ -262,9 +256,6 @@ class FirstViewController: UIViewController{
             }
         }
     }
-    
-    
-    
     func updateCell(_ c: Cell) -> Cell{
         succeed = true
         
@@ -615,6 +606,9 @@ class FirstViewController: UIViewController{
         
     }
     
+    
+    
+    
     func getCurrency(_ name: String) -> String{
         switch name{
         case "AUD":
@@ -642,22 +636,20 @@ class FirstViewController: UIViewController{
         default:
             return "Not Found"
         }
-        
     }
-    
-    
-    func unfinished(){
-        ani3.setValue(UIColor(named: "failure")!, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
-        self.ani4.setValue(UIColor(named: "failure")!, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
-        self.impact.impactOccurred()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
-            self.impact.impactOccurred()
-        }
+    func addCurrencies(){
+        all.append(CMC(name: "USD", rank: "", symbol: "USD", price_usd: "1", percent_change_24h: ""))
+        all.append(CMC(name: "AUD", rank: "", symbol: "AUD", price_usd: String(1 / c.rates.AUD), percent_change_24h: ""))
+        all.append(CMC(name: "CAD", rank: "", symbol: "CAD", price_usd: String(1 / c.rates.CAD), percent_change_24h: ""))
+        all.append(CMC(name: "CNY", rank: "", symbol: "CNY", price_usd: String(1 / c.rates.CNY), percent_change_24h: ""))
+        all.append(CMC(name: "BRL", rank: "", symbol: "BRL", price_usd: String(1 / c.rates.BRL), percent_change_24h: ""))
+        all.append(CMC(name: "KRW", rank: "", symbol: "KRW", price_usd: String(1 / c.rates.KRW), percent_change_24h: ""))
+        all.append(CMC(name: "EUR", rank: "", symbol: "EUR", price_usd: String(1 / c.rates.EUR), percent_change_24h: ""))
+        all.append(CMC(name: "GBP", rank: "", symbol: "GBP", price_usd: String(1 / c.rates.GBP), percent_change_24h: ""))
+        all.append(CMC(name: "MXN", rank: "", symbol: "MXN", price_usd: String(1 / c.rates.MXN), percent_change_24h: ""))
+        all.append(CMC(name: "JPY", rank: "", symbol: "JPY", price_usd: String(1 / c.rates.JPY), percent_change_24h: ""))
+        all.append(CMC(name: "SGD", rank: "", symbol: "SGD", price_usd: String(1 / c.rates.SGD), percent_change_24h: ""))
     }
-    
-    
-    
-    
     func Currency(completion: @escaping (currency?) -> ()){
         self.disGroup3.enter()
         
@@ -684,7 +676,7 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
-    
+    //I could use <T> generics here but its too much to fix atm
     func neoBalance(_ c: Cell, completion: @escaping ([NEO]?) -> ()){
         self.disGroup.enter()
         var done = false
@@ -724,9 +716,6 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
-    
-    
-    
     func ethBalance(_ c:Cell, completion: @escaping (ETH?) -> ()){
         self.disGroup.enter()
         var done = false
@@ -758,9 +747,6 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
-    
-    
-    
     func btcBalance(_ c:Cell, completion: @escaping (BTC?) -> ()){
         self.disGroup.enter()
         var done = false
@@ -791,8 +777,6 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
-    
-    
     func ltcBalance(_ c:Cell, completion: @escaping (LTC?) -> ()){
         self.disGroup.enter()
         var done = false
@@ -825,12 +809,6 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
-    
-    
-    
-    
-    
-    
     func xrpBalance(_ c:Cell, completion: @escaping ([XRP]) -> ()){
         self.disGroup.enter()
         var done = false
@@ -863,8 +841,6 @@ class FirstViewController: UIViewController{
             }
             }.resume()
     }
-    
-    typealias CallBack = (_ result: [BinanceCoins]) -> Void
     func bnbBalacne(_ c:Cell, completion: @escaping CallBack){
         let seperate = c.address.split(separator: " ")
         let apikey = String(seperate[0])
@@ -910,13 +886,6 @@ class FirstViewController: UIViewController{
             
         }
     }
-    
-    
-    
-    //
-    
-    
-    typealias CMCallBack = (_ result: [CMC]) -> Void
     func CMCc(_ num: Int, completion: @escaping CMCallBack){
         
         self.constGroup.enter()
@@ -942,8 +911,8 @@ class FirstViewController: UIViewController{
             
         }
     }
-    
-    
+    typealias CMCallBack = (_ result: [CMC]) -> Void
+    typealias CallBack = (_ result: [BinanceCoins]) -> Void
     
     func getPrice(name: String) -> String{
         if self.all != nil{
@@ -957,7 +926,6 @@ class FirstViewController: UIViewController{
         }
         return "Not Found"
     }
-    
     func cleanUp(_ cash:Double) -> Double{
         var out = cash
         if out < 0.00001 && out >= 0.0{
@@ -982,27 +950,16 @@ class FirstViewController: UIViewController{
     }
     
     
-    func addCurrencies(){
-        all.append(CMC(name: "USD", rank: "", symbol: "USD", price_usd: "1", percent_change_24h: ""))
-        all.append(CMC(name: "AUD", rank: "", symbol: "AUD", price_usd: String(1 / c.rates.AUD), percent_change_24h: ""))
-        all.append(CMC(name: "CAD", rank: "", symbol: "CAD", price_usd: String(1 / c.rates.CAD), percent_change_24h: ""))
-        all.append(CMC(name: "CNY", rank: "", symbol: "CNY", price_usd: String(1 / c.rates.CNY), percent_change_24h: ""))
-        all.append(CMC(name: "BRL", rank: "", symbol: "BRL", price_usd: String(1 / c.rates.BRL), percent_change_24h: ""))
-        all.append(CMC(name: "KRW", rank: "", symbol: "KRW", price_usd: String(1 / c.rates.KRW), percent_change_24h: ""))
-        all.append(CMC(name: "EUR", rank: "", symbol: "EUR", price_usd: String(1 / c.rates.EUR), percent_change_24h: ""))
-        all.append(CMC(name: "GBP", rank: "", symbol: "GBP", price_usd: String(1 / c.rates.GBP), percent_change_24h: ""))
-        all.append(CMC(name: "MXN", rank: "", symbol: "MXN", price_usd: String(1 / c.rates.MXN), percent_change_24h: ""))
-        all.append(CMC(name: "JPY", rank: "", symbol: "JPY", price_usd: String(1 / c.rates.JPY), percent_change_24h: ""))
-        all.append(CMC(name: "SGD", rank: "", symbol: "SGD", price_usd: String(1 / c.rates.SGD), percent_change_24h: ""))
+    
+    func reloadFailed(){
+        ani3.setValue(UIColor(named: "failure")!, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
+        self.ani4.setValue(UIColor(named: "failure")!, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
+        self.impact.impactOccurred()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+            self.impact.impactOccurred()
+        }
     }
-    
-    
-    
-    
-    
     let bg = UIImageView(image: UIImage(named:"refresh"))
-    
-    
     func setupRefresh() {
         bg.frame.origin = CGPoint(x: 18, y: 180)
         self.view.addSubview(bg)
@@ -1055,10 +1012,6 @@ class FirstViewController: UIViewController{
         NSLayoutConstraint.activate(cons)
         self.view.layoutIfNeeded()
     }
-    
-    
-    
-    
     
     var addOn = false
     var add:LOTAnimationView?
@@ -1117,7 +1070,6 @@ class FirstViewController: UIViewController{
             
         }
     }
-    
     func toggleMenuDelagate(){
         if !addOn {
             if showBool{
@@ -1139,17 +1091,7 @@ class FirstViewController: UIViewController{
         }
     }
     
-    
     func fadeMore(){
-        //        var list = [CustomTableViewCell]()
-        //        let rowCount = table.numberOfRowsInSection(section)
-        //
-        //
-        //        for row in 0 ..< rowCount {
-        //            let cell = table.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section)) as! CustomTableViewCell
-        //            list.append(cell)
-        //        }
-        //
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
         for i in cells {
             i.moreLabel.alpha = 0
@@ -1158,7 +1100,6 @@ class FirstViewController: UIViewController{
             i.toView.isActive = true
         }
     }
-    
     func defadeMore(){
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
         for i in cells {
@@ -1168,14 +1109,12 @@ class FirstViewController: UIViewController{
             i.toView.isActive = false
         }
     }
-    
     func reloadSubTable() {
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
         for i in cells {
             i.subTable.reloadData()
         }
     }
-    
     func reloadSubMore() {
         let cells = self.table.visibleCells as! Array<CustomTableViewCell>
         for i in cells {
@@ -1185,14 +1124,12 @@ class FirstViewController: UIViewController{
         }
     }
     
-    
-    
     @IBOutlet var totalHeight: NSLayoutConstraint!
-    
-    
     @IBOutlet weak var bannerHeight: NSLayoutConstraint!
-    
     var showBool = true
+    var doneButtonTouched = false
+    var becomeEdit = false
+    var hideBool = true
     func showAdd(){
         
         showBool = false
@@ -1245,8 +1182,6 @@ class FirstViewController: UIViewController{
         
         
     }
-    var becomeEdit:Bool = false
-    var hideBool = true
     func hideAdd(){
         hideBool = false
         let superView = parent as! ViewController
@@ -1340,7 +1275,6 @@ class FirstViewController: UIViewController{
         
         
     }
-    var doneButtonTouched = false
     
 }
 
@@ -1414,21 +1348,19 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
                 }
                 break
             case "NEO":
-                var checkIfNotFucked:[NEO]!
-                neoBalance(testCell, completion: { (out)  in
-                    checkIfNotFucked = out
-                })
-                disGroup.notify(queue: .main){
-                    self.doneButtonTouched = false
+                self.doneButtonTouched = false
+                let cleanAddress = address.trimmingCharacters(in: .whitespacesAndNewlines)
+                if cleanAddress.count == 34 && cleanAddress.isBase58 && cleanAddress[cleanAddress.startIndex] == "A"{
                     
-                    if checkIfNotFucked != nil && !checkIfNotFucked.isEmpty{
-                        self.toggleMenuDelagate()
-                        let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: address, subCells: [Cell]())
-                        self.cellArray.insert(add, at: 0)
-                        self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
-                        self.saveCells()
-                        self.reload(self)
-                    }
+                    self.toggleMenuDelagate()
+                    let add = Cell(name: type, tag: nick, amount: "0.0", price: "0.0", balance: "0.0", address: cleanAddress, subCells: [Cell]())
+                    self.cellArray.insert(add, at: 0)
+                    self.table.insertRows(at: [IndexPath(row: 0, section: 0)], with: .fade)
+                    self.saveCells()
+                    self.reload(self)
+                }
+                else{
+                    print("fail")
                 }
                 break
             case "LTC":
@@ -1593,22 +1525,6 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
     
     
 }
-
-
-
-
-
-class NeverClearView: UIView {
-    override var backgroundColor: UIColor? {
-        didSet {
-            if backgroundColor?.cgColor.alpha == 0 {
-                backgroundColor = oldValue
-            }
-        }
-    }
-}
-
-
 extension String {
     func hmac(base64key key: String) -> String {
         let algorithm = CCHmacAlgorithm(kCCHmacAlgSHA256)
@@ -1627,18 +1543,34 @@ extension String {
         let result = output.map { b in String(format: "%02x", b) }.joined()
         return result
     }
+    var isBase58: Bool {
+        let allowed = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+        let characterSet = CharacterSet(charactersIn: allowed)
+        guard rangeOfCharacter(from: characterSet.inverted) == nil else {
+            return false
+        }
+        return true
+    }
+}
+extension Double{
+    func truncate(places : Int)-> Double{
+        return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
+        
+    }
+}
+class NeverClearView: UIView {
+    override var backgroundColor: UIColor? {
+        didSet {
+            if backgroundColor?.cgColor.alpha == 0 {
+                backgroundColor = oldValue
+            }
+        }
+    }
 }
 
-
-
-extension Double{func truncate(places : Int)-> Double{return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))}}
-
-// Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertToCALayerContentsFilter(_ input: String) -> CALayerContentsFilter {
-	return CALayerContentsFilter(rawValue: input)
+    return CALayerContentsFilter(rawValue: input)
 }
-
-// Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromCALayerContentsFilter(_ input: CALayerContentsFilter) -> String {
-	return input.rawValue
+    return input.rawValue
 }

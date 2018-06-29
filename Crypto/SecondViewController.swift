@@ -388,7 +388,7 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
         else{
             CCPrice[indexPath.row] = getPrice(name)
             CCChange[indexPath.row] = getChange(name) + "%"
-            CCColor[indexPath.row] = color(name) ? "green" : "red" 
+            CCColor[indexPath.row] = color(name) ? "green" : "red"
             save()
         }
         
