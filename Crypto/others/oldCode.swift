@@ -31,7 +31,7 @@ import Foundation
 //}
 
 
-//let neo = Cell(name: "NEO", tag: "Neo Tracker", amount: "0", price: "0", balance: "0", address: "AX7zArzdTweY8MoDRozgriR7vTQWsaU3yW", subCells: [Cell]())
+//let neo =
 //
 //let neo2 = Cell(name: "NEO", tag: "Ledger", amount: "0", price: "0", balance: "0", address: "AXhrBwC6C2vHQeEzB2HjvBYtUUAgK1uCdr", subCells: [Cell]())
 //

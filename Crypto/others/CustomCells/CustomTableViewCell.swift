@@ -341,7 +341,11 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
     
     @IBOutlet var newAddress: UILabel!
     var extended = true
-    
+	
+	func moreError(){
+		moreIcon.setImage(UIImage(named: "moreError"), for: UIControl.State.normal)
+
+	}
 
     @IBAction func more(_ sender: UIButton) {
         let up = self.superview as! UITableView

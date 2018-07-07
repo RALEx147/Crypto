@@ -16,9 +16,9 @@ let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BR
 
 class FirstViewController: UIViewController{
     @IBAction func debug(_ sender: Any) {
-        
-        
-    }
+		 let bb = Cell(name: "BINANCE", tag: "asdf", amount: "0", price: "0", balance: "0", address: "wnO4Z9w5JjQsLINQKvolThfCedfLew8iQ9bgodGjCEe7MLOU9wEoHkkakJbn4WLJ 4cFp2hD8L1ceexvY7Qjo8GLt8XneKISGTyzr9OgRFpHywcaoTgV6AvoBvsh6Nxom", subCells: [Cell]())
+		self.bnbBalacne(bb){(completion) in print(completion)}
+	}
     
     @IBOutlet weak var spacing: UIView!
     @IBOutlet weak var banner: UIImageView!
@@ -26,6 +26,7 @@ class FirstViewController: UIViewController{
     @IBOutlet weak var total: UILabel!
     
     var cellArray = [Cell]()
+	var errorArray = [String]()
     var all:[CMC]!
     var c:currency!
     var impact = UIImpactFeedbackGenerator(style: .heavy)
@@ -38,16 +39,18 @@ class FirstViewController: UIViewController{
     let disGroup2 = DispatchGroup()
     let disGroup3 = DispatchGroup()
     let constGroup = DispatchGroup()
-    
+	
     var loading = false
     let ani1 = LOTAnimationView(name: "1")
     let ani2 = LOTAnimationView(name: "2")
     let ani3 = LOTAnimationView(name: "3")
     let ani4 = LOTAnimationView(name: "4")
-    
+	
     override func viewDidLoad() {
+		
         self.loadCells()
-        
+
+		setErrorArray()
         table.estimatedRowHeight = 130
         table.rowHeight = UITableView.automaticDimension
         self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
@@ -114,14 +117,17 @@ class FirstViewController: UIViewController{
         }
         else{
             if !loading{
+				self.setErrorArray()
+				self.table.reloadData()
                 disGroup2.enter()
                 loading = true
                 self.ani3.setValue(UIColor.white, forKeypath: "end.Ellipse 1.Stroke 1.Color", atFrame: 0)
                 self.ani4.setValue(UIColor.white, forKeypath: "2.Group 1.Stroke 1.Color", atFrame: 0)
                 
                 
-                Currency{(completion) in self.c = completion ?? self.c}
-                var n = 1
+                //Currency{(completion) in self.c = completion ?? self.c}
+				
+				var n = 1
                 var out = [CMC]()
                 while n < 1700{
                     CMCc(n) { (con) in
@@ -130,11 +136,6 @@ class FirstViewController: UIViewController{
                         }
                     }
                     n += 100
-                }
-                constGroup.notify(queue: .main){
-                    for i in self.cellArray.indices{
-                        self.cellArray[i] = self.updateCell(self.cellArray[i])
-                    }
                 }
                 
                 
@@ -212,34 +213,18 @@ class FirstViewController: UIViewController{
                     }
                 }
                 constGroup.notify(queue: .main){
-                    out.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
-                        
-                        if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
-                            return Int(lhsTime)! < Int(rhsTime)!
-                        }
-                        
-                        if lhs.rank == nil && rhs.rank == nil {
-                            // return true to stay at top
-                            return false
-                        }
-                        
-                        if lhs.rank == nil {
-                            // return true to stay at top
-                            return false
-                        }
-                        
-                        if rhs.rank == nil {
-                            // return false to stay at top
-                            return true
-                        }
-                        return false
-                    })
-                    self.all = out
+					self.all = self.sortPrice(out)
                     self.disGroup.notify(queue: .main){
                         self.ani2.loopAnimation = false
                     }
                 }
-                
+				
+				constGroup.notify(queue: .main){
+					print("setupcmc")
+					for i in self.cellArray.indices{
+						self.cellArray[i] = self.updateCell(self.cellArray[i],I:i)
+					}
+				}
                 
                 disGroup2.notify(queue: .main){
                     for i in self.cellArray{
@@ -256,637 +241,40 @@ class FirstViewController: UIViewController{
             }
         }
     }
-    func updateCell(_ c: Cell) -> Cell{
+	
+	func updateCell(_ c: Cell, I:Int) -> Cell{
         succeed = true
-        
-        if c.name.lowercased() == "neo"{
-            var neo:[NEO]!
-            neoBalance(c){(completion) in neo = completion}
-            disGroup.notify(queue: .main){
-                
-                
-                if neo != nil && !neo.isEmpty{
-                    
-                    var tempArr = [String]()
-                    if !c.subCells.isEmpty{
-                        for j in c.subCells!{
-                            tempArr.append(j.name.lowercased())
-                        }
-                    }
-                    tempArr.append("neo")
-                    
-                    
-                    
-                    for i in neo.indices{
-                        let namee = neo[i].name!
-                        if let space = namee.index(of: " ") {
-                            neo[i].name = String(namee[namee.startIndex..<space])
-                        }
-                    }
-                    var newSubcells = [NEO]()
-                    for i in neo{
-                        if !tempArr.contains((i.name?.lowercased())!){
-                            newSubcells.append(i)
-                        }
-                    }
-                    
-                    
-                    for x in newSubcells{
-                        let t = (Double(x.total!)) ?? 0.0
-                        let p = Double(self.getPrice(name: x.name!.lowercased())) ?? 0.0
-                        let new = Cell(name: x.name!, tag: x.name!, amount: x.total!, price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
-                        c.subCells!.append(new)
-                        
-                        
-                    }
-                    
-                    
-                    for i in neo{
-                        if i.name?.lowercased() != "neo"{
-                            for j in c.subCells!{
-                                if i.name?.lowercased() == j.name.lowercased() {
-                                    j.amount = i.total
-                                    if let t = (Double(i.total!)), let p = Double(self.getPrice(name: j.name.lowercased())){
-                                        j.balance = String(describing: (t * p))
-                                        j.price = String(describing: p)
-                                        
-                                    }
-                                }
-                            }
-                        }
-                        
-                        if i.name?.lowercased() == "neo"{
-                            c.amount = i.total
-                            if let t = (Double(i.total!)){
-                                c.amount = String(describing: t)
-                                if let p = Double(self.getPrice(name: c.name.lowercased())){
-                                    c.balance = String(describing: (t * p))
-                                    c.price = String(describing: p)
-                                }
-                            }
-                        }
-                    }
-                    
-                    
-                    
-                }
-                else{
-                    self.succeed = false
-                }
-            }
-        }
-            
-            
-            
-        else if c.name.lowercased() == "eth"{
-            var eth:ETH!
-            ethBalance(c){(completion) in eth = completion}
-            disGroup.notify(queue: .main){
-                
-                if eth.ETH?.balance != nil{
-                    c.amount = String(describing: eth.ETH!.balance!)
-                    
-                    if let p = Double(self.getPrice(name: c.name.lowercased())){
-                        c.balance = String(describing: (eth.ETH!.balance! * p))
-                        c.price = String(describing: p)
-                        
-                    }
-                    
-                    
-                    
-                    var tempArr = [String]()
-                    if !c.subCells.isEmpty{
-                        for j in c.subCells!{
-                            tempArr.append(j.tag.lowercased())
-                        }
-                    }
-                    //bad programming but too lazy and im rushing to get this done
-                    var currentNamesInSubcell = [String]()
-                    if eth.tokens != nil{
-                        for i in eth.tokens!{
-                            currentNamesInSubcell.append((i.tokenInfo?.symbol?.lowercased())!)
-                        }
-                    }
-                    
-                    for i in stride(from: c.subCells.count-1, to: -1, by: -1) {
-                        if !currentNamesInSubcell.contains(c.subCells[i].name.lowercased()){
-                            c.subCells.remove(at: i)
-                        }
-                    }
-                    
-                    
-                    tempArr.append("ethereum")
-                    
-                    var newSubcells = [ERC20]()
-                    if eth.tokens != nil{
-                        for i in eth.tokens!{
-                            if !tempArr.contains((i.tokenInfo?.name?.lowercased())!){
-                                newSubcells.append(i)
-                            }
-                        }
-                    }
-                    
-                    
-                    for x in newSubcells{
-                        var exp: Int = 0
-                        if x.tokenInfo?.decimals?.decInt == 0 && x.tokenInfo?.decimals?.decString != ""{
-                            exp = Int((x.tokenInfo?.decimals?.decString)!)!
-                        }
-                        else if x.tokenInfo?.decimals?.decInt != 0{
-                            exp = (x.tokenInfo?.decimals?.decInt)!
-                        }
-                        let divisor = Double(10 ^ exp)
-                        let t = Double(x.balance!) / divisor
-                        if let p = Double(self.getPrice(name: (x.tokenInfo?.symbol!.lowercased())!)){
-                            let new = Cell(name: x.tokenInfo!.symbol!, tag: x.tokenInfo!.name!, amount: String(describing: t), price: String(describing: p), balance: String(describing: (t * p)), address: c.address!, subCells: [Cell]())
-                            c.subCells!.append(new)
-                        }
-                        
-                    }
-                    
-                    
-                    
-                    if eth.tokens != nil && !(eth.tokens?.isEmpty)!{
-                        for i in eth.tokens!{
-                            for j in c.subCells{
-                                if i.tokenInfo?.symbol?.lowercased() == j.name.lowercased() {
-                                    if let p = Double(self.getPrice(name: j.name.lowercased())){
-                                        let exp: Int
-                                        if i.tokenInfo?.decimals?.decInt == 0 {
-                                            exp = Int((i.tokenInfo?.decimals?.decString)!)!
-                                        }
-                                        else{
-                                            exp = (i.tokenInfo?.decimals?.decInt)!
-                                        }
-                                        let divisor: Double = Double(truncating: pow(10, exp) as NSNumber)
-                                        let t = Double(i.balance!) / divisor
-                                        j.amount = String(describing: t)
-                                        j.balance = String(describing: (t * p))
-                                        j.price = String(describing: p)
-                                        
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
-                }
-                else{
-                    self.succeed = false
-                }
-            }
-        }
-        else if c.name == "BTC"{
-            var btc:BTC!
-            btcBalance(c){(completion) in btc = completion}
-            disGroup.notify(queue: .main){
-                if btc != nil && Double(btc.balance) >= 0.0{
-                    if let p = Double(self.getPrice(name: c.name.lowercased())){
-                        c.balance = String(describing: (btc.balance * p))
-                        c.price = String(describing: p)
-                        c.amount = String(describing: btc.balance)
-                    }
-                }
-                
-            }
-        }
-        else if c.name == "LTC"{
-            var ltc:LTC!
-            ltcBalance(c){(completion) in ltc = completion}
-            disGroup.notify(queue: .main){
-                if Double(ltc.confirmed_balance) >= 0.0 {
-                    if let p = Double(self.getPrice(name: c.name.lowercased())){
-                        
-                        c.balance = String(p * ltc.confirmed_balance)
-                        c.amount = String(ltc.confirmed_balance)
-                        c.price = String(describing: p)
-                    }
-                }
-            }
-            
-        }
-        else if c.name == "BINANCE"{
-            
-            var bnb: [BinanceCoins]!
-            self.bnbBalacne(c){(completion) in bnb = completion}
-            self.disGroup.notify(queue: .main){
-                var nameArr = [String]()
-                var bnbArr = [String]()
-                for i in c.subCells{
-                    nameArr.append(i.name)
-                }
-                c.balance = "0"
-                c.amount = "0"
-                c.price = "0"
-                if bnb != nil{
-                    
-                    for i in bnb{
-                        bnbArr.append(i.asset!.lowercased())
-                    }
-                    print(bnbArr)
-                    for i in stride(from: c.subCells.count-1, to: -1, by: -1) {
-                        if !bnbArr.contains(c.subCells[i].name.lowercased()){
-                            c.subCells.remove(at: i)
-                        }
-                    }
-                    
-                    for i in bnb{
-                        if !nameArr.contains(i.asset!){
-                            if let a = Double(i.free!), let p = Double(self.getPrice(name: i.asset!)){
-                                c.subCells.append(Cell(name: i.asset!, tag: "", amount: i.free!, price: self.getPrice(name: i.asset!), balance: String(describing: (a * p)), address: "", subCells: [Cell]()))
-                            }
-                        }
-                        else{
-                            for i in c.subCells{
-                                for j in bnb{
-                                    if i.name!.lowercased() == j.asset!.lowercased(){
-                                        i.amount = j.free!
-                                        i.price = self.getPrice(name: j.asset!)
-                                        if let a = Double(j.free!), let p = Double(self.getPrice(name: j.asset!)){
-                                            i.balance = String(describing: (a * p))
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    self.succeed = false
-                }
-                
-                
-            }
-        }
-            
-        else if c.name == "XRP"{
-            var xrp:[XRP]!
-            xrpBalance(c){(completion) in xrp = completion}
-            var already = [String]()
-            for k in c.subCells{
-                already.append(k.name)
-            }
-            
-            
-            disGroup.notify(queue: .main){
-                var dict = [String:Double]()
-                
-                
-                
-                if let list = xrp{
-                    for i in list{
-                        
-                        if let amount = Double(i.value!){
-                            if amount > 0.001 || amount < -0.001{
-                                
-                                if dict[i.currency!] != nil{
-                                    dict[i.currency!]! += amount
-                                }
-                                else{
-                                    dict[i.currency!] = amount
-                                }
-                            }
-                        }
-                    }
-                }
-                let xrpArray = Array(dict)
-                for i in xrpArray{
-                    if i.key == "XRP"{
-                        if let p = Double(self.getPrice(name: c.name.lowercased())){
-                            
-                            c.amount = String(describing: i.value)
-                            c.price = String(describing: p)
-                            c.balance = String(i.value * p)
-                        }
-                        
-                    }
-                    else{
-                        if !already.contains(i.key){
-                            if currNames.contains(i.key){
-                                if let p = Double(self.getCurrency( i.key)){
-                                    let new = Cell(name: i.key, tag: i.key, amount: String(i.value), price: String(p), balance: String(Double(i.value) * p), address: c.address, subCells: [Cell]())
-                                    c.subCells.append(new)
-                                }
-                            }
-                            else{
-                                if let p = Double(self.getPrice(name: i.key)){
-                                    let new = Cell(name: i.key, tag: i.key, amount: String(i.value), price: String(p), balance: String(Double(i.value) * p), address: c.address, subCells: [Cell]())
-                                    c.subCells.append(new)
-                                }
-                            }
-                        }
-                        else{
-                            for u in c.subCells{
-                                if i.key.lowercased() == u.name.lowercased(){
-                                    c.amount = String(describing: i.value)
-                                    if currNames.contains(i.key){
-                                        print(i.key, self.getCurrency(u.name))
-                                        if let p = Double(self.getCurrency(u.name)){
-                                            u.price = String(p)
-                                            u.balance = String(i.value * p)
-                                        }
-                                    }
-                                    else{
-                                        if let p = Double(self.getPrice(name: u.name)){
-                                            u.price = String(p)
-                                            u.balance = String(i.value * p)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+		switch c.name.lowercased(){
+		case "neo":
+			updateNEOCell(c: c, I: I)
+		case "eth":
+			updateETHCell(c: c, I: I)
+		case "ltc":
+			updateLTCCell(c: c, I: I)
+		case "binance":
+			updateBNBCell(c: c, I: I)
+		case "xrp":
+			updateXRPCell(c: c, I: I)
+		case "btc":
+			updateBTCCell(c: c, I: I)
+		default:
+			break
+		}
         c.updateMore()
-        
         return c
-        
-        
     }
     
     
+	func setErrorArray(){
+		errorArray = [String]()
+		for _ in cellArray{
+			errorArray.append("no")
+		}
+	}
     
-    
-    func getCurrency(_ name: String) -> String{
-        switch name{
-        case "AUD":
-            return String(1 / c.rates.AUD)
-        case "CNY":
-            return String(1 / c.rates.CNY)
-        case "JPY":
-            return String(1 / c.rates.JPY)
-        case "CAD":
-            return String(1 / c.rates.CAD)
-        case "MXN":
-            return String(1 / c.rates.MXN)
-        case "GBP":
-            return String(1 / c.rates.GBP)
-        case "EUR":
-            return String(1 / c.rates.EUR)
-        case "SGD":
-            return String(1 / c.rates.SGD)
-        case "KRW":
-            return String(1 / c.rates.KRW)
-        case "BRL":
-            return String(1 / c.rates.BRL)
-        case "USD":
-            return "1"
-        default:
-            return "Not Found"
-        }
-    }
-    func addCurrencies(){
-        all.append(CMC(name: "USD", rank: "", symbol: "USD", price_usd: "1", percent_change_24h: ""))
-        all.append(CMC(name: "AUD", rank: "", symbol: "AUD", price_usd: String(1 / c.rates.AUD), percent_change_24h: ""))
-        all.append(CMC(name: "CAD", rank: "", symbol: "CAD", price_usd: String(1 / c.rates.CAD), percent_change_24h: ""))
-        all.append(CMC(name: "CNY", rank: "", symbol: "CNY", price_usd: String(1 / c.rates.CNY), percent_change_24h: ""))
-        all.append(CMC(name: "BRL", rank: "", symbol: "BRL", price_usd: String(1 / c.rates.BRL), percent_change_24h: ""))
-        all.append(CMC(name: "KRW", rank: "", symbol: "KRW", price_usd: String(1 / c.rates.KRW), percent_change_24h: ""))
-        all.append(CMC(name: "EUR", rank: "", symbol: "EUR", price_usd: String(1 / c.rates.EUR), percent_change_24h: ""))
-        all.append(CMC(name: "GBP", rank: "", symbol: "GBP", price_usd: String(1 / c.rates.GBP), percent_change_24h: ""))
-        all.append(CMC(name: "MXN", rank: "", symbol: "MXN", price_usd: String(1 / c.rates.MXN), percent_change_24h: ""))
-        all.append(CMC(name: "JPY", rank: "", symbol: "JPY", price_usd: String(1 / c.rates.JPY), percent_change_24h: ""))
-        all.append(CMC(name: "SGD", rank: "", symbol: "SGD", price_usd: String(1 / c.rates.SGD), percent_change_24h: ""))
-    }
-    func Currency(completion: @escaping (currency?) -> ()){
-        self.disGroup3.enter()
-        
-        var done = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                self.disGroup3.leave()
-                completion(nil)
-            }
-        }
-        guard let url = URL(string: "https://api.fixer.io/latest?base=USD") else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    
-                    let coin = try JSONDecoder().decode(currency.self, from: data)
-                    print("currency")
-                    self.disGroup3.leave()
-                    done = true
-                    completion(coin)
-                } catch let jsonErr {
-                    print("CURENCY Error serializing json:", jsonErr)
-                }
-            }
-            }.resume()
-    }
-    //I could use <T> generics here but its too much to fix atm
-    func neoBalance(_ c: Cell, completion: @escaping ([NEO]?) -> ()){
-        self.disGroup.enter()
-        var done = false
-        var fail = false
-        let link = "https://otcgo.cn/api/v1/balances/" + c.address
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                fail = true
-                self.disGroup.leave()
-                completion([NEO]())
-            }
-        }
-        guard let url = URL(string: link) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let neo = try JSONDecoder().decode(NEON.self, from: data)
-                    var output = [NEO]()
-                    for i in neo.balances{
-                        let num = Double(i.total!) ?? 0.0
-                        if (i.name == "NEO" || num > 0.00001) {
-                            output.append(i)
-                        }
-                    }
-                    print("neo")
-                    done = true
-                    if !fail{
-                        self.disGroup.leave()
-                    }
-                    completion(output)
-                } catch let jsonErr {
-                    print("NEO Error serializing json:", jsonErr)
-                    self.disGroup.leave()
-                    done = true
-                    completion(nil)
-                }
-            }
-            }.resume()
-    }
-    func ethBalance(_ c:Cell, completion: @escaping (ETH?) -> ()){
-        self.disGroup.enter()
-        var done = false
-        let link = "https://api.ethplorer.io/getAddressInfo/" + c.address + "?apiKey=freekey"
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                self.disGroup.leave()
-                let e = ETH(ETH: ether(balance: nil), tokens: nil)
-                completion(e)
-            }
-        }
-        
-        guard let url = URL(string: link) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let balance = try JSONDecoder().decode(ETH.self, from: data)
-                    
-                    print("eth")
-                    self.disGroup.leave()
-                    done = true
-                    completion(balance)
-                } catch let jsonErr {
-                    print("ETH Error serializing json:", jsonErr)
-                    self.disGroup.leave()
-                    done = true
-                    completion(nil)
-                }
-            }
-            }.resume()
-    }
-    func btcBalance(_ c:Cell, completion: @escaping (BTC?) -> ()){
-        self.disGroup.enter()
-        var done = false
-        let link = "https://blockexplorer.com/api/addr/" + c.address
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                self.disGroup.leave()
-                let b = BTC(balance: -999)
-                completion(b)
-            }
-        }
-        guard let url = URL(string: link) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let balance = try JSONDecoder().decode(BTC.self, from: data)
-                    print("btc")
-                    self.disGroup.leave()
-                    done = true
-                    completion(balance)
-                } catch let jsonErr {
-                    print("BTC Error serializing json:", jsonErr)
-                    
-                    self.disGroup.leave()
-                    done = true
-                    completion(nil)
-                }
-            }
-            }.resume()
-    }
-    func ltcBalance(_ c:Cell, completion: @escaping (LTC?) -> ()){
-        self.disGroup.enter()
-        var done = false
-        let link = "https://chain.so/api/v2/get_address_balance/LTC/" + c.address
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                self.disGroup.leave()
-                let l = LTC(confirmed_balance: -999)
-                completion(l)
-            }
-        }
-        guard let url = URL(string: link) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let balance = try JSONDecoder().decode(LTCN.self, from: data)
-                    if balance.status == "success"{
-                        print("ltc")
-                        self.disGroup.leave()
-                        done = true
-                        completion(balance.data)
-                    }
-                } catch let jsonErr {
-                    print("LTC Error serializing json:", jsonErr)
-                    self.disGroup.leave()
-                    done = true
-                    completion(nil)
-                    
-                }
-            }
-            }.resume()
-    }
-    func xrpBalance(_ c:Cell, completion: @escaping ([XRP]) -> ()){
-        self.disGroup.enter()
-        var done = false
-        let link = "https://data.ripple.com/v2/accounts/" + c.address + "/balances"
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 15) {
-            if !done{
-                self.disGroup.leave()
-                completion([XRP]())
-            }
-        }
-        
-        guard let url = URL(string: link) else { return }
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let data = data {
-                do {
-                    let balance = try JSONDecoder().decode(XRPN.self, from: data)
-                    
-                    if balance.result == "success"{
-                        done = true
-                    }
-                    else{
-                        done = false
-                    }
-                    print("xrp")
-                    self.disGroup.leave()
-                    completion(balance.balances!)
-                } catch let jsonErr {
-                    print("XRP Error serializing json:", jsonErr)
-                }
-            }
-            }.resume()
-    }
-    func bnbBalacne(_ c:Cell, completion: @escaping CallBack){
-        let seperate = c.address.split(separator: " ")
-        let apikey = String(seperate[0])
-        let secret = String(seperate[1])
-        let time = Int64(NSDate().timeIntervalSince1970*1000)
-        let signkey = "timestamp=\(time)"
-        let signature = signkey.hmac(base64key:secret)
-        let headers: HTTPHeaders = ["X-MBX-APIKEY": apikey]
-        var out = [BinanceCoins]()
-        self.disGroup.enter()
-        
-        let manager = Alamofire.SessionManager.default
-        manager.session.configuration.timeoutIntervalForRequest = 15
-        
-        manager.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
-            do {
-                debugPrint(response)
-                let binance = try JSONDecoder().decode(Binance.self, from: response.data!)
-                
-                for i in binance.balances!{
-                    if let amount = Double(i.free!) {
-                        if amount > 0{
-                            out.append(i)
-                        }
-                    }
-                }
-                
-                let final = out.filter {
-                    if let price = Double(self.getPrice(name: $0.asset!.lowercased())) {
-                        return Double($0.free!)! * price > 0.5
-                    }
-                    else{
-                        return false
-                    }
-                }
-                self.disGroup.leave()
-                completion(final)
-            }
-            catch{
-                print("bnb error", error)
-                self.disGroup.leave()
-            }
-            
-        }
-    }
-    func CMCc(_ num: Int, completion: @escaping CMCallBack){
+	
+	
+    func CMCc(_ num: Int, completion: @escaping ([CMC]) -> () ){
         
         self.constGroup.enter()
         var out = [CMC]()
@@ -911,8 +299,129 @@ class FirstViewController: UIViewController{
             
         }
     }
-    typealias CMCallBack = (_ result: [CMC]) -> Void
-    typealias CallBack = (_ result: [BinanceCoins]) -> Void
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	
+
+    
+	
+
+	
+	func GenericAsync<T: Decodable>(_ c:Cell, completion: @escaping (T) -> ()){
+		Alamofire.SessionManager.default.session.configuration.timeoutIntervalForRequest = 20
+		self.disGroup.enter()
+		let type = Cryptos(rawValue: c.name.lowercased())
+		let link = getLink(type!, c.address)
+		guard let url = URL(string: link) else { return }
+		Alamofire.request(url, method: .get).responseJSON {response in
+			do {
+				print("GenericAsync: " + self.genericName(T.self) + String(describing: T.self))
+				let balance = try JSONDecoder().decode(T.self, from: response.data!)
+				self.disGroup.leave()
+				
+				completion(balance)
+				
+			} catch let jsonErr {
+				print(self.genericName(T.self),"Error serializing json:", jsonErr)
+				self.disGroup.leave()
+			}
+		}
+	}
+	
+    func genericName(_ T:Any) -> String {
+		let className = String(describing:type(of: T))
+        return className
+    }
+    
+    func getLink(_ coin: Cryptos,_ address: String) -> String{
+        switch coin {
+        case .btc:
+            return "https://blockexplorer.com/api/addr/" + address
+        case .eth:
+            return "https://api.ethplorer.io/getAddressInfo/" + address + "?apiKey=freekey"
+        case .ltc:
+            return "https://chain.so/api/v2/get_address_balance/LTC/" + address
+        case .neo:
+            return "https://otcgo.cn/api/v1/balances/" + address
+        case .xrp:
+            return "https://data.ripple.com/v2/accounts/" + address + "/balances"
+        case .eos:
+            return ""
+        }
+    }
+    
+    
+    
+    
+    
+    
+    enum Cryptos: String{
+        case btc
+        case eth
+        case ltc
+        case neo
+        case xrp
+        case eos
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	func sortPrice(_ out:[CMC]) -> [CMC]{
+		var ourt = out
+		ourt.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
+			
+			if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
+				return Int(lhsTime)! < Int(rhsTime)!
+			}
+			
+			if lhs.rank == nil && rhs.rank == nil {
+				// return true to stay at top
+				return false
+			}
+			
+			if lhs.rank == nil {
+				// return true to stay at top
+				return false
+			}
+			
+			if rhs.rank == nil {
+				// return false to stay at top
+				return true
+			}
+			return false
+		})
+		return ourt
+	}
+    
+    
+    
     
     func getPrice(name: String) -> String{
         if self.all != nil{
@@ -1169,7 +678,7 @@ class FirstViewController: UIViewController{
             self.add?.frame.origin.y = 60
             let add = Cell(name: "", tag: "", amount: "", price: "", balance: "", address: "", subCells: [Cell]())
             self.cellArray.insert(add, at: 0)
-            
+            self.errorArray.insert("no", at: 0)
             
             self.table.performBatchUpdates({
                 self.table.isEditing = true
@@ -1190,6 +699,7 @@ class FirstViewController: UIViewController{
         
         
         self.cellArray.remove(at: 0)
+		self.errorArray.remove(at: 0)
         let indx = IndexPath(row: 0, section: 0)
         let x = self.table.cellForRow(at: indx) as! CustomTableViewCell
         becomeEdit = false
@@ -1417,6 +927,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = table.dequeueReusableCell(withIdentifier: "cell2") as! CustomTableViewCell
         let cur = self.cellArray[indexPath.row]
+		let errorCheck = self.errorArray[indexPath.row]
         cell.cellView?.layer.cornerRadius = 10
         cell.name?.text = cur.tag
         cell.imgg.layer.minificationFilter = convertToCALayerContentsFilter(convertFromCALayerContentsFilter(CALayerContentsFilter.trilinear))
@@ -1451,6 +962,13 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
                     cash += Double(i.balance!) ?? 0.0
                 }
             }
+			
+			if errorCheck == "yes"{
+				cell.moreIcon.setImage(UIImage(named:"moreError"), for: .normal)
+			}
+			else{
+				cell.moreIcon.setImage(UIImage(named:"more"), for: .normal)
+			}
             
             cash = cleanUp(cash)
             let format = nF.string(from: NSNumber(value: cash))
@@ -1505,8 +1023,11 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         if destinationIndexPath.row != 0 {
             let movedObject = self.cellArray[sourceIndexPath.row]
+			let movedObject2 = self.errorArray[sourceIndexPath.row]
             self.cellArray.remove(at: sourceIndexPath.row)
             self.cellArray.insert(movedObject, at: destinationIndexPath.row)
+			self.errorArray.remove(at: sourceIndexPath.row)
+			self.errorArray.insert(movedObject2, at: destinationIndexPath.row)
             self.saveCells()
             NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) \(cellArray)")
             // To check for correctness enable: self.tableView.reloadData()
@@ -1518,6 +1039,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
             print("Deleted")
             
             self.cellArray.remove(at: indexPath.row)
+			self.errorArray.remove(at: indexPath.row)
             self.table.deleteRows(at: [indexPath], with: .automatic)
             self.saveCells()
         }

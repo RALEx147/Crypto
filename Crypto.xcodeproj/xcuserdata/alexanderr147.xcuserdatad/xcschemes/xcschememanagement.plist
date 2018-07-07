@@ -6,8 +6,10 @@
 	<dict>
 		<key>Crypto PubKeys.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>0</integer>
 		</dict>
 		<key>Crypto Widget.xcscheme</key>
 		<dict>
@@ -17,17 +19,26 @@
 		<key>Crypto.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>3</integer>
+		</dict>
+		<key>CryptoSiri 2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>CryptoSiri.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>CryptoSiriUI.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Kucoin.xcscheme</key>
 		<dict>
@@ -42,7 +53,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9113C0E01FE9EC39005170A4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>914B4BA61FC8F7C400968A3E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>914BAE0C1FEBA02800861C31</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -38,16 +38,16 @@ class Cell: NSObject, NSCoding{
     }
     
     required init(coder decoder: NSCoder) {
-        self.name = decoder.decodeObject(forKey: "name") as! String
+		self.name = decoder.decodeObject(forKey: "name") as? String
         self.tag = decoder.decodeObject(forKey: "tag") as? String
         self.more = decoder.decodeObject(forKey: "more") as? String
-        self.amount = decoder.decodeObject(forKey: "amount") as! String
-        self.address = decoder.decodeObject(forKey: "address") as! String
-        self.price = decoder.decodeObject(forKey: "price") as! String
+		self.amount = decoder.decodeObject(forKey: "amount") as? String
+		self.address = decoder.decodeObject(forKey: "address") as? String
+		self.price = decoder.decodeObject(forKey: "price") as? String
         
-        self.balance = decoder.decodeObject(forKey: "balance") as! String
+		self.balance = decoder.decodeObject(forKey: "balance") as? String
         if let key = (decoder.decodeObject(forKey: "subCells") as? NSData) as Data? {
-            self.subCells = NSKeyedUnarchiver.unarchiveObject(with: key) as! [Cell]
+			self.subCells = NSKeyedUnarchiver.unarchiveObject(with: key) as? [Cell]
         }
     }
     

@@ -11,24 +11,13 @@ import Lottie
 
 
 class ViewController: UIViewController {
-    
-    
-    
+	
     @IBOutlet weak var gradient: NSLayoutConstraint!
-    
-    
-    
     @IBOutlet weak var halo: UIImageView!
-    
-    
-    
     @IBOutlet weak var v2: UIView!
     @IBOutlet weak var v1: UIView!
-    
     @IBOutlet var icon: UIButton!
-    
-    
-    
+	
     var view1:FirstViewController!
     var view2:SecondViewController!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -45,20 +34,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTopButton(on: topOn)
-        
         v2.alpha = 0
         setupFrame()
-        
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+	
     var topOn = false
     var top:LOTAnimationView?
     let topFrame = CGRect(x: 0, y: 0, width: 84, height: 45)

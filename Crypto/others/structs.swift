@@ -41,6 +41,7 @@ struct NEO: Decodable {
     let total: String?
     var price_usd: Double?
     
+    
 }
 
 
