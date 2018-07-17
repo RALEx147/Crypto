@@ -12,7 +12,8 @@ extension FirstViewController{
 	
 	func updateBTCCell(c:Cell,I:Int){
 		var btc:BTC!
-		btcBalance(c){(completion) in btc = completion}
+//		btcBalance(c){(completion) in btc = completion}
+		GenericAsync(c){(result: BTC) in btc = result}
 		disGroup.notify(queue: .main){
 			if btc != nil && Double(btc.balance) >= 0.0{
 				if let p = Double(self.getPrice(name: c.name.lowercased())){

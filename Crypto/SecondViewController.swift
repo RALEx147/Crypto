@@ -32,7 +32,9 @@ class SecondViewController: UIViewController, ContDelegate {
         }
     }
     
-    
+	func getifContains(inp:String) -> Bool{
+		return CCCoins.contains(inp)
+	}
     
     
     var CCCoins = [String]()

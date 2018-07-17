@@ -44,8 +44,6 @@
 		914B4BAD1FC8F7C400968A3E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 914B4BAC1FC8F7C400968A3E /* TodayViewController.swift */; };
 		914B4BB41FC8F7C400968A3E /* Crypto Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 914B4BA71FC8F7C400968A3E /* Crypto Widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		914BAE081FEB98F100861C31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 910A819B1FA4DC75001F868A /* Assets.xcassets */; };
-		914C4361209D2917006CD37D /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4350209D1F46006CD37D /* Lottie.framework */; };
-		914C4362209D2917006CD37D /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 914C4350209D1F46006CD37D /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9164BB3D203E691000C40F93 /* top2.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3B203E690F00C40F93 /* top2.json */; };
 		9164BB3E203E691000C40F93 /* top1.json in Resources */ = {isa = PBXBuildFile; fileRef = 9164BB3C203E690F00C40F93 /* top1.json */; };
 		918F08D71FF33D5E0082AC9A /* 4.json in Resources */ = {isa = PBXBuildFile; fileRef = 918F08D31FF33D5E0082AC9A /* 4.json */; };
@@ -141,7 +139,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				914C4362209D2917006CD37D /* Lottie.framework in Embed Frameworks */,
 				1FDAA03120EFAB860048BF10 /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -158,6 +155,7 @@
 		1F036BCF20EFCD7E00A770B5 /* AsyncFetchXRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchXRP.swift; sourceTree = "<group>"; };
 		1F036BD220EFD57200A770B5 /* AsyncFetchCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchCurrency.swift; sourceTree = "<group>"; };
 		1FB369F420EFAFF900564F18 /* Timeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeout.swift; sourceTree = "<group>"; };
+		1FD1E03720F0BB59005AB7FF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../../../Desktop/MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1FDAA01520EFA4FC0048BF10 /* STHeitiSC-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeitiSC-Light.ttf"; sourceTree = "<group>"; };
 		1FDAA01620EFA4FD0048BF10 /* STHeitiSC-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeitiSC-Medium.ttf"; sourceTree = "<group>"; };
 		1FDAA01720EFAA410048BF10 /* Alamofire.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Alamofire.xcodeproj; path = Alamofire/Alamofire.xcodeproj; sourceTree = "<group>"; };
@@ -186,7 +184,6 @@
 		914B4BAC1FC8F7C400968A3E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		914B4BAF1FC8F7C400968A3E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		914B4BB11FC8F7C400968A3E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		914C4350209D1F46006CD37D /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
 		9164BB3B203E690F00C40F93 /* top2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top2.json; path = ../../../../../Desktop/local/old/top2.json; sourceTree = "<group>"; };
 		9164BB3C203E690F00C40F93 /* top1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = top1.json; path = ../../../../../Desktop/local/old/top1.json; sourceTree = "<group>"; };
 		918F08D31FF33D5E0082AC9A /* 4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = 4.json; sourceTree = "<group>"; };
@@ -205,7 +202,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				914C4361209D2917006CD37D /* Lottie.framework in Frameworks */,
 				1FDAA03020EFAB860048BF10 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,6 +262,7 @@
 		910A81861FA4DC75001F868A = {
 			isa = PBXGroup;
 			children = (
+				1FD1E03720F0BB59005AB7FF /* MyPlayground.playground */,
 				1FDAA01720EFAA410048BF10 /* Alamofire.xcodeproj */,
 				910A81911FA4DC75001F868A /* Crypto */,
 				914B4BAB1FC8F7C400968A3E /* Crypto Widget */,
@@ -301,7 +298,6 @@
 		914B4BA81FC8F7C400968A3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				914C4350209D1F46006CD37D /* Lottie.framework */,
 				914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */,
 				9113C0E21FE9EC39005170A4 /* IntentsUI.framework */,
 			);

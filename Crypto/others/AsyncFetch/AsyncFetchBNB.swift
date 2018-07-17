@@ -92,7 +92,7 @@ extension FirstViewController{
 		
 		manager.request("https://api.binance.com/api/v3/account?timestamp=\(time)&signature=\(signature)", method: .get, headers: headers).responseJSON {response in
 			do {
-				debugPrint(response)
+//				debugPrint(response)
 				let binance = try JSONDecoder().decode(Binance.self, from: response.data!)
 				guard let balances = binance.balances else{throw MyError.runtimeError("balances is nil")}
 				

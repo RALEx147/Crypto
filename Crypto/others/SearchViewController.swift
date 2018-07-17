@@ -97,7 +97,8 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResul
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     
-    
+	
+	
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return self.search.text == "" ? all.count : showArray.count
@@ -113,6 +114,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.rank.text?.insert("#", at: (cell.rank.text?.startIndex)!)
         cell.view.layer.cornerRadius = 7
         cell.delegate = self
+		
         
 
         return cell

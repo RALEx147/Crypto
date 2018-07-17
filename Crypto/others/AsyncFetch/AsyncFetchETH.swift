@@ -12,8 +12,8 @@ extension FirstViewController{
 	
 	func updateETHCell(c:Cell,I:Int){
 		var eth:ETH!
-		ethBalance(c){(completion) in eth = completion}
-//		GenericAsync(c){(result: ETH) in eth = result}
+//		ethBalance(c){(completion) in eth = completion}
+		GenericAsync(c){(result: ETH) in eth = result}
 		disGroup.notify(queue: .main){
 			
 			if eth != nil && eth.ETH != nil && eth.ETH?.balance != nil{

@@ -23,8 +23,8 @@ extension FirstViewController{
 	
 	func updateNEOCell(c:Cell,I:Int){
 		var neo:[NEO]!
-		neoBalance(c){(completion) in neo = completion}
-//		GenericAsync(c) {(result: NEON) in neo = self.cleanNeo(result)}
+//		neoBalance(c){(completion) in neo = completion}
+		GenericAsync(c) {(result: NEON) in neo = self.cleanNeo(result)}
 		disGroup.notify(queue: .main){
 			
 			

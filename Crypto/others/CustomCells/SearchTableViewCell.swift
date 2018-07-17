@@ -20,8 +20,8 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet var add: UIButton!
     @IBOutlet var rank: UILabel!
     @IBOutlet var lb: UILabel!
-    
-    var delegate: SearchCellDelegate?
+
+	var delegate: SearchCellDelegate?
     
     @IBAction func click(_ sender: Any) {
         delegate?.addTouched(name: lb.text!)
@@ -31,6 +31,8 @@ class SearchTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
+//	let added = CCCoins.contains(cell.name.text!)
+
     
     
 
