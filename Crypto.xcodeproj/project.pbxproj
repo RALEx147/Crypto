@@ -17,6 +17,9 @@
 		1F036BCE20EFCD2A00A770B5 /* AsyncFetchBNB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F036BCD20EFCD2A00A770B5 /* AsyncFetchBNB.swift */; };
 		1F036BD020EFCD7E00A770B5 /* AsyncFetchXRP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F036BCF20EFCD7E00A770B5 /* AsyncFetchXRP.swift */; };
 		1F036BD320EFD57200A770B5 /* AsyncFetchCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F036BD220EFD57200A770B5 /* AsyncFetchCurrency.swift */; };
+		1F806A4420FDCB3A0050722C /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F806A4320FDCB3A0050722C /* Lottie.framework */; };
+		1F806A4520FDCB430050722C /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F806A4320FDCB3A0050722C /* Lottie.framework */; };
+		1F806A4720FDCB480050722C /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1F806A4320FDCB3A0050722C /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1FB369F520EFAFF900564F18 /* Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB369F420EFAFF900564F18 /* Timeout.swift */; };
 		1FB369FA20EFB2AC00564F18 /* STHeitiSC-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FDAA01620EFA4FD0048BF10 /* STHeitiSC-Medium.ttf */; };
 		1FB369FB20EFB2AD00564F18 /* STHeitiSC-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1FDAA01620EFA4FD0048BF10 /* STHeitiSC-Medium.ttf */; };
@@ -140,6 +143,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				1FDAA03120EFAB860048BF10 /* Alamofire.framework in Embed Frameworks */,
+				1F806A4720FDCB480050722C /* Lottie.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +158,7 @@
 		1F036BCD20EFCD2A00A770B5 /* AsyncFetchBNB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchBNB.swift; sourceTree = "<group>"; };
 		1F036BCF20EFCD7E00A770B5 /* AsyncFetchXRP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchXRP.swift; sourceTree = "<group>"; };
 		1F036BD220EFD57200A770B5 /* AsyncFetchCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFetchCurrency.swift; sourceTree = "<group>"; };
+		1F806A4320FDCB3A0050722C /* Lottie.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Lottie.framework; sourceTree = "<group>"; };
 		1FB369F420EFAFF900564F18 /* Timeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timeout.swift; sourceTree = "<group>"; };
 		1FD1E03720F0BB59005AB7FF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../../../Desktop/MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1FDAA01520EFA4FC0048BF10 /* STHeitiSC-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeitiSC-Light.ttf"; sourceTree = "<group>"; };
@@ -203,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FDAA03020EFAB860048BF10 /* Alamofire.framework in Frameworks */,
+				1F806A4420FDCB3A0050722C /* Lottie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,6 +216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F806A4520FDCB430050722C /* Lottie.framework in Frameworks */,
 				1F036BC220EFB8A800A770B5 /* Alamofire.framework in Frameworks */,
 				914B4BAA1FC8F7C400968A3E /* NotificationCenter.framework in Frameworks */,
 			);
@@ -298,6 +305,7 @@
 		914B4BA81FC8F7C400968A3E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1F806A4320FDCB3A0050722C /* Lottie.framework */,
 				914B4BA91FC8F7C400968A3E /* NotificationCenter.framework */,
 				9113C0E21FE9EC39005170A4 /* IntentsUI.framework */,
 			);
