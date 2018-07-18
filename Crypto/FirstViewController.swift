@@ -328,22 +328,17 @@ class FirstViewController: UIViewController{
 		guard let url = URL(string: link) else { return }
 		Alamofire.request(url, method: .get).responseJSON {response in
 			do {
-				print("GenericAsync: " + self.genericName(T.self) + String(describing: T.self))
+				print("GenericAsync: " + String(describing: T.self))
 				let balance = try JSONDecoder().decode(T.self, from: response.data!)
 				self.disGroup.leave()
 				
 				completion(balance)
 				
 			} catch let jsonErr {
-				print(self.genericName(T.self),"Error serializing json:", jsonErr)
+				print(String(describing: T.self),"Error serializing json:", jsonErr)
 				self.disGroup.leave()
 			}
 		}
-	}
-	
-	func genericName(_ T:Any) -> String {
-		let className = String(describing:type(of: T))
-		return className
 	}
 	
 	func getLink(_ coin: Cryptos,_ address: String) -> String{
@@ -662,8 +657,11 @@ class FirstViewController: UIViewController{
 			superView.halo.frame.origin.y = -29
 			superView.halo.alpha = 0
 			superView.top?.frame.origin.y = -30
-			
 			superView.top?.alpha = 0
+			
+			superView.profileImage.frame.origin.y = -30
+			superView.profileImage.alpha = 0
+			
 			self.add?.frame.origin.y = 60
 			self.total.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
 			self.bg.frame.origin.y = 59
@@ -720,6 +718,8 @@ class FirstViewController: UIViewController{
 				superView.halo.alpha = 1
 				superView.top?.frame.origin.y = 30
 				superView.top?.alpha = 1
+				superView.profileImage?.frame.origin.y = 30
+				superView.profileImage.alpha = 1
 				self.total.transform = CGAffineTransform(scaleX: 1, y: 1)
 				self.bg.frame.origin.y = 180
 				self.ani1.frame.origin.y = 173.5

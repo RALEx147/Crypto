@@ -18,7 +18,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var v1: UIView!
     @IBOutlet var icon: UIButton!
 	
-    var view1:FirstViewController!
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		addTopButton(on: topOn)
+		v2.alpha = 0
+		setupFrame()
+		setupProfile()
+		imagePicker.delegate = self
+	}
+	
+	
+	var view1:FirstViewController!
     var view2:SecondViewController!
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "seg1"{
@@ -28,15 +39,38 @@ class ViewController: UIViewController {
             view2 = segue.destination as? SecondViewController
         }
     }
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        addTopButton(on: topOn)
-        v2.alpha = 0
-        setupFrame()
-    }
+	
+	
+	@IBOutlet weak var profileImage: UIButton!
+	let imagePicker = UIImagePickerController()
+	@IBAction func profile(_ sender: Any) {
+		imagePicker.allowsEditing = false
+		imagePicker.sourceType = .photoLibrary
+		present(imagePicker, animated: true, completion: nil)
+	}
+	
+	func setupProfile(){
+		profileImage.layer.masksToBounds = true
+		profileImage.layer.cornerRadius = profileImage.frame.width / 2
+		loadProfileImage()
+	}
+	
+	func saveProfileImage(){
+		let data = profileImage.imageView?.image?.pngData()
+		UserDefaults.standard.set(data, forKey: "ProfileImage")
+		UserDefaults.standard.synchronize()
+	}
+	func loadProfileImage(){
+		if let imgData = UserDefaults.standard.object(forKey: "ProfileImage")as? NSData{
+			profileImage.setImage(UIImage(data: imgData as Data), for: .normal)
+		}
+		else{
+			profileImage.setImage(UIImage(named: "defaultProfile"), for: .normal)
+		}
+	}
+	
+	
+	
 	
     var topOn = false
     var top:LOTAnimationView?
@@ -98,7 +132,14 @@ class ViewController: UIViewController {
     @IBOutlet var debug: UIButton!
     
     @IBAction func debug(_ sender: Any) {
-        print(view2.banner.frame.size.height)
+		
+		let version: AnyObject = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
+
+		let alert = UIAlertController(title: "Crypto Keychain", message: "CryptoKeychain Version " + (version as! String) + "\nNava Dräg Limited", preferredStyle: UIAlertController.Style.alert)
+		alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in }))
+		self.present(alert, animated: true, completion: nil)
+		
+		
     }
     
     func toKey(){
@@ -174,6 +215,7 @@ class ViewController: UIViewController {
             self.view1?.ani3.alpha = 0
             self.view1?.ani4.alpha = 0
             self.view1?.bg.alpha = 0
+			
             
             self.view.layoutIfNeeded()
         }) { (_) in}
@@ -211,8 +253,8 @@ class ViewController: UIViewController {
     var bannerFrame2:CGRect!
     var v2BH:CGFloat!
     var v1BH:CGFloat!
-    
-    func setupFrame() {
+	
+	func setupFrame() {
         
         addFrame = CGRect(x: (self.view1?.add?.frame.origin.x)!, y: (self.view1?.add?.frame.origin.y)! , width: (self.view1?.add?.frame.width)!, height: (self.view1?.add?.frame.height)!)
         bannerFrame = CGRect(x: (self.view1?.banner.frame.origin.x)!, y: (self.view1?.banner.frame.origin.y)! , width: (self.view.frame.width), height: (self.view1?.banner.frame.height)!)
@@ -238,3 +280,20 @@ class ViewController: UIViewController {
 }
 
 
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+	
+	@objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+		if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+			profileImage.contentMode = .scaleAspectFit
+			profileImage.setImage(pickedImage, for: .normal)
+			saveProfileImage()
+		}
+		
+		dismiss(animated: true, completion: nil)
+	}
+	
+	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+		dismiss(animated: true, completion: nil)
+	}
+}

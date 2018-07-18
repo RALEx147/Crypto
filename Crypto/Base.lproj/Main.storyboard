@@ -38,7 +38,7 @@
                                     <segue destination="4Zq-Mi-MeJ" kind="embed" identifier="seg1" id="L7d-Hm-Evl"/>
                                 </connections>
                             </containerView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient" translatesAutoresizingMaskIntoConstraints="NO" id="u7M-uF-oZb">
+                            <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gradient" translatesAutoresizingMaskIntoConstraints="NO" id="u7M-uF-oZb">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="98"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="98" id="BDp-3r-VyY"/>
@@ -54,6 +54,16 @@
                                     <action selector="debug:" destination="pC6-Vz-kmf" eventType="touchUpInside" id="b1Y-pm-aK0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kpo-Yb-SIL">
+                                <rect key="frame" x="312" y="30" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="2Bb-97-Y2u"/>
+                                    <constraint firstAttribute="width" constant="45" id="J4b-D6-Rzj"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="profile:" destination="pC6-Vz-kmf" eventType="touchUpInside" id="gt3-5i-cog"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -61,10 +71,12 @@
                             <constraint firstAttribute="top" secondItem="u7M-uF-oZb" secondAttribute="top" id="CDW-pR-uig"/>
                             <constraint firstAttribute="top" secondItem="8mu-P7-huN" secondAttribute="top" id="IIS-fB-SPp"/>
                             <constraint firstItem="u7M-uF-oZb" firstAttribute="leading" secondItem="lhK-12-eGR" secondAttribute="leading" id="Iea-tt-sTq"/>
+                            <constraint firstItem="Kpo-Yb-SIL" firstAttribute="centerY" secondItem="a4r-aM-62I" secondAttribute="centerY" id="Rjn-Az-rge"/>
                             <constraint firstItem="lhK-12-eGR" firstAttribute="trailing" secondItem="RXW-uv-47g" secondAttribute="trailing" id="Sso-XD-hX0"/>
                             <constraint firstAttribute="bottom" secondItem="8mu-P7-huN" secondAttribute="bottom" id="Ztd-t7-ccq"/>
                             <constraint firstItem="lhK-12-eGR" firstAttribute="trailing" secondItem="a4r-aM-62I" secondAttribute="trailing" constant="17" id="aSd-pE-Rzt"/>
                             <constraint firstItem="Uax-6Q-QzV" firstAttribute="trailing" secondItem="a4r-aM-62I" secondAttribute="leading" constant="-12" id="dLS-fY-eiR"/>
+                            <constraint firstItem="Kpo-Yb-SIL" firstAttribute="centerX" secondItem="a4r-aM-62I" secondAttribute="centerX" id="iag-yV-CRu"/>
                             <constraint firstItem="8mu-P7-huN" firstAttribute="leading" secondItem="lhK-12-eGR" secondAttribute="leading" id="jkY-5V-RWf"/>
                             <constraint firstItem="RXW-uv-47g" firstAttribute="leading" secondItem="lhK-12-eGR" secondAttribute="leading" id="p18-93-skS"/>
                             <constraint firstItem="Uax-6Q-QzV" firstAttribute="top" secondItem="lhK-12-eGR" secondAttribute="top" constant="19" id="pqx-8i-ltS"/>
@@ -80,6 +92,7 @@
                         <outlet property="gradient" destination="BDp-3r-VyY" id="dDT-8M-LML"/>
                         <outlet property="halo" destination="a4r-aM-62I" id="kyk-a6-eGr"/>
                         <outlet property="icon" destination="Uax-6Q-QzV" id="zb7-pd-lK1"/>
+                        <outlet property="profileImage" destination="Kpo-Yb-SIL" id="dOl-Pz-Wxy"/>
                         <outlet property="v1" destination="RXW-uv-47g" id="GHL-We-RJ8"/>
                         <outlet property="v2" destination="8mu-P7-huN" id="aqP-8y-adK"/>
                     </connections>
@@ -597,7 +610,7 @@
                                                     <rect key="frame" x="15" y="3.5" width="345" height="33"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" minimumFontSize="9" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PBa-7A-q9r">
-                                                            <rect key="frame" x="10" y="8.5" width="43" height="16"/>
+                                                            <rect key="frame" x="10" y="5.5" width="40" height="22.5"/>
                                                             <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -619,13 +632,13 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YtY-wA-9T9">
-                                                    <rect key="frame" x="226.5" y="12" width="43" height="16"/>
+                                                    <rect key="frame" x="229.5" y="9" width="40" height="22.5"/>
                                                     <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9Gb-mq-IzY">
-                                                    <rect key="frame" x="284" y="13" width="62" height="18"/>
+                                                    <rect key="frame" x="284" y="9.5" width="62" height="25.5"/>
                                                     <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="18"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="deviceRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -678,7 +691,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price Tracker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xz8-TF-ute">
-                                <rect key="frame" x="16" y="109" width="191" height="31"/>
+                                <rect key="frame" x="16" y="109" width="197" height="43.5"/>
                                 <fontDescription key="fontDescription" name="STHeitiSC-Medium" family="Heiti SC" pointSize="31"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

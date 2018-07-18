@@ -15,7 +15,6 @@ extension FirstViewController{
 //		ethBalance(c){(completion) in eth = completion}
 		GenericAsync(c){(result: ETH) in eth = result}
 		disGroup.notify(queue: .main){
-			
 			if eth != nil && eth.ETH != nil && eth.ETH?.balance != nil{
 				c.amount = String(describing: eth.ETH!.balance!)
 				

@@ -67,15 +67,12 @@ class SecondViewController: UIViewController, ContDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //        ddd.constant -= 6
-        
+		
         setupSearch()
         setupConstr()
         setupRefresh()
         setupLbl()
         load()
-        //        save()
         
         self.v.delag = self
         
@@ -311,50 +308,7 @@ class SecondViewController: UIViewController, ContDelegate {
         }
         refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         refreshControl.tintColor = UIColor(named: "loading")
-        
-        
-        
-        var n = 1
-        var out = [CMC]()
-        while n < 1700{
-            CMCc(n) { (con) in
-                for i in con{
-                    out.append(i)
-                }
-            }
-            n += 100
-        }
-        constGroup.notify(queue: .main){
-            
-            out.sort(by: { (lhs: CMC, rhs: CMC) -> Bool in
-                
-                if let lhsTime = lhs.rank, let rhsTime = rhs.rank {
-                    return Int(lhsTime)! < Int(rhsTime)!
-                }
-                
-                if lhs.rank == nil && rhs.rank == nil {
-                    // return true to stay at top
-                    return false
-                }
-                
-                if lhs.rank == nil {
-                    // return true to stay at top
-                    return false
-                }
-                
-                if rhs.rank == nil {
-                    // return false to stay at top
-                    return true
-                }
-                return false
-            })
-            self.v.all = out
-            
-            self.table.reloadData()
-            
-        }
-        
-        
+           
     }
     
     
