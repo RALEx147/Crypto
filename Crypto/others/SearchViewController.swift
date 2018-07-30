@@ -49,10 +49,11 @@ class SearchViewController: UIViewController, UISearchBarDelegate, UISearchResul
 
         
         search.backgroundImage = #imageLiteral(resourceName: "Background")
-        self.view.bringSubviewToFront(searchTable)
-        self.view.bringSubviewToFront(search)
-         UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): UIColor(named: "pink")!], for: UIControl.State.normal)
-        
+		self.view.bringSubview(toFront: searchTable)
+		self.view.bringSubview(toFront: search)
+		UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitleTextAttributes([NSAttributedStringKey(rawValue: NSAttributedStringKey.foregroundColor.rawValue): UIColor(named: "pink")!], for: .normal)
+
+		
         
         
     }

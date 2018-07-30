@@ -32,9 +32,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>7</string>
+	<string>9</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access photos for profile picture</string>
 	<key>NSSiriUsageDescription</key>
 	<string>siri for crypto prices</string>
 	<key>UIAppFonts</key>

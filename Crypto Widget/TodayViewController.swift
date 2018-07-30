@@ -137,13 +137,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         else{
 
-            self.labl.setTitle(" ", for: UIControl.State.application)
-            self.labl.setTitle(" ", for: UIControl.State.disabled)
-            self.labl.setTitle(" ", for: UIControl.State.focused)
-            self.labl.setTitle(" ", for: UIControl.State.highlighted)
-            self.labl.setTitle(" ", for: UIControl.State.normal)
-            self.labl.setTitle(" ", for: UIControl.State.reserved)
-            self.labl.setTitle(" ", for: UIControl.State.selected)
+            self.labl.setTitle(" ", for: .normal)
             
             prevPrice = UserDefaults().array(forKey: "prevPrice") as? [String] ?? prevPrice
             prevChange = UserDefaults().array(forKey: "prevChange") as? [String] ?? prevChange
@@ -171,7 +165,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                         imgs[i].backgroundColor = UIColor(named: "myGreen");
                         changes[i].text!.insert("+", at: String.Index.init(encodedOffset: 0))
                     }
-                    self.view.sendSubviewToBack(imgs[i])
+					self.view.sendSubview(toBack: imgs[i])
                 }
                 else{changes[i].text = "--"}
             }

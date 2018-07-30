@@ -85,7 +85,7 @@ class SecondViewController: UIViewController, ContDelegate {
     }
     
     func delaget(){
-        UIView.animate(withDuration: 0.3, delay: 0.3, options: UIView.AnimationOptions.curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
             self.v.search.alpha = 0
             self.blurView.alpha = 0
             self.bgView.alpha = 0
@@ -296,7 +296,7 @@ class SecondViewController: UIViewController, ContDelegate {
         
         self.view.addSubview(blurView)
         self.view.addSubview(bgView)
-        self.view.bringSubviewToFront(self.cont)
+		self.view.bringSubview(toFront: self.cont)
         
     }
     
@@ -306,7 +306,7 @@ class SecondViewController: UIViewController, ContDelegate {
         } else {
             table.addSubview(refreshControl)
         }
-        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = UIColor(named: "loading")
            
     }
@@ -355,7 +355,7 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             
