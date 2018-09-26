@@ -165,7 +165,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                         imgs[i].backgroundColor = UIColor(named: "myGreen");
                         changes[i].text!.insert("+", at: String.Index.init(encodedOffset: 0))
                     }
-					self.view.sendSubview(toBack: imgs[i])
+					self.view.sendSubviewToBack(imgs[i])
                 }
                 else{changes[i].text = "--"}
             }

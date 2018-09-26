@@ -52,7 +52,7 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         let nFormat = supper.nF.string(from: NSNumber(value: num))
         cell.amount?.text =  nFormat! + " " + cur.name!
         
-		cell.img.layer.minificationFilter = kCAFilterTrilinear
+		cell.img.layer.minificationFilter = CALayerContentsFilter.trilinear
         cell.img.layer.minificationFilterBias = 0.03
         
         

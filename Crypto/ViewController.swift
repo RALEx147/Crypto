@@ -57,7 +57,7 @@ class ViewController: UIViewController {
 	
 	func saveProfileImage(){
 		let image: UIImage? = profileImage.imageView?.image
-		let data: Data = UIImagePNGRepresentation(image!)!
+		let data: Data = image!.pngData()!
 		
 		
 //		let data = profileImage.imageView?.image?.pngData()
@@ -286,10 +286,8 @@ class ViewController: UIViewController {
 
 
 extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-	
-	@objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-
-		if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+	private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
 			profileImage.contentMode = .scaleAspectFit
 			profileImage.setImage(pickedImage, for: .normal)
 			saveProfileImage()
@@ -297,7 +295,6 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
 		
 		dismiss(animated: true, completion: nil)
 	}
-	
 	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 		dismiss(animated: true, completion: nil)
 	}

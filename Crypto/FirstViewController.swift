@@ -51,7 +51,7 @@ class FirstViewController: UIViewController{
 		
 		setErrorArray()
 		table.estimatedRowHeight = 130
-		table.rowHeight = UITableViewAutomaticDimension
+		table.rowHeight = UITableView.automaticDimension
 		self.total.font = UIFont(name: "STHeitiSC-Light", size: 50.0)
 		total.font = total.font.withSize(50)
 		let format = nF.string(from: NSNumber(value: cleanUp(totalPrice())))
@@ -890,7 +890,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
 		let errorCheck = self.errorArray[indexPath.row]
 		cell.cellView?.layer.cornerRadius = 10
 		cell.name?.text = cur.tag
-		cell.imgg.layer.minificationFilter = kCAFilterTrilinear
+		cell.imgg.layer.minificationFilter = CALayerContentsFilter.trilinear
 		cell.imgg.layer.minificationFilterBias = 0.03
 		if cur.name != "BINANCE"{
 			cell.tagg?.text = cur.name + ": " + cur.address
@@ -994,7 +994,7 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			print("Deleted")
 			

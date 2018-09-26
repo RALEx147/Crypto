@@ -164,6 +164,7 @@ class SecondViewController: UIViewController, ContDelegate {
         
         self.constGroup.enter()
         var out = [CMC]()
+		
         Alamofire.request("https://api.coinmarketcap.com/v2/ticker/?start=\(num)", method: .get).responseJSON {response in
             do {
                 let output = try JSONDecoder().decode(CMCC.self, from: response.data!)
@@ -296,7 +297,7 @@ class SecondViewController: UIViewController, ContDelegate {
         
         self.view.addSubview(blurView)
         self.view.addSubview(bgView)
-		self.view.bringSubview(toFront: self.cont)
+		self.view.bringSubviewToFront(self.cont)
         
     }
     
@@ -355,7 +356,7 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
             
