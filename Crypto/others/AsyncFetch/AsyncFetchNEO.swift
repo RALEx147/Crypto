@@ -14,7 +14,7 @@ extension FirstViewController{
 		var output = [NEO]()
 		for i in input.balances{
 			let num = Double(i.total!) ?? 0.0
-			if (i.name == "NEO" || num > 0.00001) {
+			if (i.name == "NEO" || num > 0.00001 && i.name != "RPX") {
 				output.append(i)
 			}
 		}
@@ -63,7 +63,7 @@ extension FirstViewController{
 				
 				
 				for i in neo{
-					if i.name?.lowercased() != "neo"{
+					if i.name?.lowercased() != "neo"{ //tokens update
 						for j in c.subCells!{
 							if i.name?.lowercased() == j.name.lowercased() {
 								j.amount = i.total
@@ -76,7 +76,7 @@ extension FirstViewController{
 						}
 					}
 					
-					if i.name?.lowercased() == "neo"{
+					if i.name?.lowercased() == "neo"{ //NEO UTXO update
 						c.amount = i.total
 						if let t = (Double(i.total!)){
 							c.amount = String(describing: t)
@@ -89,7 +89,8 @@ extension FirstViewController{
 				}
 				
 				
-				
+				c.subCells.sort(by: { $0.balance > $1.balance })
+
 			}
 			else{
 				self.succeed = false

@@ -17,6 +17,7 @@ let currNames = ["USD","AUS","CAD","CNY","JPY","MXN","SGD","GBP","EUR","KRW","BR
 class FirstViewController: UIViewController{
 	@IBAction func debug(_ sender: Any) {
 		
+		
 	}
 	
 	@IBOutlet weak var spacing: UIView!
@@ -213,12 +214,10 @@ class FirstViewController: UIViewController{
 				}
 				constGroup.notify(queue: .main){
 					self.all = self.sortPrice(out)
+					print(self.all.last?.name)
 					self.disGroup.notify(queue: .main){
 						self.ani2.loopAnimation = false
 					}
-				}
-				
-				constGroup.notify(queue: .main){
 					print("setupcmc")
 					for i in self.cellArray.indices{
 						self.cellArray[i] = self.updateCell(self.cellArray[i],I:i)
@@ -304,22 +303,6 @@ class FirstViewController: UIViewController{
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	func GenericAsync<T: Decodable>(_ c:Cell, completion: @escaping (T) -> ()){
 		Alamofire.SessionManager.default.session.configuration.timeoutIntervalForRequest = 20
 		self.disGroup.enter()
@@ -371,19 +354,6 @@ class FirstViewController: UIViewController{
 		case xrp
 		case eos
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -626,6 +596,37 @@ class FirstViewController: UIViewController{
 			}
 		}
 	}
+	func showCopied(){
+		let w:CGFloat = 150
+		let h:CGFloat = 75
+		let darkView = UIView(frame: CGRect(x: (view.frame.width / 2) - (w/2), y: (view.frame.height / 2) - (h/2), width: w, height: h))
+		darkView.backgroundColor = .black
+		darkView.alpha = 0
+		darkView.layer.cornerRadius = 10
+		view.addSubview(darkView)
+		
+		let copyLabel = UILabel(frame: CGRect(x: (view.frame.width / 2) - (w/2), y: (view.frame.height / 2) - (h/2), width: w, height: h))
+		copyLabel.alpha = 0
+		copyLabel.text = "Copied!"
+		copyLabel.font = UIFont(name: "SF-Bold", size: UIFont.systemFontSize)
+		copyLabel.textColor = .white
+		copyLabel.textAlignment = .center
+		view.addSubview(copyLabel)
+		
+		UIView.animate(withDuration: 0.1, animations: {
+			darkView.alpha = 0.8
+			copyLabel.alpha = 0.8
+		}) { (_) in
+			UIView.animate(withDuration: 0.2, delay: 0.8, animations: {
+				darkView.alpha = 0
+				copyLabel.alpha = 0
+			}, completion: { (_) in
+				darkView.removeFromSuperview()
+				copyLabel.removeFromSuperview()
+			})
+		}
+		
+	}
 	
 	@IBOutlet var totalHeight: NSLayoutConstraint!
 	@IBOutlet weak var bannerHeight: NSLayoutConstraint!
@@ -787,7 +788,7 @@ class FirstViewController: UIViewController{
 	
 }
 
-extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneDelagate {
+extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneDelagate, CopiedDelagate {
 	
 	fileprivate func addCleanAddress(_ type: String, _ nick: String, _ cleanAddress: String) {
 		self.toggleMenuDelagate()
@@ -890,6 +891,8 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
 		let errorCheck = self.errorArray[indexPath.row]
 		cell.cellView?.layer.cornerRadius = 10
 		cell.name?.text = cur.tag
+		cell.moreIcon.tag = indexPath.row
+		cell.addressText = cur.address
 		cell.imgg.layer.minificationFilter = CALayerContentsFilter.trilinear
 		cell.imgg.layer.minificationFilterBias = 0.03
 		if cur.name != "BINANCE"{
@@ -954,7 +957,9 @@ extension FirstViewController: UITableViewDelegate, UITableViewDataSource, DoneD
 		else{
 			cell.subTable.frame = CGRect(x: cell.subTable.frame.origin.x, y: cell.subTable.frame.origin.y, width: cell.subTable.frame.width, height: 45)
 		}
-		cell.delagate = self
+		cell.doneDelagate = self
+		cell.copiedDelagate = self
+		cell.layoutIfNeeded()
 		return cell
 	}
 	

@@ -10,6 +10,7 @@ import UIKit
 import Lottie
 import Alamofire
 
+let widgetSuite = "group.com.NavaDrag.CryptoKeychain"
 
 class SecondViewController: UIViewController, ContDelegate {
     func updateArray(name: String) {
@@ -73,9 +74,8 @@ class SecondViewController: UIViewController, ContDelegate {
         setupRefresh()
         setupLbl()
         load()
-        
         self.v.delag = self
-        
+        table.reloadData()
         
         
     }
@@ -134,28 +134,28 @@ class SecondViewController: UIViewController, ContDelegate {
                 return false
             })
             self.v.all = out
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.4) {
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.09) {
                 self.refreshControl.endRefreshing()
                 self.table.reloadData()
-            }
+//            }
         }
         
     }
     
     func save(){
-        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCCoins, forKey: "CCCoins")
-        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCPrice, forKey: "CCPrice")
-        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCChange, forKey: "CCChange")
-        UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.set(CCColor, forKey: "CCColor")
+        UserDefaults(suiteName: widgetSuite)?.set(CCCoins, forKey: "CCCoins")
+        UserDefaults(suiteName: widgetSuite)?.set(CCPrice, forKey: "CCPrice")
+        UserDefaults(suiteName: widgetSuite)?.set(CCChange, forKey: "CCChange")
+        UserDefaults(suiteName: widgetSuite)?.set(CCColor, forKey: "CCColor")
         
         
     }
     func load() {
-        CCCoins = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCCoins") as? [String] ?? [])!
-        CCPrice = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCPrice") as? [String] ?? [])!
-        CCChange = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCChange") as? [String] ?? [])!
-        CCColor = (UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCColor") as? [String] ?? [])!
-        
+        CCCoins = (UserDefaults(suiteName: widgetSuite)?.array(forKey: "CCCoins") as? [String] ?? [])!
+        CCPrice = (UserDefaults(suiteName: widgetSuite)?.array(forKey: "CCPrice") as? [String] ?? [])!
+        CCChange = (UserDefaults(suiteName: widgetSuite)?.array(forKey: "CCChange") as? [String] ?? [])!
+        CCColor = (UserDefaults(suiteName: widgetSuite)?.array(forKey: "CCColor") as? [String] ?? [])!
+		
     }
     
     
@@ -327,12 +327,14 @@ extension SecondViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let FVC = FirstViewController()
         let cell = table.dequeueReusableCell(withIdentifier: "cellprice") as! PriceTableViewCell
         let name = self.CCCoins[indexPath.row]
         cell.cellView.layer.cornerRadius = 8
         cell.color.layer.cornerRadius = 7
         cell.name.text = name
-        cell.price.text = getPrice(name)
+		let p = FVC.cleanUp(Double(getPrice(name)) ?? 0.0)
+		cell.price.text = FirstViewController().nF.string(from: NSNumber(value: p))
         cell.change.text = getChange(name) + "%"
         let clr = color(name) ? UIColor(named: "myGreen") : UIColor(named: "myRed")
         cell.color.backgroundColor = clr

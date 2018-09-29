@@ -10,6 +10,9 @@ import UIKit
 protocol DoneDelagate : class {
     func pressdone(type: String, address: String, nick: String)
 }
+protocol CopiedDelagate: class {
+	func showCopied()
+}
 
 
 class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
@@ -260,13 +263,13 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         })
     }
     
-    weak var delagate: DoneDelagate?
+    weak var doneDelagate: DoneDelagate?
     @IBAction func toDone(_ sender: Any) {
         let txxt = lab.text!
         let id = txxt.index((txxt.startIndex), offsetBy: 3)
         let coinName = txxt.prefix(upTo: id)
         
-        delagate?.pressdone(type: String(coinName), address: address.text!, nick: nickname.text!)
+        doneDelagate?.pressdone(type: String(coinName), address: address.text!, nick: nickname.text!)
     }
     
     
@@ -277,7 +280,8 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         
         print("qr")
     }
-    
+	
+	var addressText: String!
     var addBool = true
     @IBAction func touchAdd(_ sender: Any) {
         let up = self.superview as! UITableView
@@ -403,6 +407,19 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         
         extended = !extended
     }
+	
+	weak var copiedDelagate: CopiedDelagate?
+	@objc func longTap(_ sender: UIGestureRecognizer){
+		let up = self.superview as! UITableView
+		if(sender.state == UIGestureRecognizer.State.began){
+			if let tag = sender.view?.tag{
+				let cell = up.cellForRow(at: IndexPath(row: tag, section: 0)) as! CustomTableViewCell
+				
+				UIPasteboard.general.string = cell.addressText!
+				copiedDelagate?.showCopied()
+			}
+		}
+	}
     
     var cells = [Cell]()
     
@@ -430,10 +447,14 @@ class CustomTableViewCell: UITableViewCell, UITableViewDelegate, UITableViewData
         ogheight = 75
         sub.layer.cornerRadius = 10
         address.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+		
+        buttons = [neoButton,eosButton, ltcButton, btcButton, ethButton, xrpButton]
+	
+		let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap(_:)))
+		moreIcon.addGestureRecognizer(longGesture)
+		cellView?.addGestureRecognizer(longGesture)
+		cellView?.isUserInteractionEnabled = true
 
-       buttons = [neoButton,eosButton, ltcButton, btcButton, ethButton, xrpButton]
-        
-        
     }
     
 

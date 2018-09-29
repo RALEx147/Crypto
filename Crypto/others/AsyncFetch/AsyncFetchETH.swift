@@ -102,7 +102,10 @@ extension FirstViewController{
 						}
 					}
 				}
+				c.subCells.sort(by: { $0.balance > $1.balance })
 			}
+				
+				
 			else{
 				self.succeed = false
 				self.errorArray[I] = "yes"

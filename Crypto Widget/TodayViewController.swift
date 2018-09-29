@@ -10,6 +10,8 @@ import UIKit
 import NotificationCenter
 import Alamofire
 
+let widgetSuite = "group.com.NavaDrag.CryptoKeychain"
+
 struct CMC: Decodable{
     let name: String?
     let rank: String?
@@ -41,6 +43,7 @@ struct CMCC2: Decodable{
 }
 
 
+
 class TodayViewController: UIViewController, NCWidgetProviding {
     
     var user: [String?]!
@@ -54,6 +57,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     let constGroup = DispatchGroup()
     
     //this is the most disgusting this i have done in my life
+	//it truly is so bad like holy shit wtf bro
     @IBOutlet weak var name0: UILabel!
     @IBOutlet weak var price0: UILabel!
     @IBOutlet weak var name1: UILabel!
@@ -115,6 +119,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         //if you look at this there is a reason
         //i started out a rough project hard code
         //but turned into real app and too lazy to change
+		//for now
         
         prices.append(price0);prices.append(price1);prices.append(price2);prices.append(price3);prices.append(price4)
         prices.append(price5);prices.append(price6);prices.append(price7);prices.append(price8);prices.append(price9)
@@ -124,8 +129,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         imgs.append(img5);imgs.append(img6);imgs.append(img7);imgs.append(img8);imgs.append(img9);
         changes.append(change0);changes.append(change1);changes.append(change2);changes.append(change3);changes.append(change4);
         changes.append(change5);changes.append(change6);changes.append(change7);changes.append(change8);changes.append(change9);
-        
-        user = UserDefaults(suiteName: "group.com.NavaDrag.Crypto")?.array(forKey: "CCCoins") as? [String]
+        user = UserDefaults(suiteName: widgetSuite)?.array(forKey: "CCCoins") as? [String]
+		
         if user == nil{
             for i in 0...9{
                 changes[i].isHidden = true
@@ -193,8 +198,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                 var price = [String?](repeatElement(nil, count: 10))
                 var changes = [String?](repeatElement(nil, count: 10))
                 for u in 0...self.user.count-1{
-                    price[u] = (self.getPrice(name: self.user[u]!))
-                    changes[u] = (self.getChange(name: self.user[u]!))
+					let p = self.cleanUp(Double(self.getPrice(name: self.user[u]!) ?? "--") ?? 0.0)
+					price[u] = self.nF.string(from: NSNumber(value: p))!
+					changes[u] = (self.getChange(name: self.user[u]!))
                 }
                 for i in 0...self.names.count-1{self.prices[i].text = price[i] ?? self.prices[i].text}
                 for i in 0...self.user.count-1{
@@ -252,7 +258,9 @@ class TodayViewController: UIViewController, NCWidgetProviding {
                 var price = [String?](repeatElement(nil, count: 10))
                 var changes = [String?](repeatElement(nil, count: 10))
                 for u in 0...self.user.count-1{
-                    price[u] = (self.getPrice(name: self.user[u]!))
+					let p = self.cleanUp(Double(self.getPrice(name: self.user[u]!) ?? "--") ?? 0.0)
+					price[u] = self.nF.string(from: NSNumber(value: p))!
+					
                     changes[u] = (self.getChange(name: self.user[u]!))
                 }
                 for i in 0...self.names.count-1{self.prices[i].text = price[i] ?? self.prices[i].text}
@@ -356,4 +364,40 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         return nil
     }
+	
+	let nF:NumberFormatter = {
+		let numberFormatter = NumberFormatter()
+		numberFormatter.numberStyle = NumberFormatter.Style.decimal
+		return numberFormatter
+	}()
+	
+	func cleanUp(_ cash:Double) -> Double{
+		var out = cash
+		if out < 0.00001 && out >= 0.0{
+			out = out.truncate(places: 5)
+		}
+		if out > 0.00001 && out < 1.0{
+			out = out.truncate(places: 5)
+		}
+		else if out > 1.0 && out < 10.0{
+			out = out.truncate(places: 4)
+		}
+		else if out > 10.0 && out < 100.0{
+			out = out.truncate(places: 3)
+		}
+		else if out > 100.0 && out < 1000000{
+			out = out.truncate(places: 2)
+		}
+		else if out > 1000000{
+			out = out.truncate(places: 0)
+		}
+		return out
+	}
+}
+
+extension Double{
+	func truncate(places : Int)-> Double{
+		return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
+		
+	}
 }

@@ -45,12 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
     }
 
-    let vc = ViewController()
+	let VC = FirstViewController()
 	func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         print("OPENED FROM NOTIFACATION")
+		
         return true
     }
-    
+	
     // MARK: - Core Data stack
   
 }

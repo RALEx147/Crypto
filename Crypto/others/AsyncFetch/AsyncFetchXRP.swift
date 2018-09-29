@@ -40,6 +40,10 @@ extension FirstViewController{
 					}
 				}
 			}
+			else{
+				self.succeed = false
+				self.errorArray[I] = "yes"
+			}
 			let xrpArray = Array(dict)
 			for i in xrpArray{
 				if i.key == "XRP"{
@@ -88,6 +92,8 @@ extension FirstViewController{
 					}
 				}
 			}
+			c.subCells.sort(by: { $0.balance > $1.balance })
+			
 		}
 	}
 	
